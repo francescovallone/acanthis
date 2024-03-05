@@ -1,0 +1,3 @@
+LongStringValidationBenchmark(RunTime): 7.292966767583081 us.
+FixedLengthStringValidationBenchmark(RunTime): 0.60854475 us.
+EmptyStringValidationBenchmark(RunTime): 0.14584482934851287 us.
