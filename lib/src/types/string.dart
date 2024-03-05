@@ -115,6 +115,19 @@ class AcanthisString extends AcanthisType<String> {
     return this;
   }
 
+  AcanthisString customCheck({
+    required bool Function(String value) onCheck,
+    required String error,
+    required String name
+  }){
+    addCheck(AcanthisCheck<String>(
+      onCheck: onCheck,
+      error: error,
+      name: name
+    ));
+    return this;
+  }
+
 }
 
 AcanthisString string() => AcanthisString();

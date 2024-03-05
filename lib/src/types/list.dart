@@ -107,6 +107,19 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
+  AcanthisList<T> customCheck({
+    required bool Function(List<T> value) onCheck,
+    required String error,
+    required String name
+  }){
+    addCheck(AcanthisCheck<List<T>>(
+      onCheck: onCheck,
+      error: error,
+      name: name
+    ));
+    return this;
+  }
+
 }
 
 AcanthisList dynamicList(List<AcanthisType> elements) => AcanthisList<dynamic>(

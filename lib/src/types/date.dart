@@ -22,6 +22,19 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return this;
   }
 
+  AcanthisDate customCheck({
+    required bool Function(DateTime value) onCheck,
+    required String error,
+    required String name
+  }){
+    addCheck(AcanthisCheck<DateTime>(
+      onCheck: onCheck,
+      error: error,
+      name: name
+    ));
+    return this;
+  }
+
 }
 
 AcanthisDate date() => AcanthisDate();

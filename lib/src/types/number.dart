@@ -112,6 +112,19 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  AcanthisNumber customCheck({
+    required bool Function(num value) onCheck,
+    required String error,
+    required String name
+  }){
+    addCheck(AcanthisCheck<num>(
+      onCheck: onCheck,
+      error: error,
+      name: name
+    ));
+    return this;
+  }
+
 }
 
 AcanthisNumber number() => AcanthisNumber();
