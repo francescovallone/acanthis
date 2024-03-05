@@ -1,14 +1,8 @@
 import 'types.dart';
 
-class AcanthisNumberTypeDef extends AcanthisTypeDef {
-  const AcanthisNumberTypeDef();
-}
+class AcanthisNumber extends AcanthisType<num> {
 
-class AcanthisNumber extends AcanthisType<num, AcanthisNumberTypeDef> {
-
-  AcanthisNumber({
-    required super.definition
-  });
+  AcanthisNumber();
 
   AcanthisNumber lte(num value){
     addCheck(AcanthisCheck<num>(
@@ -120,4 +114,4 @@ class AcanthisNumber extends AcanthisType<num, AcanthisNumberTypeDef> {
 
 }
 
-AcanthisNumber number() => AcanthisNumber(definition: const AcanthisNumberTypeDef());
+AcanthisNumber number() => AcanthisNumber();

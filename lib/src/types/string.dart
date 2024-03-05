@@ -1,15 +1,9 @@
 import '../exceptions/validation_error.dart';
 import 'types.dart';
 
-class AcanthisStringTypeDef extends AcanthisTypeDef {
-  const AcanthisStringTypeDef();
-}
+class AcanthisString extends AcanthisType<String> {
 
-class AcanthisString extends AcanthisType<String, AcanthisStringTypeDef> {
-
-  AcanthisString({
-    required super.definition
-  });
+  AcanthisString();
 
   @override
   AcanthisParseStatus<String> parse(String value) {
@@ -123,4 +117,4 @@ class AcanthisString extends AcanthisType<String, AcanthisStringTypeDef> {
 
 }
 
-AcanthisString string() => AcanthisString(definition: const AcanthisStringTypeDef());
+AcanthisString string() => AcanthisString();

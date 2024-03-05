@@ -1,27 +1,10 @@
 import '../exceptions/validation_error.dart';
 
-abstract class AcanthisTypeDef {
+abstract class AcanthisType<O> {
 
-  final Map<String, String> errors;
-  final String description;
-
-  const AcanthisTypeDef({
-    this.errors = const {},
-    this.description = ''
-  });
-
-}
-
-abstract class AcanthisType<O, D extends AcanthisTypeDef> {
-
-  final D definition;
   final List<AcanthisCheck> checks = [];
 
-  AcanthisType({
-    required this.definition,
-  });
-
-  get description => definition.description;
+  AcanthisType();
 
   AcanthisParseStatus<O> parse(O value){
     for (var check in checks) {

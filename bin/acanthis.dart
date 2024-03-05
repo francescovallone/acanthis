@@ -22,8 +22,16 @@ void main(List<String> arguments) {
         'color': acanthis.string()
           .min(3)
           .max(10)
-      })
-    })
+      }),
+      'date': acanthis.date()
+        .min(DateTime.now())
+    }),
+    'elements': acanthis.dynamicList(
+      [
+        acanthis.string().min(3).max(10),
+        acanthis.number().gte(5)
+      ]
+    ).min(2).max(5)
   }).passthrough();
 
   final parsed = jsonObject.parse({
@@ -33,8 +41,20 @@ void main(List<String> arguments) {
         'email': 'test@t.com',
         'style': {
           'color': 'red',
-        }
-      }
+        },
+        'date': DateTime.now()
+      },
+      'elements': ['Hell', 5],
     });
     print(parsed);
+
+  final list = acanthis.dynamicList(
+    [
+      acanthis.string().min(3).max(10),
+      acanthis.number().gte(5)
+    ]
+  ).min(2).max(5);
+
+  final parsedList = list.tryParse(['Hell', 5]);
+  print(parsedList);
 }

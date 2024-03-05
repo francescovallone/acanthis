@@ -1,11 +1,8 @@
 import '../exceptions/validation_error.dart';
 import 'types.dart';
 
-class AcanthisMapTypeDef extends AcanthisTypeDef {
-  const AcanthisMapTypeDef();
-}
 
-class AcanthisMap<V> extends AcanthisType<Map<String, V>, AcanthisMapTypeDef> {
+class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
 
   Map<String, AcanthisType> _fields;
 
@@ -15,9 +12,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>, AcanthisMapTypeDef> {
 
   AcanthisMap(
     this._fields,
-    {
-      required super.definition,
-    }
   );
 
   Map<String, V> _parse(Map<String, V> value){
@@ -154,5 +148,4 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>, AcanthisMapTypeDef> {
 
 AcanthisMap jsonObject(Map<String, AcanthisType> fields) => AcanthisMap<dynamic>(
   fields,
-  definition: const AcanthisMapTypeDef(),
 );
