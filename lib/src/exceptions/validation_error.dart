@@ -1,5 +1,4 @@
 class ValidationError extends Error {
-  
   final String message;
 
   ValidationError(this.message);
@@ -8,5 +7,4 @@ class ValidationError extends Error {
   String toString() {
     return "ValidationError: $message";
   }
-
 }

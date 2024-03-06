@@ -1,16 +1,19 @@
 name: acanthis
-description: A sample command-line application.
-version: 1.0.0
-# repository: https://github.com/my_org/my_repo
+description: Acanthis is an easy-to-use validation library for Dart and Flutter.
+version: 0.0.1
+homepage: https://acanthis.serinus.app
+repository: https://github.com/francescovallone/acanthis
+
 
 environment:
   sdk: ^3.3.0
 
 # Add regular dependencies here.
 dependencies:
-  benchmark_harness: ^2.2.2
+  
   # path: ^1.8.0
 
 dev_dependencies:
+  benchmark_harness: ^2.2.2
   lints: ^3.0.0
   test: ^1.24.0

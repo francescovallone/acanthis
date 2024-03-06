@@ -1,4 +1,4 @@
 name, total, avg, iters
-LongStringValidationBenchmark, 60.0549175938597, 0.600549175938597, 100
-FixedLengthStringValidationBenchmark, 5.522930834871039, 0.055229308348710385, 100
-EmptyStringValidationBenchmark, 1.4772622613688693, 0.014772622613688693, 100
+LongStringValidationBenchmark, 76.38942929904397, 0.7638942929904396, 100
+FixedLengthStringValidationBenchmark, 5.9355071128625525, 0.05935507112862552, 100
+EmptyStringValidationBenchmark, 1.5504689747655127, 0.015504689747655127, 100

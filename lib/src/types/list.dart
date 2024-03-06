@@ -1,14 +1,13 @@
 import 'types.dart';
 
 class AcanthisList<T> extends AcanthisType<List<T>> {
-
   AcanthisType<T> element;
 
   AcanthisList(
     this.element,
   );
 
-  List<T> _parse(List<T> value){
+  List<T> _parse(List<T> value) {
     final parsed = <T>[];
     for (var i = 0; i < value.length; i++) {
       final parsedElement = element.parse(value[i]);
@@ -18,21 +17,18 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return parsed;
   }
 
-  (List<T> parsed, Map<String, dynamic> errors) _tryParse(List<T> value){
+  (List<T> parsed, Map<String, dynamic> errors) _tryParse(List<T> value) {
     final parsed = <T>[];
     final errors = <String, dynamic>{};
     for (var i = 0; i < value.length; i++) {
       final parsedElement = element.tryParse(value[i]);
       parsed.add(parsedElement.value);
-      if(parsedElement.errors.isNotEmpty){
+      if (parsedElement.errors.isNotEmpty) {
         errors[i.toString()] = parsedElement.errors;
       }
     }
     final result = super.tryParse(value);
-    return (parsed, {
-      ...errors,
-      ...result.errors
-    });
+    return (parsed, {...errors, ...result.errors});
   }
 
   @override
@@ -45,67 +41,57 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   AcanthisParseResult<List<T>> tryParse(List<T> value) {
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
-      value: parsed,
-      errors: errors,
-      success: _recursiveSuccess(errors)
-    );
+        value: parsed, errors: errors, success: _recursiveSuccess(errors));
   }
 
-  bool _recursiveSuccess(Map<String, dynamic> errors){
+  bool _recursiveSuccess(Map<String, dynamic> errors) {
     List<bool> results = [];
     for (var error in errors.values) {
-      results.add(error is Map<String, dynamic> ? _recursiveSuccess(error) : error.isEmpty);
+      results.add(error is Map<String, dynamic>
+          ? _recursiveSuccess(error)
+          : error.isEmpty);
     }
     return results.every((element) => element);
   }
 
-  AcanthisList<T> min(int length){
+  AcanthisList<T> min(int length) {
     addCheck(AcanthisCheck<List<T>>(
-      onCheck: (toTest) => toTest.length >= length,
-      error: 'The list must have at least $length elements',
-      name: 'min'
-    ));
+        onCheck: (toTest) => toTest.length >= length,
+        error: 'The list must have at least $length elements',
+        name: 'min'));
     return this;
   }
 
-  AcanthisList<T> max(int length){
+  AcanthisList<T> max(int length) {
     addCheck(AcanthisCheck<List<T>>(
-      onCheck: (toTest) => toTest.length <= length,
-      error: 'The list must have at most $length elements',
-      name: 'max'
-    ));
+        onCheck: (toTest) => toTest.length <= length,
+        error: 'The list must have at most $length elements',
+        name: 'max'));
     return this;
   }
 
-  AcanthisList<T> unique(){
+  AcanthisList<T> unique() {
     addCheck(AcanthisCheck<List<T>>(
-      onCheck: (toTest) => toTest.toSet().length == toTest.length,
-      error: 'The list must have unique elements',
-      name: 'unique'
-    ));
+        onCheck: (toTest) => toTest.toSet().length == toTest.length,
+        error: 'The list must have unique elements',
+        name: 'unique'));
     return this;
   }
 
-  AcanthisList<T> length(T value){
+  AcanthisList<T> length(T value) {
     addCheck(AcanthisCheck<List<T>>(
-      onCheck: (toTest) => toTest.length == value,
-      error: 'The list must have exactly $value elements',
-      name: 'length'
-    ));
+        onCheck: (toTest) => toTest.length == value,
+        error: 'The list must have exactly $value elements',
+        name: 'length'));
     return this;
   }
 
-  AcanthisList<T> customCheck({
-    required bool Function(List<T> value) onCheck,
-    required String error,
-    required String name
-  }){
-    addCheck(AcanthisCheck<List<T>>(
-      onCheck: onCheck,
-      error: error,
-      name: name
-    ));
+  AcanthisList<T> customCheck(
+      {required bool Function(List<T> value) onCheck,
+      required String error,
+      required String name}) {
+    addCheck(
+        AcanthisCheck<List<T>>(onCheck: onCheck, error: error, name: name));
     return this;
   }
-
 }

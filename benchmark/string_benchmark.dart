@@ -4,7 +4,8 @@ import 'package:acanthis/acanthis.dart';
 import 'shared/acanthis_benchmark.dart';
 
 class LongStringValidationBenchmark extends AcanthisBenchmark {
-  LongStringValidationBenchmark() : super(name: 'LongStringValidationBenchmark');
+  LongStringValidationBenchmark()
+      : super(name: 'LongStringValidationBenchmark');
 
   static void main() {
     LongStringValidationBenchmark().report();
@@ -14,11 +15,11 @@ class LongStringValidationBenchmark extends AcanthisBenchmark {
   void run() {
     string().parse('long' * 256);
   }
-
 }
 
 class FixedLengthStringValidationBenchmark extends AcanthisBenchmark {
-  FixedLengthStringValidationBenchmark() : super(name: 'FixedLengthStringValidationBenchmark');
+  FixedLengthStringValidationBenchmark()
+      : super(name: 'FixedLengthStringValidationBenchmark');
 
   static void main() {
     FixedLengthStringValidationBenchmark().report();
@@ -28,11 +29,11 @@ class FixedLengthStringValidationBenchmark extends AcanthisBenchmark {
   void run() {
     string().max(5).min(1).parse('long');
   }
-
 }
 
 class EmptyStringValidationBenchmark extends AcanthisBenchmark {
-  EmptyStringValidationBenchmark() : super(name: 'EmptyStringValidationBenchmark');
+  EmptyStringValidationBenchmark()
+      : super(name: 'EmptyStringValidationBenchmark');
 
   static void main() {
     EmptyStringValidationBenchmark().report();
@@ -42,11 +43,9 @@ class EmptyStringValidationBenchmark extends AcanthisBenchmark {
   void run() {
     string().parse('');
   }
-
 }
 
 class StringBenchmarks {
-
   static void main() {
     print("Running String benchmarks");
     LongStringValidationBenchmark.main();
@@ -54,5 +53,4 @@ class StringBenchmarks {
     EmptyStringValidationBenchmark.main();
     print("String benchmarks complete");
   }
-
 }

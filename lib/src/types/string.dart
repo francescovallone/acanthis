@@ -3,138 +3,114 @@ import 'list.dart';
 import 'types.dart';
 
 class AcanthisString extends AcanthisType<String> {
-
   AcanthisString();
 
   @override
   AcanthisParseResult<String> parse(String value) {
     for (var check in checks) {
-      if(!check.check(value)){
-        throw ValidationError(
-          check.error
-        );
+      if (!check.check(value)) {
+        throw ValidationError(check.error);
       }
     }
-    return AcanthisParseResult(
-      value: value
-    );
+    return AcanthisParseResult(value: value);
   }
 
   @override
   AcanthisParseResult<String> tryParse(String value) {
     final errors = <String, String>{};
     for (var check in checks) {
-      if(!check.check(value)){
+      if (!check.check(value)) {
         errors[check.name] = check.error;
       }
     }
     return AcanthisParseResult(
-      value: value,
-      errors: errors,
-      success: errors.isEmpty
-    );
+        value: value, errors: errors, success: errors.isEmpty);
   }
 
-  AcanthisString email(){
+  AcanthisString email() {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value),
-      error: 'Invalid email format',
-      name: 'email'
-    ));
+        onCheck: (value) =>
+            RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value),
+        error: 'Invalid email format',
+        name: 'email'));
     return this;
   }
 
-  AcanthisString min(int length){
+  AcanthisString min(int length) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => value.length >= length,
-      error: 'Value must be at least $length characters long',
-      name: 'min'
-    ));
+        onCheck: (value) => value.length >= length,
+        error: 'Value must be at least $length characters long',
+        name: 'min'));
     return this;
   }
 
-  AcanthisString max(int length){
+  AcanthisString max(int length) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => value.length <= length,
-      error: 'Value must be at most $length characters long',
-      name: 'maxLength'
-    ));
+        onCheck: (value) => value.length <= length,
+        error: 'Value must be at most $length characters long',
+        name: 'maxLength'));
     return this;
   }
 
-  AcanthisString pattern(RegExp pattern){
+  AcanthisString pattern(RegExp pattern) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => pattern.hasMatch(value),
-      error: 'Value does not match the pattern',
-      name: 'pattern'
-    ));
+        onCheck: (value) => pattern.hasMatch(value),
+        error: 'Value does not match the pattern',
+        name: 'pattern'));
     return this;
   }
 
-  AcanthisString required(){
+  AcanthisString required() {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => value.isNotEmpty,
-      error: 'Value is required',
-      name: 'required'
-    ));
+        onCheck: (value) => value.isNotEmpty,
+        error: 'Value is required',
+        name: 'required'));
     return this;
   }
 
-  AcanthisString length(int length){
+  AcanthisString length(int length) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (value) => value.length == length,
-      error: 'Value cannot be empty',
-      name: 'notEmpty'
-    ));
+        onCheck: (value) => value.length == length,
+        error: 'Value cannot be empty',
+        name: 'notEmpty'));
     return this;
   }
 
-  AcanthisString contains(String value){
+  AcanthisString contains(String value) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (v) => v.contains(value),
-      error: 'Value must contain $value',
-      name: 'contains'
-    ));
+        onCheck: (v) => v.contains(value),
+        error: 'Value must contain $value',
+        name: 'contains'));
     return this;
   }
 
-  AcanthisString startsWith(String value){
+  AcanthisString startsWith(String value) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (v) => v.startsWith(value),
-      error: 'Value must start with $value',
-      name: 'startsWith'
-    ));
+        onCheck: (v) => v.startsWith(value),
+        error: 'Value must start with $value',
+        name: 'startsWith'));
     return this;
   }
 
-  AcanthisString endsWith(String value){
+  AcanthisString endsWith(String value) {
     addCheck(AcanthisCheck<String>(
-      onCheck: (v) => v.endsWith(value),
-      error: 'Value must end with $value',
-      name: 'endsWith'
-    ));
+        onCheck: (v) => v.endsWith(value),
+        error: 'Value must end with $value',
+        name: 'endsWith'));
     return this;
   }
 
-  AcanthisList<String> list(){
-    return AcanthisList<String>(
-      this
-    );
+  AcanthisList<String> list() {
+    return AcanthisList<String>(this);
   }
 
-  AcanthisString customCheck({
-    required bool Function(String value) onCheck,
-    required String error,
-    required String name
-  }){
-    addCheck(AcanthisCheck<String>(
-      onCheck: onCheck,
-      error: error,
-      name: name
-    ));
+  AcanthisString customCheck(
+      {required bool Function(String value) onCheck,
+      required String error,
+      required String name}) {
+    addCheck(AcanthisCheck<String>(onCheck: onCheck, error: error, name: name));
     return this;
   }
-
 }
 
 AcanthisString string() => AcanthisString();

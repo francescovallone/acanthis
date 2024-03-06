@@ -2,9 +2,7 @@ import '../exceptions/validation_error.dart';
 import 'list.dart';
 import 'types.dart';
 
-
 class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
-
   Map<String, AcanthisType> _fields;
 
   Map<String, AcanthisType> get fields => _fields;
@@ -15,48 +13,43 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     this._fields,
   );
 
-  Map<String, V> _parse(Map<String, V> value){
+  Map<String, V> _parse(Map<String, V> value) {
     final parsed = <String, V>{};
-    if(!_fields.keys.every((element) => value.containsKey(element))){
+    if (!_fields.keys.every((element) => value.containsKey(element))) {
       for (var field in _fields.keys) {
-        if(!value.containsKey(field)){
-          throw ValidationError(
-            'Field $field is required'
-          );
+        if (!value.containsKey(field)) {
+          throw ValidationError('Field $field is required');
         }
       }
     }
     for (var obj in value.entries) {
-      if(!_fields.containsKey(obj.key)){
-        if(_passthrough){
+      if (!_fields.containsKey(obj.key)) {
+        if (_passthrough) {
           parsed[obj.key] = obj.value;
           continue;
         }
-        throw ValidationError(
-          'Field ${obj.key} is not allowed in this object'
-        );
+        throw ValidationError('Field ${obj.key} is not allowed in this object');
       }
       parsed[obj.key] = _fields[obj.key]!.parse(obj.value) as V;
     }
-    
-    return Map<String, V>.fromEntries(parsed.entries.map((e) => MapEntry(e.key, e.value)));
 
+    return Map<String, V>.fromEntries(
+        parsed.entries.map((e) => MapEntry(e.key, e.value)));
   }
 
-  (Map<String, V> values, Map<String, dynamic> errors) _tryParse(Map<String, V> value){
+  (Map<String, V> values, Map<String, dynamic> errors) _tryParse(
+      Map<String, V> value) {
     final parsed = <String, V>{};
     final errors = <String, dynamic>{};
-    if(!_fields.keys.every((element) => value.containsKey(element))){
+    if (!_fields.keys.every((element) => value.containsKey(element))) {
       for (var field in _fields.keys) {
-        if(!value.containsKey(field)){
-          errors[field] = {
-            'required': 'Field is required'
-          };
+        if (!value.containsKey(field)) {
+          errors[field] = {'required': 'Field is required'};
         }
       }
     }
     for (var obj in value.entries) {
-      if(!_fields.containsKey(obj.key) && _passthrough){
+      if (!_fields.containsKey(obj.key) && _passthrough) {
         parsed[obj.key] = obj.value;
         continue;
       }
@@ -72,62 +65,62 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     final parsed = _parse(value);
     return AcanthisParseResult(value: _normalize(parsed));
   }
-  
-  _normalize(dynamic value){
+
+  _normalize(dynamic value) {
     final parsed = <String, V>{};
     for (var obj in value.entries) {
-      if(obj.value is AcanthisParseResult){
+      if (obj.value is AcanthisParseResult) {
         final value = obj.value as AcanthisParseResult;
-        if(obj.value is AcanthisParseResult<Map<String, dynamic>>){
+        if (obj.value is AcanthisParseResult<Map<String, dynamic>>) {
           parsed[obj.key] = _normalize(value.value);
         } else {
           parsed[obj.key] = value.value;
         }
-      }else{
+      } else {
         parsed[obj.key] = obj.value;
       }
     }
-    return Map<String, V>.fromEntries(parsed.entries.map((e) => MapEntry(e.key, e.value)));
+    return Map<String, V>.fromEntries(
+        parsed.entries.map((e) => MapEntry(e.key, e.value)));
   }
 
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
-      value: _normalize(parsed),
-      errors: errors,
-      success: _recursiveSuccess(errors)
-    );
+        value: _normalize(parsed),
+        errors: errors,
+        success: _recursiveSuccess(errors));
   }
 
-  AcanthisList<Map<String, V>> list(){
-    return AcanthisList<Map<String, V>>(
-      this
-    );
+  AcanthisList<Map<String, V>> list() {
+    return AcanthisList<Map<String, V>>(this);
   }
 
-  bool _recursiveSuccess(Map<String, dynamic> errors){
+  bool _recursiveSuccess(Map<String, dynamic> errors) {
     List<bool> results = [];
     for (var error in errors.values) {
-      results.add(error is Map<String, dynamic> ? _recursiveSuccess(error) : error.isEmpty);
+      results.add(error is Map<String, dynamic>
+          ? _recursiveSuccess(error)
+          : error.isEmpty);
     }
     return results.every((element) => element);
   }
 
-  AcanthisMap<V> extend(Map<String, AcanthisType> fields){
+  AcanthisMap<V> extend(Map<String, AcanthisType> fields) {
     _fields.addAll(fields);
     return this;
   }
 
-  AcanthisMap<V> merge(Map<String, AcanthisType> fields){
+  AcanthisMap<V> merge(Map<String, AcanthisType> fields) {
     _fields = {..._fields, ...fields};
     return this;
   }
 
-  AcanthisMap<V> pick(Iterable<String> fields){
+  AcanthisMap<V> pick(Iterable<String> fields) {
     final newFields = <String, AcanthisType>{};
     for (var field in fields) {
-      if(_fields.containsKey(field)){
+      if (_fields.containsKey(field)) {
         newFields[field] = _fields[field]!;
       }
     }
@@ -135,10 +128,10 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
-  AcanthisMap<V> omit(Iterable<String> fields){
+  AcanthisMap<V> omit(Iterable<String> fields) {
     final newFields = <String, AcanthisType>{};
     for (var field in _fields.keys) {
-      if(!fields.contains(field)){
+      if (!fields.contains(field)) {
         newFields[field] = _fields[field]!;
       }
     }
@@ -146,13 +139,13 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
-  AcanthisMap<V> passthrough(){
+  AcanthisMap<V> passthrough() {
     _passthrough = true;
     return this;
   }
-
 }
 
-AcanthisMap jsonObject(Map<String, AcanthisType> fields) => AcanthisMap<dynamic>(
-  fields,
-);
+AcanthisMap jsonObject(Map<String, AcanthisType> fields) =>
+    AcanthisMap<dynamic>(
+      fields,
+    );

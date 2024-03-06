@@ -34,7 +34,7 @@ packages:
     source: hosted
     version: "2.11.0"
   benchmark_harness:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: benchmark_harness
       sha256: a12bc021ec45c05f60ad65a6cec1be881d4d84842699b2c4f4aa59f1089de242

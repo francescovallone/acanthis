@@ -2,136 +2,115 @@ import 'list.dart';
 import 'types.dart';
 
 class AcanthisNumber extends AcanthisType<num> {
-
   AcanthisNumber();
 
-  AcanthisNumber lte(num value){
+  AcanthisNumber lte(num value) {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest <= value,
-      error: 'Value must be less than or equal to $value',
-      name: 'lte'
-    ));
+        onCheck: (toTest) => toTest <= value,
+        error: 'Value must be less than or equal to $value',
+        name: 'lte'));
     return this;
   }
 
-  AcanthisNumber gte(num value){
+  AcanthisNumber gte(num value) {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest >= value,
-      error: 'Value must be greater than or equal to $value',
-      name: 'gte'
-    ));
+        onCheck: (toTest) => toTest >= value,
+        error: 'Value must be greater than or equal to $value',
+        name: 'gte'));
     return this;
   }
 
-  AcanthisNumber gt(num value){
+  AcanthisNumber gt(num value) {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest > value,
-      error: 'Value must be greater than $value',
-      name: 'gt'
-    ));
+        onCheck: (toTest) => toTest > value,
+        error: 'Value must be greater than $value',
+        name: 'gt'));
     return this;
   }
 
-  AcanthisNumber lt(num value){
+  AcanthisNumber lt(num value) {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest < value,
-      error: 'Value must be less than $value',
-      name: 'lt'
-    ));
+        onCheck: (toTest) => toTest < value,
+        error: 'Value must be less than $value',
+        name: 'lt'));
     return this;
   }
 
-  AcanthisNumber positive(){
+  AcanthisNumber positive() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest > 0,
-      error: 'Value must be positive',
-      name: 'positive'
-    ));
+        onCheck: (toTest) => toTest > 0,
+        error: 'Value must be positive',
+        name: 'positive'));
     return this;
   }
 
-  AcanthisNumber negative(){
+  AcanthisNumber negative() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest < 0,
-      error: 'Value must be negative',
-      name: 'negative'
-    ));
+        onCheck: (toTest) => toTest < 0,
+        error: 'Value must be negative',
+        name: 'negative'));
     return this;
   }
 
-  AcanthisNumber integer(){
+  AcanthisNumber integer() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest % 1 == 0,
-      error: 'Value must be an integer',
-      name: 'integer'
-    ));
+        onCheck: (toTest) => toTest % 1 == 0,
+        error: 'Value must be an integer',
+        name: 'integer'));
     return this;
   }
 
-  AcanthisNumber multipleOf(int value){
+  AcanthisNumber multipleOf(int value) {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest % value == 0,
-      error: 'Value must be a multiple of $value',
-      name: 'multipleOf'
-    ));
+        onCheck: (toTest) => toTest % value == 0,
+        error: 'Value must be a multiple of $value',
+        name: 'multipleOf'));
     return this;
   }
 
-  AcanthisNumber finite(){
+  AcanthisNumber finite() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest.isFinite,
-      error: 'Value is not finite',
-      name: 'finite'
-    ));
+        onCheck: (toTest) => toTest.isFinite,
+        error: 'Value is not finite',
+        name: 'finite'));
     return this;
   }
 
-  AcanthisNumber infinite(){
+  AcanthisNumber infinite() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest.isInfinite,
-      error: 'Value is not infinite',
-      name: 'infinite'
-    ));
+        onCheck: (toTest) => toTest.isInfinite,
+        error: 'Value is not infinite',
+        name: 'infinite'));
     return this;
   }
 
-  AcanthisNumber nan(){
+  AcanthisNumber nan() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => toTest.isNaN,
-      error: 'Value is not NaN',
-      name: 'nan'
-    ));
+        onCheck: (toTest) => toTest.isNaN,
+        error: 'Value is not NaN',
+        name: 'nan'));
     return this;
   }
 
-  AcanthisNumber notNaN(){
+  AcanthisNumber notNaN() {
     addCheck(AcanthisCheck<num>(
-      onCheck: (toTest) => !toTest.isNaN,
-      error: 'Value is NaN',
-      name: 'notNaN'
-    ));
+        onCheck: (toTest) => !toTest.isNaN,
+        error: 'Value is NaN',
+        name: 'notNaN'));
     return this;
   }
 
-  AcanthisList<num> list(){
-    return AcanthisList<num>(
-      this
-    );
+  AcanthisList<num> list() {
+    return AcanthisList<num>(this);
   }
 
-  AcanthisNumber customCheck({
-    required bool Function(num value) onCheck,
-    required String error,
-    required String name
-  }){
-    addCheck(AcanthisCheck<num>(
-      onCheck: onCheck,
-      error: error,
-      name: name
-    ));
+  AcanthisNumber customCheck(
+      {required bool Function(num value) onCheck,
+      required String error,
+      required String name}) {
+    addCheck(AcanthisCheck<num>(onCheck: onCheck, error: error, name: name));
     return this;
   }
-
 }
 
 AcanthisNumber number() => AcanthisNumber();

@@ -3,7 +3,6 @@ import 'package:benchmark_harness/benchmark_harness.dart';
 import 'acanthis_emitter.dart';
 
 class AcanthisBenchmark extends BenchmarkBase {
-
   final int iterations;
 
   List<double> result = [];
@@ -19,5 +18,4 @@ class AcanthisBenchmark extends BenchmarkBase {
       run();
     }
   }
-
 }
