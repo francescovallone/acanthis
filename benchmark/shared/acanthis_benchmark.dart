@@ -6,6 +6,8 @@ class AcanthisBenchmark extends BenchmarkBase {
 
   final int iterations;
 
+  List<double> result = [];
+
   AcanthisBenchmark({
     String name = 'AcanthisBenchmark',
     this.iterations = 100,

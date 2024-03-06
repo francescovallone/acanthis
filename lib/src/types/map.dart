@@ -1,4 +1,5 @@
 import '../exceptions/validation_error.dart';
+import 'list.dart';
 import 'types.dart';
 
 
@@ -96,6 +97,12 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       value: _normalize(parsed),
       errors: errors,
       success: _recursiveSuccess(errors)
+    );
+  }
+
+  AcanthisList<Map<String, V>> list(){
+    return AcanthisList<Map<String, V>>(
+      this
     );
   }
 

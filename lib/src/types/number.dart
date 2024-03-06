@@ -1,3 +1,4 @@
+import 'list.dart';
 import 'types.dart';
 
 class AcanthisNumber extends AcanthisType<num> {
@@ -110,6 +111,12 @@ class AcanthisNumber extends AcanthisType<num> {
       name: 'notNaN'
     ));
     return this;
+  }
+
+  AcanthisList<num> list(){
+    return AcanthisList<num>(
+      this
+    );
   }
 
   AcanthisNumber customCheck({

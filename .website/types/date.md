@@ -66,3 +66,26 @@ void main() {
   }
 }
 ```
+
+### list
+
+The list method is used to validate a list of `DateTime` objects.
+
+For the list validations methods, you check the [List](/types/list) page.
+
+```dart
+
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final date = date().list();
+
+  final result = date.tryParse([DateTime.now(), DateTime.now()]);
+
+  if (result.success) {
+	print('The schema is valid!');
+  } else {
+	print('The schema is invalid!');
+  }
+}
+```

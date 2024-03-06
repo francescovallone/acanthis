@@ -173,3 +173,38 @@ void main() {
 }
 ```
 
+### list
+
+The list method is used to validate a list of maps.
+
+For the list validations methods, you check the [List](/types/list) page.
+
+
+```dart
+
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = jsonObject({
+	'name': string().min(3),
+	'age': number().positive(),
+  }).list();
+
+  final result = schema.tryParse([
+	{
+	  'name': 'Francesco',
+	  'age': 24,
+	},
+	{
+	  'name': 'Francesco',
+	  'age': 24,
+	},
+  ]);
+
+  if (result.success) {
+	print('The schema is valid!');
+  } else {
+	print('The schema is invalid!');
+  }
+}
+```

@@ -275,3 +275,26 @@ void main() {
   }
 }
 ```
+
+### list
+
+The list method is used to validate a list of `num` objects.
+
+For the list validations methods, you check the [List](/types/list) page.
+
+```dart
+
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final numbers = number().list();
+
+  final result = numbers.tryParse([24, 255]);
+
+  if (result.success) {
+	print('The schema is valid!');
+  } else {
+	print('The schema is invalid!');
+  }
+}
+```

@@ -214,3 +214,27 @@ void main() {
   }
 }
 ```
+
+### list
+
+The list method is used to validate a list of `String` objects.
+
+For the list validations methods, you check the [List](/types/list) page.
+
+
+```dart
+
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final list = string().min(3).list();
+
+  final result = list.tryParse(['Francesco', '255']);
+
+  if (result.success) {
+	print('The schema is valid!');
+  } else {
+	print('The schema is invalid!');
+  }
+}
+```

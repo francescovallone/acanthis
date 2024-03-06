@@ -2,18 +2,19 @@ import 'types.dart';
 
 class AcanthisList<T> extends AcanthisType<List<T>> {
 
-  List<AcanthisType> elements;
+  AcanthisType<T> element;
 
   AcanthisList(
-    this.elements,
+    this.element,
   );
 
   List<T> _parse(List<T> value){
     final parsed = <T>[];
     for (var i = 0; i < value.length; i++) {
-      final parsedElement = elements[i].parse(value[i]);
+      final parsedElement = element.parse(value[i]);
       parsed.add(parsedElement.value);
     }
+    super.parse(value);
     return parsed;
   }
 
@@ -21,13 +22,17 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     final parsed = <T>[];
     final errors = <String, dynamic>{};
     for (var i = 0; i < value.length; i++) {
-      final parsedElement = elements[i].tryParse(value[i]);
+      final parsedElement = element.tryParse(value[i]);
       parsed.add(parsedElement.value);
       if(parsedElement.errors.isNotEmpty){
         errors[i.toString()] = parsedElement.errors;
       }
     }
-    return (parsed, errors);
+    final result = super.tryParse(value);
+    return (parsed, {
+      ...errors,
+      ...result.errors
+    });
   }
 
   @override
@@ -104,7 +109,3 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   }
 
 }
-
-AcanthisList dynamicList(List<AcanthisType> elements) => AcanthisList<dynamic>(
-  elements,
-);

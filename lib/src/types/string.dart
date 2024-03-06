@@ -1,4 +1,5 @@
 import '../exceptions/validation_error.dart';
+import 'list.dart';
 import 'types.dart';
 
 class AcanthisString extends AcanthisType<String> {
@@ -113,6 +114,12 @@ class AcanthisString extends AcanthisType<String> {
       name: 'endsWith'
     ));
     return this;
+  }
+
+  AcanthisList<String> list(){
+    return AcanthisList<String>(
+      this
+    );
   }
 
   AcanthisString customCheck({

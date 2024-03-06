@@ -1,3 +1,4 @@
+import 'list.dart';
 import 'types.dart';
 
 class AcanthisDate extends AcanthisType<DateTime> {
@@ -20,6 +21,12 @@ class AcanthisDate extends AcanthisType<DateTime> {
       name: 'max'
     ));
     return this;
+  }
+
+  AcanthisList<DateTime> list(){
+    return AcanthisList<DateTime>(
+      this
+    );
   }
 
   AcanthisDate customCheck({

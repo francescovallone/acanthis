@@ -1,6 +1,4 @@
 // Import BenchmarkBase class.
-import 'dart:io';
-
 import 'package:acanthis/acanthis.dart';
 
 import 'shared/acanthis_benchmark.dart';
@@ -47,11 +45,14 @@ class EmptyStringValidationBenchmark extends AcanthisBenchmark {
 
 }
 
-void main() {
-  File('acanthis_benchmark.csv').writeAsStringSync(
-    'name, total, avg, iters\n'
-  );
-  LongStringValidationBenchmark.main();
-  FixedLengthStringValidationBenchmark.main();
-  EmptyStringValidationBenchmark.main();
+class StringBenchmarks {
+
+  static void main() {
+    print("Running String benchmarks");
+    LongStringValidationBenchmark.main();
+    FixedLengthStringValidationBenchmark.main();
+    EmptyStringValidationBenchmark.main();
+    print("String benchmarks complete");
+  }
+
 }

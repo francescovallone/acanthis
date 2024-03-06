@@ -26,12 +26,6 @@ void main(List<String> arguments) {
       'date': acanthis.date()
         .min(DateTime.now())
     }),
-    'elements': acanthis.dynamicList(
-      [
-        acanthis.string().min(3).max(10),
-        acanthis.number().gte(5)
-      ]
-    ).min(2).max(5)
   }).passthrough();
 
   final parsed = jsonObject.parse({
@@ -46,15 +40,8 @@ void main(List<String> arguments) {
       },
       'elements': ['Hell', 5],
     });
-    print(parsed);
+  final list = acanthis.string().max(5).list().max(2);
 
-  final list = acanthis.dynamicList(
-    [
-      acanthis.string().min(3).max(10),
-      acanthis.number().gte(5)
-    ]
-  ).min(2).max(5);
-
-  final parsedList = list.tryParse(['Hell', 5]);
+  final parsedList = list.tryParse(['Hello', 'World', 'hello']);
   print(parsedList);
 }
