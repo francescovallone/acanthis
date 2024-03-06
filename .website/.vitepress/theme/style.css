@@ -3,6 +3,16 @@
  * https://github.com/vuejs/vitepress/blob/main/src/client/theme-default/styles/vars.css
  */
 
+ :root {
+  --vp-c-brand: #c52233;
+  --vp-c-brand-light: #a7333f;
+  --vp-c-brand-lighter: #df7373;
+  --vp-c-brand-lightest: #e4b1ab;
+  --vp-c-brand-dark: #a51c30;
+  --vp-c-brand-darker: #74121d;
+  --vp-c-brand-dimm: rgba(165, 28, 48, 0.08);
+}
+
 /**
  * Colors
  *
@@ -49,10 +59,10 @@
   --vp-c-default-3: var(--vp-c-gray-3);
   --vp-c-default-soft: var(--vp-c-gray-soft);
 
-  --vp-c-brand-1: var(--vp-c-indigo-1);
-  --vp-c-brand-2: var(--vp-c-indigo-2);
-  --vp-c-brand-3: var(--vp-c-indigo-3);
-  --vp-c-brand-soft: var(--vp-c-indigo-soft);
+  --vp-c-brand-1: var(--vp-c-brand-lighter);
+  --vp-c-brand-2: var(--vp-c-brand-light);
+  --vp-c-brand-3: var(--vp-c-brand);
+  --vp-c-brand-soft: var(--vp-c-brand-dimm);
 
   --vp-c-tip-1: var(--vp-c-brand-1);
   --vp-c-tip-2: var(--vp-c-brand-2);
@@ -94,8 +104,9 @@
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(
     120deg,
-    #bd34fe 30%,
-    #41d1ff
+    var(--vp-c-brand) 30%,
+    var(--vp-c-brand-lighter) 50%,
+    var(--vp-c-brand) 70%
   );
 
   --vp-home-hero-image-background-image: linear-gradient(

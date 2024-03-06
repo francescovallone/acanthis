@@ -6,7 +6,7 @@ class AcanthisString extends AcanthisType<String> {
   AcanthisString();
 
   @override
-  AcanthisParseStatus<String> parse(String value) {
+  AcanthisParseResult<String> parse(String value) {
     for (var check in checks) {
       if(!check.check(value)){
         throw ValidationError(
@@ -14,20 +14,20 @@ class AcanthisString extends AcanthisType<String> {
         );
       }
     }
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: value
     );
   }
 
   @override
-  AcanthisParseStatus<String> tryParse(String value) {
+  AcanthisParseResult<String> tryParse(String value) {
     final errors = <String, String>{};
     for (var check in checks) {
       if(!check.check(value)){
         errors[check.name] = check.error;
       }
     }
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: value,
       errors: errors,
       success: errors.isEmpty

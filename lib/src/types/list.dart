@@ -31,32 +31,15 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   }
 
   @override
-  AcanthisParseStatus<List<T>> parse(List<T> value) {
+  AcanthisParseResult<List<T>> parse(List<T> value) {
     final parsed = _parse(value);
-    return AcanthisParseStatus(value: parsed);
+    return AcanthisParseResult(value: parsed);
   }
-  
-  // _normalize(dynamic value){
-  //   final parsed = <String, V>{};
-  //   for (var obj in value.entries) {
-  //     if(obj.value is AcanthisParseStatus){
-  //       final value = obj.value as AcanthisParseStatus;
-  //       if(obj.value is AcanthisParseStatus<Map<String, dynamic>>){
-  //         parsed[obj.key] = _normalize(value.value);
-  //       } else {
-  //         parsed[obj.key] = value.value;
-  //       }
-  //     }else{
-  //       parsed[obj.key] = obj.value;
-  //     }
-  //   }
-  //   return Map<String, V>.fromEntries(parsed.entries.map((e) => MapEntry(e.key, e.value)));
-  // }
 
   @override
-  AcanthisParseStatus<List<T>> tryParse(List<T> value) {
+  AcanthisParseResult<List<T>> tryParse(List<T> value) {
     final (parsed, errors) = _tryParse(value);
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: parsed,
       errors: errors,
       success: _recursiveSuccess(errors)

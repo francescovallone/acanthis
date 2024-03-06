@@ -6,7 +6,7 @@ abstract class AcanthisType<O> {
 
   AcanthisType();
 
-  AcanthisParseStatus<O> parse(O value){
+  AcanthisParseResult<O> parse(O value){
     for (var check in checks) {
       if(!check.check(value)){
         throw ValidationError(
@@ -14,19 +14,19 @@ abstract class AcanthisType<O> {
         );
       }
     }
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: value
     );
   }
 
-  AcanthisParseStatus<O> tryParse(O value){
+  AcanthisParseResult<O> tryParse(O value){
     final errors = <String, String>{};
     for (var check in checks) {
       if(!check.check(value)){
         errors[check.name] = check.error;
       }
     }
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: value,
       errors: errors,
       success: errors.isEmpty
@@ -61,13 +61,13 @@ class AcanthisCheck<O> {
 
 }
 
-class AcanthisParseStatus<O> {
+class AcanthisParseResult<O> {
 
   final O value;
   final Map<String, dynamic> errors;
   final bool success;
 
-  const AcanthisParseStatus({
+  const AcanthisParseResult({
     required this.value,
     this.errors = const {},
     this.success = true
@@ -75,7 +75,7 @@ class AcanthisParseStatus<O> {
 
   @override
   String toString() {
-    return 'AcanthisParseStatus<$O>{value: $value, errors: $errors, success: $success}';
+    return 'AcanthisParseResult<$O>{value: $value, errors: $errors, success: $success}';
   }
 
 }

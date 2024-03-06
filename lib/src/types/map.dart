@@ -67,17 +67,17 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   }
 
   @override
-  AcanthisParseStatus<Map<String, V>> parse(Map<String, V> value) {
+  AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
     final parsed = _parse(value);
-    return AcanthisParseStatus(value: _normalize(parsed));
+    return AcanthisParseResult(value: _normalize(parsed));
   }
   
   _normalize(dynamic value){
     final parsed = <String, V>{};
     for (var obj in value.entries) {
-      if(obj.value is AcanthisParseStatus){
-        final value = obj.value as AcanthisParseStatus;
-        if(obj.value is AcanthisParseStatus<Map<String, dynamic>>){
+      if(obj.value is AcanthisParseResult){
+        final value = obj.value as AcanthisParseResult;
+        if(obj.value is AcanthisParseResult<Map<String, dynamic>>){
           parsed[obj.key] = _normalize(value.value);
         } else {
           parsed[obj.key] = value.value;
@@ -90,9 +90,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   }
 
   @override
-  AcanthisParseStatus<Map<String, V>> tryParse(Map<String, V> value) {
+  AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
     final (parsed, errors) = _tryParse(value);
-    return AcanthisParseStatus(
+    return AcanthisParseResult(
       value: _normalize(parsed),
       errors: errors,
       success: _recursiveSuccess(errors)
