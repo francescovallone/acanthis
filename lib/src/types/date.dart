@@ -34,6 +34,12 @@ class AcanthisDate extends AcanthisType<DateTime> {
         AcanthisCheck<DateTime>(onCheck: onCheck, error: error, name: name));
     return this;
   }
+
+  AcanthisDate transform(DateTime Function(DateTime value) transformation) {
+    addTransformation(AcanthisTransformation<DateTime>(transformation: transformation));
+    return this;
+  }
+
 }
 
 AcanthisDate date() => AcanthisDate();

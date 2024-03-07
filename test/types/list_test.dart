@@ -156,6 +156,22 @@ void main() {
       );
 
       test(
+        'when creating a list validator with the length check,'
+        'and the list is valid, '
+        'then the result should be successful',
+        () {
+          final list = acanthis.string().min(5).max(20).list().length(4);
+          final result = list.tryParse(['value', 'other', 'another', 'oneee']);
+
+          expect(result.success, true);
+
+          final resultParse = list.parse(['value', 'other', 'another', 'oneee']);
+
+          expect(resultParse.success, true);
+        }
+      );
+
+      test(
         'when creating a list validator with a custom check,'
         'and the list is invalid, '
         'then the result should be unsuccessful',
@@ -166,6 +182,27 @@ void main() {
           expect(result.success, false);
 
           expect(() => list.parse(['value', 'other', 'another', 'another', 'oneee']), throwsA(TypeMatcher<ValidationError>()));
+        }
+      );
+
+      test(
+        'when creating a list validator with a custom transformation,'
+        'and all the elements in the list are valid, '
+        'and the list itself is valid, '
+        'then the result should be transformed',
+        () {
+          final list = acanthis.string().min(5).max(20).list().transform(
+            (value) => value.map((e) => e.toUpperCase()).toList() 
+          );
+
+          final result = list.tryParse(['value', 'other', 'another', 'oneee']);
+
+          expect(result.success, true);
+
+          final resultParse = list.parse(['value', 'other', 'another', 'oneee']);
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, ['VALUE', 'OTHER', 'ANOTHER', 'ONEEE']);
         }
       );
 

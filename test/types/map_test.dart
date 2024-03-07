@@ -95,14 +95,19 @@ void main() {
         'then the result should be successful',
         () {
           final map = acanthis.jsonObject({
-            'key': acanthis.string().min(5).max(20)
+            'key': acanthis.string().min(5).max(20),
+            'other': acanthis.string().min(5).max(20)
           }).omit(['key']);
 
-          final result = map.tryParse({});
+          final result = map.tryParse({
+            'other': 'value'
+          });
 
           expect(result.success, true);
 
-          final resultParse = map.parse({});
+          final resultParse = map.parse({
+            'other': 'value'
+          });
 
           expect(resultParse.success, true);
         }
@@ -266,6 +271,64 @@ void main() {
           expect(() => map.parse({
             'other': 'value'
           }), throwsA(TypeMatcher<ValidationError>()));
+        }
+      );
+
+      test(
+        'when creating a map validator with a custom transformation,'
+        'and all the elements in the map are valid, '
+        'and the map itself is valid, '
+        'then the result should be transformed',
+        () {
+          final map = acanthis.jsonObject({
+            'key': acanthis.string().min(5).max(20),
+          }).transform((value) => value.map((key, value) => MapEntry(key, value.toString().toUpperCase())));
+
+          final result = map.tryParse({
+            'key': 'value'
+          });
+
+          expect(result.success, true);
+
+          final resultParse = map.parse({
+            'key': 'value'
+          });
+
+          expect(resultParse.success, true);
+          expect(resultParse.value['key'], 'VALUE');
+        }
+      );
+
+      test(
+        'when creating a map validator for a complex object,'
+        'and the map is valid, '
+        'then the result should be successful',
+        () {
+          final jsonObject = acanthis.jsonObject({
+            'name': acanthis.string().min(5).max(10).encode(),
+            'attributes': acanthis.jsonObject({
+              'age': acanthis.number().gte(18),
+              'email': acanthis.string().email(),
+              'style': acanthis.jsonObject({'color': acanthis.string().min(3).max(10).transform((value) => value.toUpperCase())}),
+              'date': acanthis.date().min(DateTime.now())
+            }),
+          }).passthrough();
+
+          final parsed = jsonObject.parse({
+            'name': 'Hello',
+            'attributes': {
+              'age': 18,
+              'email': 'test@gmail.com',
+              'style': {
+                'color': 'red',
+              },
+              'date': DateTime.now()
+            },
+            'elements': ['Hell', 5],
+          });
+          
+          expect(parsed.success, true);
+
         }
       );
 

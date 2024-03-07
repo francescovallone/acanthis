@@ -374,7 +374,74 @@ void main() {
           expect(() => string.parse('test1'), throwsA(TypeMatcher<ValidationError>()));
         }
       );
-      
+
+      test(
+        'when creating a string validator with the toUpperCase transformation,'
+        'and the string is valid, '
+        'then the result should be the string in uppercase',
+        () {
+          final string = acanthis.string().toUpperCase();
+          final result = string.tryParse('test');
+
+          expect(result.success, true);
+
+          final resultParse = string.parse('test');
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 'TEST');
+        }
+      );
+
+      test(
+        'when creating a string validator with the toLowerCase transformation,'
+        'and the string is valid, '
+        'then the result should be the string in lowercase',
+        () {
+          final string = acanthis.string().toLowerCase();
+          final result = string.tryParse('TEST');
+
+          expect(result.success, true);
+
+          final resultParse = string.parse('TEST');
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 'test');
+        }
+      );
+
+      test(
+        'when creating a string validator with the encode transformation,'
+        'and the string is valid, '
+        'then the result should be the string encoded in base64',
+        () {
+          final string = acanthis.string().encode();
+          final result = string.tryParse('test');
+
+          expect(result.success, true);
+
+          final resultParse = string.parse('test');
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 'dGVzdA==');
+        }
+      );
+
+      test(
+        'when creating a string validator with the decode transformation,'
+        'and the string is valid, '
+        'then the result should be the string decoded from base64',
+        () {
+          final string = acanthis.string().decode();
+          final result = string.tryParse('dGVzdA==');
+
+          expect(result.success, true);
+
+          final resultParse = string.parse('dGVzdA==');
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 'test');
+        }
+      );
     }
   );
 

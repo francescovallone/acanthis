@@ -132,6 +132,25 @@ void main() {
           expect(resultParse.success, true);
         }
       );
+
+      test(
+        'when creating a date validator with a custom transformation,'
+        'and the date is valid, '
+        'then the result should be transformed',
+        () {
+          final date = acanthis.date().transform(
+            (date) => DateTime(date.year, date.month, date.day + 1)
+          );
+          final result = date.tryParse(DateTime(2021, 1, 1));
+
+          expect(result.success, true);
+
+          final resultParse = date.parse(DateTime(2021, 1, 1));
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, DateTime(2021, 1, 2));
+        }
+      );
     }
   );
 }

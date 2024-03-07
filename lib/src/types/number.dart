@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'list.dart';
 import 'types.dart';
 
@@ -111,6 +113,18 @@ class AcanthisNumber extends AcanthisType<num> {
     addCheck(AcanthisCheck<num>(onCheck: onCheck, error: error, name: name));
     return this;
   }
+
+  AcanthisNumber pow(int value) {
+    addTransformation(AcanthisTransformation<num>(
+        transformation: (toTransform) => math.pow(toTransform, value)));
+    return this;
+  }
+
+  AcanthisNumber transform(num Function(num value) transformation) {
+    addTransformation(AcanthisTransformation<num>(transformation: transformation));
+    return this;
+  }
+
 }
 
 AcanthisNumber number() => AcanthisNumber();

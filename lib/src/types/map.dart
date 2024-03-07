@@ -30,11 +30,10 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         }
         throw ValidationError('Field ${obj.key} is not allowed in this object');
       }
-      parsed[obj.key] = _fields[obj.key]!.parse(obj.value) as V;
+      parsed[obj.key] = _fields[obj.key]!.parse(obj.value).value;
     }
-
-    return Map<String, V>.fromEntries(
-        parsed.entries.map((e) => MapEntry(e.key, e.value)));
+    final result = super.parse(parsed);
+    return result.value;
   }
 
   (Map<String, V> values, Map<String, dynamic> errors) _tryParse(
@@ -61,38 +60,21 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       parsed[obj.key] = parsedValue.value;
       errors[obj.key] = parsedValue.errors;
     }
-    return (parsed, errors);
+    final result = super.tryParse(parsed);
+    return (result.value, errors);
   }
 
   @override
   AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
     final parsed = _parse(value);
-    return AcanthisParseResult(value: _normalize(parsed));
-  }
-
-  _normalize(dynamic value) {
-    final parsed = <String, V>{};
-    for (var obj in value.entries) {
-      if (obj.value is AcanthisParseResult) {
-        final value = obj.value as AcanthisParseResult;
-        if (obj.value is AcanthisParseResult<Map<String, dynamic>>) {
-          parsed[obj.key] = _normalize(value.value);
-        } else {
-          parsed[obj.key] = value.value;
-        }
-      } else {
-        parsed[obj.key] = obj.value;
-      }
-    }
-    return Map<String, V>.fromEntries(
-        parsed.entries.map((e) => MapEntry(e.key, e.value)));
+    return AcanthisParseResult(value: parsed);
   }
 
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
-        value: _normalize(parsed),
+        value: parsed,
         errors: errors,
         success: _recursiveSuccess(errors));
   }
@@ -132,10 +114,10 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
-  AcanthisMap<V> omit(Iterable<String> fields) {
+  AcanthisMap<V> omit(Iterable<String> toOmit) {
     final newFields = <String, AcanthisType>{};
     for (var field in _fields.keys) {
-      if (!fields.contains(field)) {
+      if (!toOmit.contains(field)) {
         newFields[field] = _fields[field]!;
       }
     }
@@ -147,6 +129,12 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     _passthrough = true;
     return this;
   }
+
+  AcanthisMap<V> transform(Map<String, V> Function(Map<String, V>) transformation) {
+    addTransformation(AcanthisTransformation(transformation: transformation));
+    return this;
+  }
+
 }
 
 AcanthisMap jsonObject(Map<String, AcanthisType> fields) =>

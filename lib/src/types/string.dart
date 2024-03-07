@@ -1,31 +1,9 @@
-import '../exceptions/validation_error.dart';
+import 'dart:convert';
 import 'list.dart';
 import 'types.dart';
 
 class AcanthisString extends AcanthisType<String> {
   AcanthisString();
-
-  @override
-  AcanthisParseResult<String> parse(String value) {
-    for (var check in checks) {
-      if (!check.check(value)) {
-        throw ValidationError(check.error);
-      }
-    }
-    return AcanthisParseResult(value: value);
-  }
-
-  @override
-  AcanthisParseResult<String> tryParse(String value) {
-    final errors = <String, String>{};
-    for (var check in checks) {
-      if (!check.check(value)) {
-        errors[check.name] = check.error;
-      }
-    }
-    return AcanthisParseResult(
-        value: value, errors: errors, success: errors.isEmpty);
-  }
 
   AcanthisString email() {
     addCheck(AcanthisCheck<String>(
@@ -111,6 +89,36 @@ class AcanthisString extends AcanthisType<String> {
     addCheck(AcanthisCheck<String>(onCheck: onCheck, error: error, name: name));
     return this;
   }
+  
+  AcanthisString encode() {
+    addTransformation(AcanthisTransformation<String>(
+        transformation: (value) => base64.encode(value.codeUnits)));
+    return this;
+  }
+
+  AcanthisString decode() {
+    addTransformation(AcanthisTransformation<String>(
+        transformation: (value) => utf8.decode(base64.decode(value))));
+    return this;
+  }
+
+  AcanthisString transform(String Function(String value) transformation) {
+    addTransformation(AcanthisTransformation<String>(transformation: transformation));
+    return this;
+  }
+
+  AcanthisString toUpperCase() {
+    addTransformation(AcanthisTransformation<String>(
+        transformation: (value) => value.toUpperCase()));
+    return this;
+  }
+
+  AcanthisString toLowerCase() {
+    addTransformation(AcanthisTransformation<String>(
+        transformation: (value) => value.toLowerCase()));
+    return this;
+  }
+
 }
 
 AcanthisString string() => AcanthisString();

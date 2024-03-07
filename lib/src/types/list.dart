@@ -13,8 +13,8 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
       final parsedElement = element.parse(value[i]);
       parsed.add(parsedElement.value);
     }
-    super.parse(value);
-    return parsed;
+    final result = super.parse(value);
+    return result.value;
   }
 
   (List<T> parsed, Map<String, dynamic> errors) _tryParse(List<T> value) {
@@ -28,7 +28,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
       }
     }
     final result = super.tryParse(value);
-    return (parsed, {...errors, ...result.errors});
+    return (result.value, {...errors, ...result.errors});
   }
 
   @override
@@ -78,7 +78,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
-  AcanthisList<T> length(T value) {
+  AcanthisList<T> length(int value) {
     addCheck(AcanthisCheck<List<T>>(
         onCheck: (toTest) => toTest.length == value,
         error: 'The list must have exactly $value elements',
@@ -94,4 +94,10 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
         AcanthisCheck<List<T>>(onCheck: onCheck, error: error, name: name));
     return this;
   }
+
+  AcanthisList<T> transform(List<T> Function(List<T> value) transformation) {
+    addTransformation(AcanthisTransformation(transformation: transformation));
+    return this;
+  }
+
 }

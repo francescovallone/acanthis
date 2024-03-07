@@ -421,6 +421,23 @@ void main() {
           expect(() => number.parse(2), throwsA(TypeMatcher<ValidationError>()));
         }
       );
+
+      test(
+        'when creating a number validator with the pow transformation,'
+        'and the string is valid, '
+        'then the result should be the pow value',
+        () {
+          final number = acanthis.number().pow(2);
+          final result = number.tryParse(2);
+
+          expect(result.success, true);
+
+          final resultParse = number.parse(2);
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 4);
+        }
+      );
     }
   );
 }
