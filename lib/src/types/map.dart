@@ -49,8 +49,12 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       }
     }
     for (var obj in value.entries) {
-      if (!_fields.containsKey(obj.key) && _passthrough) {
-        parsed[obj.key] = obj.value;
+      if (!_fields.containsKey(obj.key)) {
+        if (_passthrough) {
+          parsed[obj.key] = obj.value;
+        }else{
+          errors[obj.key] = {'notAllowed': 'Field is not allowed in this object'};
+        }
         continue;
       }
       final parsedValue = _fields[obj.key]!.tryParse(obj.value);
