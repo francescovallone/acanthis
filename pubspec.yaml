@@ -10,6 +10,7 @@ environment:
 
 # Add regular dependencies here.
 dependencies:
+  email_validator: ^2.1.17
   
   # path: ^1.8.0
 
