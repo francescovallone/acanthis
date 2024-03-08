@@ -332,6 +332,70 @@ void main() {
         }
       );
 
+      test(
+        'when creating a map validator for a complex object, '
+        'and use the list method, '
+        'and all the values are valid, '
+        'then the result should be successful',
+        () {
+          final jsonObject = acanthis.jsonObject({
+            'name': acanthis.string().min(5).max(10).encode(),
+            'attributes': acanthis.jsonObject({
+              'age': acanthis.number().gte(18),
+              'email': acanthis.string().email(),
+              'style': acanthis.jsonObject({'color': acanthis.string().min(3).max(10).transform((value) => value.toUpperCase())}),
+              'date': acanthis.date().min(DateTime.now())
+            }),
+          }).passthrough().list();
+
+          jsonObject.parse([
+            {
+              'name': 'Hello',
+              'attributes': {
+                'age': 18,
+                'email': 'test@test.com',
+                'style': {
+                  'color': 'red',
+                },
+                'date': DateTime.now()
+              },
+              'elements': ['Hell', 5],
+            },
+            {
+              'name': 'Hello',
+              'attributes': {
+                'age': 18,
+                'email': 'test@example.com',
+                'style': {
+                  'color': 'red',
+                },
+                'date': DateTime.now()
+              },
+              'elements': ['Hell', 5],
+            }
+          ]);
+        }
+      );
+
+      test(
+        'when creating a map validator for a complex object, '
+        'and use the keys getter, '
+        'then the not nested keys should be returned',
+        () {
+          final jsonObject = acanthis.jsonObject({
+            'name': acanthis.string().min(5).max(10).encode(),
+            'attributes': acanthis.jsonObject({
+              'age': acanthis.number().gte(18),
+              'email': acanthis.string().email(),
+              'style': acanthis.jsonObject({'color': acanthis.string().min(3).max(10).transform((value) => value.toUpperCase())}),
+              'date': acanthis.date().min(DateTime.now())
+            }),
+          }).passthrough();
+          print(jsonObject.keys);
+          expect(jsonObject.keys, ['name', 'attributes']);
+        }
+      );
+
     }
   );
 

@@ -3,9 +3,11 @@ import 'dart:math' as math;
 import 'list.dart';
 import 'types.dart';
 
+/// A class to validate number types
 class AcanthisNumber extends AcanthisType<num> {
   AcanthisNumber();
 
+  /// Add a check to the number to check if it is less than or equal to [value]
   AcanthisNumber lte(num value) {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest <= value,
@@ -14,6 +16,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is greater than or equal to [value]
   AcanthisNumber gte(num value) {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest >= value,
@@ -22,6 +25,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is greater than [value]
   AcanthisNumber gt(num value) {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest > value,
@@ -30,6 +34,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is less than [value]
   AcanthisNumber lt(num value) {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest < value,
@@ -38,6 +43,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is positive
   AcanthisNumber positive() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest > 0,
@@ -46,6 +52,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is negative
   AcanthisNumber negative() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest < 0,
@@ -54,6 +61,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is an integer
   AcanthisNumber integer() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest % 1 == 0,
@@ -62,6 +70,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is a multiple of [value]
   AcanthisNumber multipleOf(int value) {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest % value == 0,
@@ -70,6 +79,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is finite
   AcanthisNumber finite() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest.isFinite,
@@ -78,6 +88,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is infinite
   AcanthisNumber infinite() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest.isInfinite,
@@ -86,6 +97,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is "not a number"
   AcanthisNumber nan() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => toTest.isNaN,
@@ -94,6 +106,7 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Add a check to the number to check if it is not "not a number"
   AcanthisNumber notNaN() {
     addCheck(AcanthisCheck<num>(
         onCheck: (toTest) => !toTest.isNaN,
@@ -102,10 +115,12 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Create a list of numbers
   AcanthisList<num> list() {
     return AcanthisList<num>(this);
   }
 
+  /// Add a custom check to the number
   AcanthisNumber customCheck(
       {required bool Function(num value) onCheck,
       required String error,
@@ -114,12 +129,14 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  /// Transform the number to a power of [value]
   AcanthisNumber pow(int value) {
     addTransformation(AcanthisTransformation<num>(
         transformation: (toTransform) => math.pow(toTransform, value)));
     return this;
   }
 
+  /// Add a transformation to the number to add [value]
   AcanthisNumber transform(num Function(num value) transformation) {
     addTransformation(AcanthisTransformation<num>(transformation: transformation));
     return this;
@@ -127,4 +144,5 @@ class AcanthisNumber extends AcanthisType<num> {
 
 }
 
+/// Create a number type
 AcanthisNumber number() => AcanthisNumber();

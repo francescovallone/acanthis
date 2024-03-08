@@ -151,6 +151,23 @@ void main() {
           expect(resultParse.value, DateTime(2021, 1, 2));
         }
       );
+
+      test(
+        'when creating a date validator,'
+        'and use the list method, '
+        'and all the values are valid, '
+        'then the result should be successful',
+        () {
+          final date = acanthis.date().min(DateTime(2020, 1, 1)).max(DateTime(2021, 1, 1)).list();
+          final result = date.tryParse([DateTime(2020, 1, 1), DateTime(2021, 1, 1)]);
+
+          expect(result.success, true);
+
+          final resultParse = date.parse([DateTime(2020, 1, 1), DateTime(2021, 1, 1)]);
+
+          expect(resultParse.success, true);
+        }
+      );
     }
   );
 }

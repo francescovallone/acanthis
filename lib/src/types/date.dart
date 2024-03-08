@@ -1,9 +1,11 @@
 import 'list.dart';
 import 'types.dart';
 
+/// A class to validate date types
 class AcanthisDate extends AcanthisType<DateTime> {
   AcanthisDate();
 
+  /// Add a check to the date to check if it is before or equal to [value]
   AcanthisDate min(DateTime value) {
     addCheck(AcanthisCheck<DateTime>(
         onCheck: (toTest) =>
@@ -13,6 +15,7 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return this;
   }
 
+  /// Add a check to the date to check if it is less than or equal to [value]
   AcanthisDate max(DateTime value) {
     addCheck(AcanthisCheck<DateTime>(
         onCheck: (toTest) =>
@@ -22,10 +25,12 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return this;
   }
 
+  /// Create a list of dates
   AcanthisList<DateTime> list() {
     return AcanthisList<DateTime>(this);
   }
 
+  /// Add a custom check to the date
   AcanthisDate customCheck(
       {required bool Function(DateTime value) onCheck,
       required String error,
@@ -35,6 +40,7 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return this;
   }
 
+  /// Add a transformation to the date to transform it using [transformation]
   AcanthisDate transform(DateTime Function(DateTime value) transformation) {
     addTransformation(AcanthisTransformation<DateTime>(transformation: transformation));
     return this;
@@ -42,4 +48,5 @@ class AcanthisDate extends AcanthisType<DateTime> {
 
 }
 
+/// Create a new date type
 AcanthisDate date() => AcanthisDate();

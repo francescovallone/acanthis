@@ -424,8 +424,8 @@ void main() {
 
       test(
         'when creating a number validator with the pow transformation,'
-        'and the string is valid, '
-        'then the result should be the pow value',
+        'and the number is valid, '
+        'then the result should be the transformed value',
         () {
           final number = acanthis.number().pow(2);
           final result = number.tryParse(2);
@@ -436,6 +436,40 @@ void main() {
 
           expect(resultParse.success, true);
           expect(resultParse.value, 4);
+        }
+      );
+
+      test(
+        'when creating a number validator with a custom transformation,'
+        'and the number is valid, '
+        'then the result should be the transformed value',
+        () {
+          final number = acanthis.number().transform((value) => value * 3);
+          final result = number.tryParse(2);
+
+          expect(result.success, true);
+
+          final resultParse = number.parse(2);
+
+          expect(resultParse.success, true);
+          expect(resultParse.value, 6);
+        }
+      );
+
+      test(
+        'when creating a number validator,'
+        'and use the list method, '
+        'and all the values are valid, '
+        'then the result should be successful',
+        () {
+          final number = acanthis.number().list();
+          final result = number.tryParse([1, 2, 3]);
+
+          expect(result.success, true);
+
+          final resultParse = number.parse([1, 2, 3]);
+
+          expect(resultParse.success, true);
         }
       );
     }

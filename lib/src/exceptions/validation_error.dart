@@ -1,3 +1,4 @@
+/// Error thrown when a validation fails.
 class ValidationError extends Error {
   final String message;
 

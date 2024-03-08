@@ -2,10 +2,12 @@ import '../exceptions/validation_error.dart';
 import 'list.dart';
 import 'types.dart';
 
+/// A class to validate map types
 class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   Map<String, AcanthisType> _fields;
 
-  Map<String, AcanthisType> get fields => _fields;
+  /// The keys that the map should have
+  Iterable<String> get keys => _fields.keys;
 
   bool _passthrough = false;
 
@@ -64,12 +66,14 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return (result.value, errors);
   }
 
+  /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
   }
 
+  /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
     final (parsed, errors) = _tryParse(value);
@@ -79,6 +83,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         success: _recursiveSuccess(errors));
   }
 
+  /// Create a list of maps
   AcanthisList<Map<String, V>> list() {
     return AcanthisList<Map<String, V>>(this);
   }
@@ -93,16 +98,20 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return results.every((element) => element);
   }
 
+  /// Add field(s) to the map
   AcanthisMap<V> extend(Map<String, AcanthisType> fields) {
     _fields.addAll(fields);
     return this;
   }
 
+  /// Merge field(s) to the map
+  /// if a field already exists, it will be overwritten
   AcanthisMap<V> merge(Map<String, AcanthisType> fields) {
     _fields = {..._fields, ...fields};
     return this;
   }
 
+  /// Pick field(s) from the map
   AcanthisMap<V> pick(Iterable<String> fields) {
     final newFields = <String, AcanthisType>{};
     for (var field in fields) {
@@ -114,6 +123,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
+  /// Omit field(s) from the map
   AcanthisMap<V> omit(Iterable<String> toOmit) {
     final newFields = <String, AcanthisType>{};
     for (var field in _fields.keys) {
@@ -125,11 +135,13 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
+  /// Allow unknown keys in the map
   AcanthisMap<V> passthrough() {
     _passthrough = true;
     return this;
   }
 
+  /// Add a transformation to the map to transform it using [transformation]
   AcanthisMap<V> transform(Map<String, V> Function(Map<String, V>) transformation) {
     addTransformation(AcanthisTransformation(transformation: transformation));
     return this;
@@ -137,6 +149,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
 
 }
 
+/// Create a map of [fields]
 AcanthisMap jsonObject(Map<String, AcanthisType> fields) =>
     AcanthisMap<dynamic>(
       fields,
