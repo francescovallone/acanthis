@@ -1,3 +1,5 @@
+import 'package:email_validator/email_validator.dart';
+
 import 'dart:convert';
 import 'list.dart';
 import 'types.dart';
@@ -8,7 +10,7 @@ class AcanthisString extends AcanthisType<String> {
   AcanthisString email() {
     addCheck(AcanthisCheck<String>(
         onCheck: (value) =>
-            RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value),
+            EmailValidator.validate(value),
         error: 'Invalid email format',
         name: 'email'));
     return this;
