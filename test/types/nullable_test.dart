@@ -1,5 +1,4 @@
 import 'package:acanthis/acanthis.dart';
-import 'package:acanthis/src/types/nullable.dart';
 import 'package:test/test.dart';
 
 void main(){
