@@ -1,5 +1,6 @@
 import '../exceptions/validation_error.dart';
 import 'list.dart';
+import 'nullable.dart';
 import 'types.dart';
 
 /// A class to validate map types
@@ -145,6 +146,11 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   AcanthisMap<V> transform(Map<String, V> Function(Map<String, V>) transformation) {
     addTransformation(AcanthisTransformation(transformation: transformation));
     return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<Map<String, V>> nullable({Map<String, V>? defaultValue}) {
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
 }

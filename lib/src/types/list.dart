@@ -1,3 +1,4 @@
+import 'nullable.dart';
 import 'types.dart';
 
 /// A class to validate list types
@@ -107,6 +108,11 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   AcanthisList<T> transform(List<T> Function(List<T> value) transformation) {
     addTransformation(AcanthisTransformation(transformation: transformation));
     return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<List<T>> nullable({List<T>? defaultValue}) {
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
 }

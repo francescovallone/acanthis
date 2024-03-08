@@ -1,5 +1,6 @@
 import 'dart:math' as math;
 
+import 'nullable.dart';
 import 'list.dart';
 import 'types.dart';
 
@@ -140,6 +141,11 @@ class AcanthisNumber extends AcanthisType<num> {
   AcanthisNumber transform(num Function(num value) transformation) {
     addTransformation(AcanthisTransformation<num>(transformation: transformation));
     return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<num> nullable({num? defaultValue}){
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
 }

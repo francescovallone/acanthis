@@ -1,4 +1,5 @@
 import 'list.dart';
+import 'nullable.dart';
 import 'types.dart';
 
 /// A class to validate date types
@@ -44,6 +45,11 @@ class AcanthisDate extends AcanthisType<DateTime> {
   AcanthisDate transform(DateTime Function(DateTime value) transformation) {
     addTransformation(AcanthisTransformation<DateTime>(transformation: transformation));
     return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<DateTime> nullable({DateTime? defaultValue}){
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
 }

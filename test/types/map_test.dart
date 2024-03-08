@@ -391,11 +391,11 @@ void main() {
               'date': acanthis.date().min(DateTime.now())
             }),
           }).passthrough();
-          print(jsonObject.keys);
           expect(jsonObject.keys, ['name', 'attributes']);
         }
       );
 
+      
     }
   );
 

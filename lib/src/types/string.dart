@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 
 import 'dart:convert';
 import 'list.dart';
+import 'nullable.dart';
 import 'types.dart';
 
 /// A class to validate string types
@@ -136,6 +137,11 @@ class AcanthisString extends AcanthisType<String> {
     addTransformation(AcanthisTransformation<String>(
         transformation: (value) => value.toLowerCase()));
     return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<String> nullable({String? defaultValue}){
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
 }
