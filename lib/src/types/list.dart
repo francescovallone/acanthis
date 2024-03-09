@@ -114,5 +114,4 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   AcanthisNullable<List<T>> nullable({List<T>? defaultValue}) {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
-
 }

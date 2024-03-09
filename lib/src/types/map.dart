@@ -54,8 +54,10 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       if (!_fields.containsKey(obj.key)) {
         if (_passthrough) {
           parsed[obj.key] = obj.value;
-        }else{
-          errors[obj.key] = {'notAllowed': 'Field is not allowed in this object'};
+        } else {
+          errors[obj.key] = {
+            'notAllowed': 'Field is not allowed in this object'
+          };
         }
         continue;
       }
@@ -79,9 +81,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
-        value: parsed,
-        errors: errors,
-        success: _recursiveSuccess(errors));
+        value: parsed, errors: errors, success: _recursiveSuccess(errors));
   }
 
   /// Create a list of maps
@@ -143,7 +143,8 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   }
 
   /// Add a transformation to the map to transform it using [transformation]
-  AcanthisMap<V> transform(Map<String, V> Function(Map<String, V>) transformation) {
+  AcanthisMap<V> transform(
+      Map<String, V> Function(Map<String, V>) transformation) {
     addTransformation(AcanthisTransformation(transformation: transformation));
     return this;
   }
@@ -152,7 +153,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   AcanthisNullable<Map<String, V>> nullable({Map<String, V>? defaultValue}) {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
-
 }
 
 /// Create a map of [fields]

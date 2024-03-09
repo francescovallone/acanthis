@@ -27,7 +27,12 @@ void main(List<String> arguments) {
     },
     'elements': ['Hell', 5],
   });
-  final list = acanthis.string().max(5).list().max(3).transform((value) => value.map((e) => e.toUpperCase()).toList());
+  final list = acanthis
+      .string()
+      .max(5)
+      .list()
+      .max(3)
+      .transform((value) => value.map((e) => e.toUpperCase()).toList());
 
   final parsedList = list.tryParse(['Hello', 'World', 'hello']);
 
@@ -35,4 +40,11 @@ void main(List<String> arguments) {
   print(number.tryParse(3));
   print(parsed);
   print(parsedList);
+
+  final union = acanthis.union([
+    acanthis.number(),
+    acanthis.string(),
+  ]);
+
+  print(union.tryParse(DateTime.now()));
 }

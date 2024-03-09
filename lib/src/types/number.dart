@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'nullable.dart';
 import 'list.dart';
 import 'types.dart';
+import 'union.dart';
 
 /// A class to validate number types
 class AcanthisNumber extends AcanthisType<num> {
@@ -139,15 +140,20 @@ class AcanthisNumber extends AcanthisType<num> {
 
   /// Add a transformation to the number to add [value]
   AcanthisNumber transform(num Function(num value) transformation) {
-    addTransformation(AcanthisTransformation<num>(transformation: transformation));
+    addTransformation(
+        AcanthisTransformation<num>(transformation: transformation));
     return this;
   }
 
   /// Make the value nullable
-  AcanthisNullable<num> nullable({num? defaultValue}){
+  AcanthisNullable<num> nullable({num? defaultValue}) {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
+  /// Create a union from the number
+  AcanthisUnion or(List<AcanthisType> elements) {
+    return AcanthisUnion([this, ...elements]);
+  }
 }
 
 /// Create a number type

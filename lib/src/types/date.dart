@@ -1,6 +1,7 @@
 import 'list.dart';
 import 'nullable.dart';
 import 'types.dart';
+import 'union.dart';
 
 /// A class to validate date types
 class AcanthisDate extends AcanthisType<DateTime> {
@@ -43,15 +44,20 @@ class AcanthisDate extends AcanthisType<DateTime> {
 
   /// Add a transformation to the date to transform it using [transformation]
   AcanthisDate transform(DateTime Function(DateTime value) transformation) {
-    addTransformation(AcanthisTransformation<DateTime>(transformation: transformation));
+    addTransformation(
+        AcanthisTransformation<DateTime>(transformation: transformation));
     return this;
   }
 
   /// Make the value nullable
-  AcanthisNullable<DateTime> nullable({DateTime? defaultValue}){
+  AcanthisNullable<DateTime> nullable({DateTime? defaultValue}) {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
+  /// Create a union from the string
+  AcanthisUnion or(List<AcanthisType> elements) {
+    return AcanthisUnion([this, ...elements]);
+  }
 }
 
 /// Create a new date type

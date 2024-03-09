@@ -1,8 +1,6 @@
 import 'package:acanthis/acanthis.dart' as acanthis;
 
-
-void main () {
-
+void main() {
   final email = acanthis.string().email().min(5).max(20);
   final result = email.tryParse('test@test.com');
 
@@ -11,5 +9,4 @@ void main () {
   } else {
     print('Email is invalid');
   }
-
 }

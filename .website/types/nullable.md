@@ -1,10 +1,10 @@
 # Nullable
 
-Nullable types are types that can be `null` in addition to their normal values. This is useful for when you want to represent a value that may or may not be present.
+Nullable validator are used to represent a value that may or may not be present.
 
 ## How it works
 
-The nullable type is a wrapper around another type. It allows the value to be `null` in addition to the normal values of the wrapped type.
+The nullable validator is a wrapper around another type. It allows the value to be `null` in addition to the normal values of the wrapped type.
 
 ```dart
 import 'package:acanthis/acanthis.dart';

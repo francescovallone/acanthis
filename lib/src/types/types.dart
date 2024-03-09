@@ -12,12 +12,12 @@ abstract class AcanthisType<O> {
   AcanthisParseResult<O> parse(O value) {
     O newValue = value;
     for (var operation in operations) {
-      if(operation is AcanthisCheck){
+      if (operation is AcanthisCheck) {
         if (!operation(newValue)) {
           throw ValidationError(operation.error);
         }
       }
-      if(operation is AcanthisTransformation) {
+      if (operation is AcanthisTransformation) {
         newValue = operation(newValue);
       }
     }
@@ -30,12 +30,12 @@ abstract class AcanthisType<O> {
     final errors = <String, String>{};
     O newValue = value;
     for (var operation in operations) {
-      if(operation is AcanthisCheck) {
+      if (operation is AcanthisCheck) {
         if (!operation(newValue)) {
           errors[operation.name] = operation.error;
         }
       }
-      if(operation is AcanthisTransformation) {
+      if (operation is AcanthisTransformation) {
         newValue = operation(newValue);
       }
     }
@@ -52,11 +52,10 @@ abstract class AcanthisType<O> {
   void addTransformation(AcanthisTransformation<O> transformation) {
     operations.add(transformation);
   }
-
 }
 
 /// A class that represents a check operation
-class AcanthisCheck<O> extends AcanthisOperation<O>{
+class AcanthisCheck<O> extends AcanthisOperation<O> {
   final bool Function(O value) onCheck;
   final String error;
   final String name;
@@ -75,7 +74,7 @@ class AcanthisCheck<O> extends AcanthisOperation<O>{
 }
 
 /// A class that represents a transformation operation
-class AcanthisTransformation<O> extends AcanthisOperation<O>{
+class AcanthisTransformation<O> extends AcanthisOperation<O> {
   final O Function(O value) transformation;
 
   const AcanthisTransformation({required this.transformation});
@@ -85,17 +84,14 @@ class AcanthisTransformation<O> extends AcanthisOperation<O>{
   O call(O value) {
     return transformation(value);
   }
-
 }
 
 /// A class that represents an operation
 abstract class AcanthisOperation<O> {
-  
   const AcanthisOperation();
 
   /// The call method to create a Callable class
   dynamic call(O value);
-
 }
 
 /// A class to represent the result of a parse operation

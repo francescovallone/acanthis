@@ -2,7 +2,6 @@ import 'types.dart';
 import '../exceptions/validation_error.dart';
 
 class AcanthisUnion extends AcanthisType<dynamic> {
-
   final List<AcanthisType> elements;
 
   AcanthisUnion(this.elements);
@@ -10,12 +9,12 @@ class AcanthisUnion extends AcanthisType<dynamic> {
   @override
   AcanthisParseResult<dynamic> parse(dynamic value) {
     for (var element in elements) {
-      try{
+      try {
         final result = element.tryParse(value);
         if (result.success) {
           return result;
         }
-      }catch(_){}
+      } catch (_) {}
     }
     throw ValidationError('Value does not match any of the elements');
   }
@@ -23,16 +22,18 @@ class AcanthisUnion extends AcanthisType<dynamic> {
   @override
   AcanthisParseResult<dynamic> tryParse(dynamic value) {
     for (var element in elements) {
-      try{
+      try {
         final result = element.tryParse(value);
         if (result.success) {
           return result;
         }
-      }catch(_){}
+      } catch (_) {}
     }
-    return AcanthisParseResult(value: value, errors: {'union': 'Value does not match any of the elements'}, success: false);
+    return AcanthisParseResult(
+        value: value,
+        errors: {'union': 'Value does not match any of the elements'},
+        success: false);
   }
-
 }
 
 /// A class that represents a transformation operation

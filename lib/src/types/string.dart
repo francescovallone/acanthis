@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'list.dart';
 import 'nullable.dart';
 import 'types.dart';
+import 'union.dart';
 
 /// A class to validate string types
 class AcanthisString extends AcanthisType<String> {
@@ -12,8 +13,7 @@ class AcanthisString extends AcanthisType<String> {
   /// Add a check to the string to check if it is a valid email
   AcanthisString email() {
     addCheck(AcanthisCheck<String>(
-        onCheck: (value) =>
-            EmailValidator.validate(value),
+        onCheck: (value) => EmailValidator.validate(value),
         error: 'Invalid email format',
         name: 'email'));
     return this;
@@ -104,7 +104,7 @@ class AcanthisString extends AcanthisType<String> {
     addCheck(AcanthisCheck<String>(onCheck: onCheck, error: error, name: name));
     return this;
   }
-  
+
   /// Add a transformation to the string to encode it to base64
   AcanthisString encode() {
     addTransformation(AcanthisTransformation<String>(
@@ -121,7 +121,8 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a transformation to the string to transform it using [transformation]
   AcanthisString transform(String Function(String value) transformation) {
-    addTransformation(AcanthisTransformation<String>(transformation: transformation));
+    addTransformation(
+        AcanthisTransformation<String>(transformation: transformation));
     return this;
   }
 
@@ -140,10 +141,14 @@ class AcanthisString extends AcanthisType<String> {
   }
 
   /// Make the value nullable
-  AcanthisNullable<String> nullable({String? defaultValue}){
+  AcanthisNullable<String> nullable({String? defaultValue}) {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
+  /// Create a union from the string
+  AcanthisUnion or(List<AcanthisType> elements) {
+    return AcanthisUnion([this, ...elements]);
+  }
 }
 
 /// Create a new AcanthisString instance
