@@ -1,5 +1,7 @@
+import 'nullable.dart';
 import 'types.dart';
 
+/// A class to validate list types
 class AcanthisList<T> extends AcanthisType<List<T>> {
   AcanthisType<T> element;
 
@@ -13,8 +15,8 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
       final parsedElement = element.parse(value[i]);
       parsed.add(parsedElement.value);
     }
-    super.parse(value);
-    return parsed;
+    final result = super.parse(value);
+    return result.value;
   }
 
   (List<T> parsed, Map<String, dynamic> errors) _tryParse(List<T> value) {
@@ -28,15 +30,17 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
       }
     }
     final result = super.tryParse(value);
-    return (parsed, {...errors, ...result.errors});
+    return (result.value, {...errors, ...result.errors});
   }
 
+  /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> parse(List<T> value) {
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
   }
 
+  /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> tryParse(List<T> value) {
     final (parsed, errors) = _tryParse(value);
@@ -54,6 +58,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return results.every((element) => element);
   }
 
+  /// Add a check to the list to check if it is at least [length] elements long
   AcanthisList<T> min(int length) {
     addCheck(AcanthisCheck<List<T>>(
         onCheck: (toTest) => toTest.length >= length,
@@ -62,6 +67,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
+  /// Add a check to the list to check if it is at most [length] elements long
   AcanthisList<T> max(int length) {
     addCheck(AcanthisCheck<List<T>>(
         onCheck: (toTest) => toTest.length <= length,
@@ -70,6 +76,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
+  /// Add a check to the list to check if all elements are unique
   AcanthisList<T> unique() {
     addCheck(AcanthisCheck<List<T>>(
         onCheck: (toTest) => toTest.toSet().length == toTest.length,
@@ -78,7 +85,8 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
-  AcanthisList<T> length(T value) {
+  /// Add a check to the list to check if it has exactly [value] elements
+  AcanthisList<T> length(int value) {
     addCheck(AcanthisCheck<List<T>>(
         onCheck: (toTest) => toTest.length == value,
         error: 'The list must have exactly $value elements',
@@ -86,6 +94,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return this;
   }
 
+  /// Add a custom check to the list
   AcanthisList<T> customCheck(
       {required bool Function(List<T> value) onCheck,
       required String error,
@@ -93,5 +102,16 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     addCheck(
         AcanthisCheck<List<T>>(onCheck: onCheck, error: error, name: name));
     return this;
+  }
+
+  /// Add a transformation to the list to transform it using [transformation]
+  AcanthisList<T> transform(List<T> Function(List<T> value) transformation) {
+    addTransformation(AcanthisTransformation(transformation: transformation));
+    return this;
+  }
+
+  /// Make the value nullable
+  AcanthisNullable<List<T>> nullable({List<T>? defaultValue}) {
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 }

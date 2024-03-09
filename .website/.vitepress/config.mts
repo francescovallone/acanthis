@@ -17,13 +17,23 @@ export default defineConfig({
         link: '/introduction',
       },
       {
+        text: 'Operations',
+        items: [
+          { text: 'Checks', link: '/operations/checks' },
+          { text: 'Transformations', link: '/operations/transformations' },
+        ]
+      },
+      {
         text: 'Types',
         items: [
+          { text: 'Boolean', link: '/types/boolean' },
           { text: 'String', link: '/types/string' },
           { text: 'Number', link: '/types/number' },
           { text: 'Date', link: '/types/date' },
           { text: 'List', link: '/types/list' },
           { text: 'Map', link: '/types/map' },
+          { text: 'Nullable', link: '/types/nullable' },
+          { text: 'Union', link: '/types/union' },
         ]
       }
     ],

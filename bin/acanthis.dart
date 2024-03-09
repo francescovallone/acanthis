@@ -6,7 +6,7 @@ void main(List<String> arguments) {
   string.email().min(5).max(10).endsWith('i');
 
   final jsonObject = acanthis.jsonObject({
-    'name': acanthis.string().min(5).max(10),
+    'name': acanthis.string().min(5).max(10).encode(),
     'attributes': acanthis.jsonObject({
       'age': acanthis.number().gte(18),
       'email': acanthis.string().email(),
@@ -27,9 +27,24 @@ void main(List<String> arguments) {
     },
     'elements': ['Hell', 5],
   });
-  final list = acanthis.string().max(5).list().max(2);
+  final list = acanthis
+      .string()
+      .max(5)
+      .list()
+      .max(3)
+      .transform((value) => value.map((e) => e.toUpperCase()).toList());
 
   final parsedList = list.tryParse(['Hello', 'World', 'hello']);
+
+  final number = acanthis.number().pow(2).gte(5);
+  print(number.tryParse(3));
   print(parsed);
   print(parsedList);
+
+  final union = acanthis.union([
+    acanthis.number(),
+    acanthis.string(),
+  ]);
+
+  print(union.tryParse(DateTime.now()));
 }

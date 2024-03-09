@@ -1,6 +1,6 @@
 # Map
 
-The map type is used to validate a map. Usally should be used to validate JSON objects or similar.
+The map validator is used to validate a map. Usally should be used to validate JSON objects or similar.
 
 You can use the class `AcanthisMap<V>` to create a map schema or the function `jsonObject` to create a map schema suitable for a json object.
 
