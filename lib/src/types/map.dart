@@ -157,7 +157,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
 }
 
 /// Create a map of [fields]
-AcanthisMap object(Map<String, AcanthisType> fields) =>
-    AcanthisMap<dynamic>(
+AcanthisMap object(Map<String, AcanthisType> fields) => AcanthisMap<dynamic>(
       fields,
     );

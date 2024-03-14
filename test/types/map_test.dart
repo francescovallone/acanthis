@@ -9,8 +9,7 @@ void main() {
         'when creating a map validator,'
         'and the map is valid, '
         'then the result should be successful', () {
-      final map =
-          acanthis.object({'key': acanthis.string().min(5).max(20)});
+      final map = acanthis.object({'key': acanthis.string().min(5).max(20)});
       final result = map.tryParse({'key': 'value'});
 
       expect(result.success, true);
@@ -24,8 +23,7 @@ void main() {
         'when creating a map validator with a required field,'
         'and the map is missing the required field, '
         'then the result should be unsuccessful', () {
-      final map =
-          acanthis.object({'key': acanthis.string().min(5).max(20)});
+      final map = acanthis.object({'key': acanthis.string().min(5).max(20)});
       final result = map.tryParse({});
 
       expect(result.success, false);
@@ -52,8 +50,7 @@ void main() {
         'when creating a map validator with the passthrough property,'
         'and the parse value contains a non validated key, '
         'then the result should be unsuccessful', () {
-      final map =
-          acanthis.object({'key': acanthis.string().min(5).max(20)});
+      final map = acanthis.object({'key': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value', 'other': 'value'});
 
