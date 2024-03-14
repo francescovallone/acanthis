@@ -35,4 +35,5 @@ class AcanthisBoolean extends AcanthisType<bool> {
   }
 }
 
+/// Create a boolean validator
 AcanthisBoolean boolean() => AcanthisBoolean();

@@ -181,7 +181,7 @@ void main() {
         'when creating a nullable map,'
         'and the value is not null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string()}).nullable();
+      final nullable = object({'key': string()}).nullable();
 
       final result = nullable.tryParse({'key': 'This is a test'});
 
@@ -196,7 +196,7 @@ void main() {
         'when creating a nullable map,'
         'and the value is null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string()}).nullable();
+      final nullable = object({'key': string()}).nullable();
 
       final result = nullable.tryParse(null);
 
@@ -211,7 +211,7 @@ void main() {
         'when creating a nullable map with nullable values,'
         'and the value is not null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string().nullable()}).nullable();
+      final nullable = object({'key': string().nullable()}).nullable();
 
       final result = nullable.tryParse({'key': 'This is a test'});
 
@@ -226,7 +226,7 @@ void main() {
         'when creating a nullable map with nullable values,'
         'and the value is null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string().nullable()}).nullable();
+      final nullable = object({'key': string().nullable()}).nullable();
 
       final result = nullable.tryParse(null);
 
@@ -241,7 +241,7 @@ void main() {
         'when creating a nullable map with nullable keys,'
         'and the value is not null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string()}).nullable();
+      final nullable = object({'key': string()}).nullable();
 
       final result = nullable.tryParse({'key': 'This is a test'});
 
@@ -256,7 +256,7 @@ void main() {
         'when creating a nullable map with nullable keys,'
         'and the value is null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string()}).nullable();
+      final nullable = object({'key': string()}).nullable();
 
       final result = nullable.tryParse(null);
 
@@ -271,7 +271,7 @@ void main() {
         'when creating a nullable map with a default value,'
         'and the value is null, '
         'then the result should be successful', () {
-      final nullable = jsonObject({'key': string()})
+      final nullable = object({'key': string()})
           .nullable(defaultValue: {'key': 'This is a null value'});
 
       final result = nullable.tryParse(null);

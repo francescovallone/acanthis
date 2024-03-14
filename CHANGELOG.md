@@ -1,3 +1,13 @@
+## 0.1.1
+
+### Refactor
+
+- The function `jsonObject` has been renamed as `object`.
+
+### Docs
+
+- Add explicit information about the parse result object `AcanthisParseResult`.
+
 ## 0.1.0
 
 ### Features

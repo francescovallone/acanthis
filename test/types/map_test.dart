@@ -10,7 +10,7 @@ void main() {
         'and the map is valid, '
         'then the result should be successful', () {
       final map =
-          acanthis.jsonObject({'key': acanthis.string().min(5).max(20)});
+          acanthis.object({'key': acanthis.string().min(5).max(20)});
       final result = map.tryParse({'key': 'value'});
 
       expect(result.success, true);
@@ -25,7 +25,7 @@ void main() {
         'and the map is missing the required field, '
         'then the result should be unsuccessful', () {
       final map =
-          acanthis.jsonObject({'key': acanthis.string().min(5).max(20)});
+          acanthis.object({'key': acanthis.string().min(5).max(20)});
       final result = map.tryParse({});
 
       expect(result.success, false);
@@ -38,7 +38,7 @@ void main() {
         'and the parse value contains a non validated key, '
         'then the result should be successful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).passthrough();
+          .object({'key': acanthis.string().min(5).max(20)}).passthrough();
       final result = map.tryParse({'key': 'value', 'other': 'value'});
 
       expect(result.success, true);
@@ -53,7 +53,7 @@ void main() {
         'and the parse value contains a non validated key, '
         'then the result should be unsuccessful', () {
       final map =
-          acanthis.jsonObject({'key': acanthis.string().min(5).max(20)});
+          acanthis.object({'key': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value', 'other': 'value'});
 
@@ -67,7 +67,7 @@ void main() {
         'when creating a map validator with the omit property,'
         'and the parse value does not contains a validated key, '
         'then the result should be successful', () {
-      final map = acanthis.jsonObject({
+      final map = acanthis.object({
         'key': acanthis.string().min(5).max(20),
         'other': acanthis.string().min(5).max(20)
       }).omit(['key']);
@@ -86,7 +86,7 @@ void main() {
         'and the parse value contains a validated key, '
         'then the result should be unsuccessful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).omit(['key']);
+          .object({'key': acanthis.string().min(5).max(20)}).omit(['key']);
 
       final result = map.tryParse({'key': 'value'});
 
@@ -101,7 +101,7 @@ void main() {
         'and the parse value contains a validated key, '
         'then the result should be successful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).merge(
+          .object({'key': acanthis.string().min(5).max(20)}).merge(
               {'other': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value', 'other': 'value'});
@@ -118,7 +118,7 @@ void main() {
         'and the parse value does not contain a validated key, '
         'then the result should be unsuccessful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).merge(
+          .object({'key': acanthis.string().min(5).max(20)}).merge(
               {'other': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value'});
@@ -134,7 +134,7 @@ void main() {
         'and the parse value contains a validated key, '
         'then the result should be successful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).extend(
+          .object({'key': acanthis.string().min(5).max(20)}).extend(
               {'other': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value', 'other': 'value'});
@@ -151,7 +151,7 @@ void main() {
         'and the parse value does not contain a validated key, '
         'then the result should be unsuccessful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).extend(
+          .object({'key': acanthis.string().min(5).max(20)}).extend(
               {'other': acanthis.string().min(5).max(20)});
 
       final result = map.tryParse({'key': 'value'});
@@ -167,7 +167,7 @@ void main() {
         'and the parse value contains a validated key, '
         'then the result should be successful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).pick(['key']);
+          .object({'key': acanthis.string().min(5).max(20)}).pick(['key']);
 
       final result = map.tryParse({'key': 'value'});
 
@@ -183,7 +183,7 @@ void main() {
         'and the parse value does not contain a validated key, '
         'then the result should be unsuccessful', () {
       final map = acanthis
-          .jsonObject({'key': acanthis.string().min(5).max(20)}).pick(['key']);
+          .object({'key': acanthis.string().min(5).max(20)}).pick(['key']);
 
       final result = map.tryParse({'other': 'value'});
 
@@ -198,7 +198,7 @@ void main() {
         'and all the elements in the map are valid, '
         'and the map itself is valid, '
         'then the result should be transformed', () {
-      final map = acanthis.jsonObject({
+      final map = acanthis.object({
         'key': acanthis.string().min(5).max(20),
       }).transform((value) => value
           .map((key, value) => MapEntry(key, value.toString().toUpperCase())));
@@ -217,12 +217,12 @@ void main() {
         'when creating a map validator for a complex object,'
         'and the map is valid, '
         'then the result should be successful', () {
-      final jsonObject = acanthis.jsonObject({
+      final object = acanthis.object({
         'name': acanthis.string().min(5).max(10).encode(),
-        'attributes': acanthis.jsonObject({
+        'attributes': acanthis.object({
           'age': acanthis.number().gte(18),
           'email': acanthis.string().email(),
-          'style': acanthis.jsonObject({
+          'style': acanthis.object({
             'color': acanthis
                 .string()
                 .min(3)
@@ -233,7 +233,7 @@ void main() {
         }),
       }).passthrough();
 
-      final parsed = jsonObject.parse({
+      final parsed = object.parse({
         'name': 'Hello',
         'attributes': {
           'age': 18,
@@ -254,13 +254,13 @@ void main() {
         'and use the list method, '
         'and all the values are valid, '
         'then the result should be successful', () {
-      final jsonObject = acanthis
-          .jsonObject({
+      final object = acanthis
+          .object({
             'name': acanthis.string().min(5).max(10).encode(),
-            'attributes': acanthis.jsonObject({
+            'attributes': acanthis.object({
               'age': acanthis.number().gte(18),
               'email': acanthis.string().email(),
-              'style': acanthis.jsonObject({
+              'style': acanthis.object({
                 'color': acanthis
                     .string()
                     .min(3)
@@ -273,7 +273,7 @@ void main() {
           .passthrough()
           .list();
 
-      jsonObject.parse([
+      object.parse([
         {
           'name': 'Hello',
           'attributes': {
@@ -299,28 +299,6 @@ void main() {
           'elements': ['Hell', 5],
         }
       ]);
-    });
-
-    test(
-        'when creating a map validator for a complex object, '
-        'and use the keys getter, '
-        'then the not nested keys should be returned', () {
-      final jsonObject = acanthis.jsonObject({
-        'name': acanthis.string().min(5).max(10).encode(),
-        'attributes': acanthis.jsonObject({
-          'age': acanthis.number().gte(18),
-          'email': acanthis.string().email(),
-          'style': acanthis.jsonObject({
-            'color': acanthis
-                .string()
-                .min(3)
-                .max(10)
-                .transform((value) => value.toUpperCase())
-          }),
-          'date': acanthis.date().min(DateTime.now())
-        }),
-      }).passthrough();
-      expect(jsonObject.keys, ['name', 'attributes']);
     });
   });
 }

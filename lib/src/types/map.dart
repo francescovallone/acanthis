@@ -1,3 +1,5 @@
+import 'dart:collection';
+
 import '../exceptions/validation_error.dart';
 import 'list.dart';
 import 'nullable.dart';
@@ -7,8 +9,7 @@ import 'types.dart';
 class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   Map<String, AcanthisType> _fields;
 
-  /// The keys that the map should have
-  Iterable<String> get keys => _fields.keys;
+  Map<String, AcanthisType> get fields => UnmodifiableMapView(_fields);
 
   bool _passthrough = false;
 
@@ -156,7 +157,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
 }
 
 /// Create a map of [fields]
-AcanthisMap jsonObject(Map<String, AcanthisType> fields) =>
+AcanthisMap object(Map<String, AcanthisType> fields) =>
     AcanthisMap<dynamic>(
       fields,
     );
