@@ -24,6 +24,10 @@ void main() {
 
 In this example, the schema is a nullable string. The `tryParse` method is called with `null` as the argument. Since the schema is nullable, the result is successful.
 
+::: tip
+The AcanthisParseResult object, that is returned by the `parse` and `tryParse` method is described [here](/introduction.html#acanthisparseresult).
+:::
+
 ### Default value
 
 You can also specify a default value for the nullable type.
@@ -56,7 +60,7 @@ The nullable type can be used with maps and lists as well.
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).nullable();
@@ -116,7 +120,7 @@ And maps with nullable types.
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3).nullable(),
 	'age': number().positive(),
   });

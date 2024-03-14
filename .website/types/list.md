@@ -23,6 +23,10 @@ void main() {
 }
 ```
 
+::: tip
+The AcanthisParseResult object, that is returned by the `parse` and `tryParse` method is described [here](/introduction.html#acanthisparseresult).
+:::
+
 ### min
 
 The min method is used to validate the minimum length of a list.

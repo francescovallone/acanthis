@@ -24,20 +24,26 @@ Here is a simple example of how to use Acanthis:
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   });
 
   final result = schema.tryParse({
-	'name': 'Francesco',
-	'age': 59,
+	  'name': 'Francesco',
+	  'age': 59,
   });
 
+  /// The result is a AcanthisParseResult object
+  /// that has the following properties:
+  /// - success: A boolean that indicates if the parsing was successful or not.
+  /// - value: The value of the parsing. If the parsing was successful, this will contain the parsed value.
+  /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
+
   if (result.success) {
-	print('The schema is valid!');
+	  print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+	  print('The schema is invalid!');
   }
 }
 ```

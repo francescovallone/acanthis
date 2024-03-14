@@ -2,7 +2,7 @@
 
 The map validator is used to validate a map. Usally should be used to validate JSON objects or similar.
 
-You can use the class `AcanthisMap<V>` to create a map schema or the function `jsonObject` to create a map schema suitable for a json object.
+You can use the class `AcanthisMap<V>` to create a map schema or the function `object` to create a map schema suitable for a json object.
 
 
 ## Example
@@ -11,7 +11,7 @@ You can use the class `AcanthisMap<V>` to create a map schema or the function `j
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   });
@@ -29,6 +29,10 @@ void main() {
 }
 ```
 
+::: tip
+The AcanthisParseResult object, that is returned by the `parse` and `tryParse` method is described [here](/introduction.html#acanthisparseresult).
+:::
+
 ## Methods
 
 ### passthrough
@@ -39,7 +43,7 @@ The passthrough method is used to allow passthrough of unknown keys. This is use
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).passthrough();
@@ -67,7 +71,7 @@ The extend method is used to extend the schema with another schema. This is usef
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).extend({
@@ -97,7 +101,7 @@ The merge method is used to merge the schema with another schema. This is useful
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).merge({
@@ -131,7 +135,7 @@ The pick method is used to pick only the entries in the schema that are present 
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).pick(['name']);
@@ -156,7 +160,7 @@ The omit method is used to omit the entries in the schema that are present in a 
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).omit(['age']);
@@ -185,7 +189,7 @@ For the list validations methods, you check the [List](/types/list) page.
 import 'package:acanthis/acanthis.dart';
 
 void main() {
-  final schema = jsonObject({
+  final schema = object({
 	'name': string().min(3),
 	'age': number().positive(),
   }).list();

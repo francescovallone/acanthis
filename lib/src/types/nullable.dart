@@ -1,12 +1,17 @@
 import 'package:acanthis/acanthis.dart';
 
+/// A class to validate nullable types
 class AcanthisNullable<T> extends AcanthisType<T?> {
+
+  /// The default value of the nullable
   final T? defaultValue;
 
+  /// The element of the nullable
   final AcanthisType<T> element;
 
   AcanthisNullable(this.element, {this.defaultValue});
 
+  /// override of the [parse] method from [AcanthisType]
   @override
   AcanthisParseResult<T?> parse(T? value) {
     if (value == null) {
@@ -15,6 +20,7 @@ class AcanthisNullable<T> extends AcanthisType<T?> {
     return element.parse(value);
   }
 
+  /// override of the [tryParse] method from [AcanthisType]
   @override
   AcanthisParseResult<T?> tryParse(T? value) {
     if (value == null) {
@@ -23,6 +29,7 @@ class AcanthisNullable<T> extends AcanthisType<T?> {
     return element.tryParse(value);
   }
 
+  /// Make a list of nullable elements
   AcanthisList<T?> list() {
     return AcanthisList(this);
   }

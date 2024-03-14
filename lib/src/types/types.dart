@@ -25,7 +25,11 @@ abstract class AcanthisType<O> {
   }
 
   /// The tryParse method to try to parse the value
-  /// it returns a [AcanthisParseResult] with the parsed value and the errors
+  /// it returns a [AcanthisParseResult]
+  /// that has the following properties:
+  /// - success: A boolean that indicates if the parsing was successful or not.
+  /// - value: The value of the parsing. If the parsing was successful, this will contain the parsed value.
+  /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
   AcanthisParseResult<O> tryParse(O value) {
     final errors = <String, String>{};
     O newValue = value;

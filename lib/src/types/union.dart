@@ -1,11 +1,13 @@
 import 'types.dart';
 import '../exceptions/validation_error.dart';
 
+/// A class to validate union types that can be one of the elements in the list
 class AcanthisUnion extends AcanthisType<dynamic> {
   final List<AcanthisType> elements;
 
   AcanthisUnion(this.elements);
 
+  /// override of the [parse] method from [AcanthisType]
   @override
   AcanthisParseResult<dynamic> parse(dynamic value) {
     for (var element in elements) {
@@ -19,6 +21,7 @@ class AcanthisUnion extends AcanthisType<dynamic> {
     throw ValidationError('Value does not match any of the elements');
   }
 
+  /// override of the [tryParse] method from [AcanthisType]
   @override
   AcanthisParseResult<dynamic> tryParse(dynamic value) {
     for (var element in elements) {

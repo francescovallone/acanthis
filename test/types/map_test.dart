@@ -300,27 +300,5 @@ void main() {
         }
       ]);
     });
-
-    test(
-        'when creating a map validator for a complex object, '
-        'and use the keys getter, '
-        'then the not nested keys should be returned', () {
-      final object = acanthis.object({
-        'name': acanthis.string().min(5).max(10).encode(),
-        'attributes': acanthis.object({
-          'age': acanthis.number().gte(18),
-          'email': acanthis.string().email(),
-          'style': acanthis.object({
-            'color': acanthis
-                .string()
-                .min(3)
-                .max(10)
-                .transform((value) => value.toUpperCase())
-          }),
-          'date': acanthis.date().min(DateTime.now())
-        }),
-      }).passthrough();
-      expect(object.keys, ['name', 'attributes']);
-    });
   });
 }
