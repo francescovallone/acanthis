@@ -5,15 +5,23 @@ void main(List<String> arguments) {
 
   string.email().min(5).max(10).endsWith('i');
 
-  final jsonObject = acanthis.object({
-    'name': acanthis.string().min(5).max(10).encode(),
-    'attributes': acanthis.object({
-      'age': acanthis.number().gte(18),
-      'email': acanthis.string().email(),
-      'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
-      'date': acanthis.date().min(DateTime.now())
-    }),
-  }).passthrough();
+  final jsonObject = acanthis
+      .object({
+        'name': acanthis.string().min(5).max(10).encode(),
+        'attributes': acanthis.object({
+          'age': acanthis.number().gte(18),
+          'email': acanthis.string().email(),
+          'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
+          'date': acanthis.date().min(DateTime.now())
+        }),
+      })
+      .passthrough()
+      .addFieldDependency(
+          dependency: 'name',
+          dependFrom: 'attributes.age',
+          condition: (age, name) {
+            return name.length < age;
+          });
 
   final parsed = jsonObject.parse({
     'name': 'Hello',

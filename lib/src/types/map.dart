@@ -12,6 +12,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   Map<String, AcanthisType> get fields => UnmodifiableMapView(_fields);
 
   bool _passthrough = false;
+  final List<_Dependency> _dependencies = [];
 
   AcanthisMap(
     this._fields,
@@ -35,6 +36,19 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         throw ValidationError('Field ${obj.key} is not allowed in this object');
       }
       parsed[obj.key] = _fields[obj.key]!.parse(obj.value).value;
+    }
+    for (var dependency in _dependencies) {
+      final dependFrom = _keyQuery(dependency.dependFrom, value);
+      final dependTo = _keyQuery(dependency.dependency, value);
+      if (dependFrom != null && dependTo != null) {
+        if (!dependency.condition(dependFrom, dependTo)) {
+          throw ValidationError(
+              'Dependency not met: ${dependency.dependFrom}->${dependency.dependency}');
+        }
+      } else {
+        throw ValidationError(
+            'The dependency or dependFrom field does not exist in the map');
+      }
     }
     final result = super.parse(parsed);
     return result.value;
@@ -67,7 +81,38 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       errors[obj.key] = parsedValue.errors;
     }
     final result = super.tryParse(parsed);
+    for (var dependency in _dependencies) {
+      final dependFrom = _keyQuery(dependency.dependFrom, value);
+      final dependTo = _keyQuery(dependency.dependency, value);
+      if (dependFrom != null && dependTo != null) {
+        if (!dependency.condition(dependFrom, dependTo)) {
+          errors[dependency.dependency] = {'dependency': 'Dependency not met'};
+        }
+      } else {
+        errors[dependency.dependency] = {
+          'dependency[${dependency.dependFrom}->${dependency.dependency}]':
+              'The dependency or dependFrom field does not exist in the map'
+        };
+      }
+    }
     return (result.value, errors);
+  }
+
+  dynamic _keyQuery(String key, Map<String, V> value) {
+    final keys = key.split('.');
+    dynamic result = value;
+    for (var k in keys) {
+      if (result is Map<String, dynamic>) {
+        if (result.containsKey(k)) {
+          result = result[k];
+        } else {
+          return null;
+        }
+      } else {
+        return null;
+      }
+    }
+    return result;
   }
 
   /// Override of [parse] from [AcanthisType]
@@ -88,6 +133,15 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Create a list of maps
   AcanthisList<Map<String, V>> list() {
     return AcanthisList<Map<String, V>>(this);
+  }
+
+  AcanthisMap<V> addFieldDependency({
+    required String dependency,
+    required String dependFrom,
+    required bool Function(dynamic, dynamic) condition,
+  }) {
+    _dependencies.add(_Dependency(dependency, dependFrom, condition));
+    return this;
   }
 
   bool _recursiveSuccess(Map<String, dynamic> errors) {
@@ -160,3 +214,11 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
 AcanthisMap object(Map<String, AcanthisType> fields) => AcanthisMap<dynamic>(
       fields,
     );
+
+class _Dependency {
+  final String dependency;
+  final String dependFrom;
+  final bool Function(dynamic, dynamic) condition;
+
+  _Dependency(this.dependency, this.dependFrom, this.condition);
+}
