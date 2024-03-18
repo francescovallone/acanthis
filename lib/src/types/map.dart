@@ -38,12 +38,12 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       parsed[obj.key] = _fields[obj.key]!.parse(obj.value).value;
     }
     for (var dependency in _dependencies) {
-      final dependFrom = _keyQuery(dependency.dependFrom, value);
-      final dependTo = _keyQuery(dependency.dependency, value);
+      final dependFrom = _keyQuery(dependency.dependendsOn, value);
+      final dependTo = _keyQuery(dependency.dependent, value);
       if (dependFrom != null && dependTo != null) {
-        if (!dependency.condition(dependFrom, dependTo)) {
+        if (!dependency.dependency(dependFrom, dependTo)) {
           throw ValidationError(
-              'Dependency not met: ${dependency.dependFrom}->${dependency.dependency}');
+              'Dependency not met: ${dependency.dependendsOn}->${dependency.dependent}');
         }
       } else {
         throw ValidationError(
@@ -82,15 +82,15 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     }
     final result = super.tryParse(parsed);
     for (var dependency in _dependencies) {
-      final dependFrom = _keyQuery(dependency.dependFrom, value);
-      final dependTo = _keyQuery(dependency.dependency, value);
+      final dependFrom = _keyQuery(dependency.dependendsOn, value);
+      final dependTo = _keyQuery(dependency.dependent, value);
       if (dependFrom != null && dependTo != null) {
-        if (!dependency.condition(dependFrom, dependTo)) {
-          errors[dependency.dependency] = {'dependency': 'Dependency not met'};
+        if (!dependency.dependency(dependFrom, dependTo)) {
+          errors[dependency.dependent] = {'dependency': 'Dependency not met'};
         }
       } else {
-        errors[dependency.dependency] = {
-          'dependency[${dependency.dependFrom}->${dependency.dependency}]':
+        errors[dependency.dependent] = {
+          'dependency[${dependency.dependendsOn}->${dependency.dependent}]':
               'The dependency or dependFrom field does not exist in the map'
         };
       }
@@ -138,11 +138,11 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Add a field dependency to the map to validate the map based on the [condition]
   /// [dependency] is the field that depends on [dependFrom]
   AcanthisMap<V> addFieldDependency({
-    required String dependency,
-    required String dependFrom,
-    required bool Function(dynamic, dynamic) condition,
+    required String dependent,
+    required String dependendsOn,
+    required bool Function(dynamic, dynamic) dependency,
   }) {
-    _dependencies.add(_Dependency(dependency, dependFrom, condition));
+    _dependencies.add(_Dependency(dependent, dependendsOn, dependency));
     return this;
   }
 
@@ -218,9 +218,9 @@ AcanthisMap object(Map<String, AcanthisType> fields) => AcanthisMap<dynamic>(
     );
 
 class _Dependency {
-  final String dependency;
-  final String dependFrom;
-  final bool Function(dynamic, dynamic) condition;
+  final String dependent;
+  final String dependendsOn;
+  final bool Function(dynamic, dynamic) dependency;
 
-  _Dependency(this.dependency, this.dependFrom, this.condition);
+  _Dependency(this.dependent, this.dependendsOn, this.dependency);
 }

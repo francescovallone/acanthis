@@ -322,9 +322,9 @@ void main() {
             })
             .passthrough()
             .addFieldDependency(
-                dependency: 'name',
-                dependFrom: 'attributes.age',
-                condition: (age, name) {
+                dependent: 'name',
+                dependendsOn: 'attributes.age',
+                dependency: (age, name) {
                   return name.length > age;
                 });
 
@@ -385,9 +385,9 @@ void main() {
             })
             .passthrough()
             .addFieldDependency(
-                dependency: 'name',
-                dependFrom: 'attributes.age',
-                condition: (age, name) {
+                dependent: 'name',
+                dependendsOn: 'attributes.age',
+                dependency: (age, name) {
                   return name.length < age;
                 });
 

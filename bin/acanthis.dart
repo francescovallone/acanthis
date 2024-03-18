@@ -17,9 +17,9 @@ void main(List<String> arguments) {
       })
       .passthrough()
       .addFieldDependency(
-          dependency: 'name',
-          dependFrom: 'attributes.age',
-          condition: (age, name) {
+          dependent: 'name',
+          dependendsOn: 'attributes.age',
+          dependency: (age, name) {
             return name.length < age;
           });
 
