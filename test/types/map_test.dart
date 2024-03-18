@@ -304,26 +304,29 @@ void main() {
       'and the dependency is not met, '
       'then the result should be unsuccessful',
       () {
-        final object = acanthis.object({
-          'name': acanthis.string().min(5).max(10).encode(),
-          'attributes': acanthis.object({
-            'age': acanthis.number().gte(18),
-            'email': acanthis.string().email(),
-            'style': acanthis.object({
-              'color': acanthis
-                  .string()
-                  .min(3)
-                  .max(10)
-                  .transform((value) => value.toUpperCase())
-            }),
-            'date': acanthis.date().min(DateTime.now())
-          }),
-        }).passthrough().addFieldDependency(
-            dependency: 'name',
-            dependFrom: 'attributes.age',
-            condition: (age, name) {
-              return name.length > age;
-            });
+        final object = acanthis
+            .object({
+              'name': acanthis.string().min(5).max(10).encode(),
+              'attributes': acanthis.object({
+                'age': acanthis.number().gte(18),
+                'email': acanthis.string().email(),
+                'style': acanthis.object({
+                  'color': acanthis
+                      .string()
+                      .min(3)
+                      .max(10)
+                      .transform((value) => value.toUpperCase())
+                }),
+                'date': acanthis.date().min(DateTime.now())
+              }),
+            })
+            .passthrough()
+            .addFieldDependency(
+                dependency: 'name',
+                dependFrom: 'attributes.age',
+                condition: (age, name) {
+                  return name.length > age;
+                });
 
         expect(
             () => object.parse({
@@ -341,17 +344,17 @@ void main() {
             throwsA(TypeMatcher<ValidationError>()));
 
         final result = object.tryParse({
-                  'name': 'Hello',
-                  'attributes': {
-                    'age': 18,
-                    'email': 'test@test.com',
-                    'style': {
-                      'color': 'red',
-                    },
-                    'date': DateTime.now()
-                  },
-                  'elements': ['Hell', 5],
-                });
+          'name': 'Hello',
+          'attributes': {
+            'age': 18,
+            'email': 'test@test.com',
+            'style': {
+              'color': 'red',
+            },
+            'date': DateTime.now()
+          },
+          'elements': ['Hell', 5],
+        });
 
         expect(result.success, false);
         expect(result.errors['name'].keys.contains('dependency'), true);
@@ -364,26 +367,29 @@ void main() {
       'and the dependency is met, '
       'then the result should be successful',
       () {
-        final object = acanthis.object({
-          'name': acanthis.string().min(5).max(10).encode(),
-          'attributes': acanthis.object({
-            'age': acanthis.number().gte(18),
-            'email': acanthis.string().email(),
-            'style': acanthis.object({
-              'color': acanthis
-                  .string()
-                  .min(3)
-                  .max(10)
-                  .transform((value) => value.toUpperCase())
-            }),
-            'date': acanthis.date().min(DateTime.now())
-          }),
-        }).passthrough().addFieldDependency(
-            dependency: 'name',
-            dependFrom: 'attributes.age',
-            condition: (age, name) {
-              return name.length < age;
-            });
+        final object = acanthis
+            .object({
+              'name': acanthis.string().min(5).max(10).encode(),
+              'attributes': acanthis.object({
+                'age': acanthis.number().gte(18),
+                'email': acanthis.string().email(),
+                'style': acanthis.object({
+                  'color': acanthis
+                      .string()
+                      .min(3)
+                      .max(10)
+                      .transform((value) => value.toUpperCase())
+                }),
+                'date': acanthis.date().min(DateTime.now())
+              }),
+            })
+            .passthrough()
+            .addFieldDependency(
+                dependency: 'name',
+                dependFrom: 'attributes.age',
+                condition: (age, name) {
+                  return name.length < age;
+                });
 
         final result = object.tryParse({
           'name': 'Hello',
