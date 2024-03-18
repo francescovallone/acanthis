@@ -135,6 +135,8 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return AcanthisList<Map<String, V>>(this);
   }
 
+  /// Add a field dependency to the map to validate the map based on the [condition]
+  /// [dependency] is the field that depends on [dependFrom]
   AcanthisMap<V> addFieldDependency({
     required String dependency,
     required String dependFrom,
