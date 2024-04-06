@@ -1,3 +1,14 @@
+## 0.1.2
+
+### Features
+
+- Add the `addFieldDependency` function to the `object` validator.
+
+### Docs
+
+- Add information about `addFieldDependency` in the `object` validator.
+- Remove the `Operations` section from the documentation.
+
 ## 0.1.1
 
 ### Refactor
