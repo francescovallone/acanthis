@@ -2,7 +2,6 @@ import 'package:acanthis/acanthis.dart';
 
 /// A class to validate nullable types
 class AcanthisNullable<T> extends AcanthisType<T?> {
-
   /// The default value of the nullable
   final T? defaultValue;
 

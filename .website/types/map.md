@@ -212,3 +212,32 @@ void main() {
   }
 }
 ```
+
+### addFieldDependency
+
+The addFieldDependency method is used to add a dependency between two fields. It requires three parameters: the first is the field that depends on the second, the second is the field that the first depends on, and the third is a function that takes the value of the first field and the value of the second field and returns a boolean.
+
+```dart
+
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = object({
+	'name': string().min(3),
+	'age': number().positive(),
+  }).addFieldDependency(
+	dependent: 'age',
+	dependendsOn: 'name',
+	dependency: (age, name) => name.length > age,
+  );
+
+  final result = schema.tryParse({
+	'name': 'Francesco',
+	'age': 32,
+  });
+	
+  /// Since this schema is invalid, the result will be false
+  /// and the error will be:
+  /// {'name': {'dependency': 'Dependency not met: age->name'}}
+}
+```
