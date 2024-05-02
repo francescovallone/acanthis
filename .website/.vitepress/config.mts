@@ -5,11 +5,19 @@ export default defineConfig({
   title: "Acanthis",
   description: "Validation library",
   lastUpdated: true,
+  head: [
+    ['link', { rel: "icon", type: "image/png", sizes: "32x32", href: "/acanthis-icon-32x32.png"}],
+    ['link', { rel: "icon", type: "image/png", sizes: "16x16", href: "/acanthis-icon-16x16.png"}],
+  ],
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
     nav: [
-      { text: 'Home', link: '/' },
+      {
+        text: 'pub.dev',
+        link: 'https://pub.dev/packages/acanthis'
+      }
     ],
+    logo: '/acanthis-logo.png',
 
     sidebar: [
       {

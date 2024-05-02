@@ -5,6 +5,9 @@ layout: home
 hero:
   name: "Acanthis"
   tagline: A simple, and easy to use validation library powered by Dart
+  image:
+    src: /acanthis-logo.png
+    alt: Acanthis
   actions:
     - theme: brand
       text: Let's Get Started
