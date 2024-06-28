@@ -241,3 +241,35 @@ void main() {
   /// {'name': {'dependency': 'Dependency not met: age->name'}}
 }
 ```
+
+### optionals
+
+The optionals method is used to make some of the fields optional. It requires a list of strings that are the keys of the fields that should be optional.
+
+::: info
+The fields that are not present in the list of optional fields are required.
+The fields present in the list are valid only for the current layer of a multi-layered object.
+:::
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = object({
+    'name': string().min(3),
+    'age': number().positive(),
+  }).optionals(['age']);
+
+  final result = schema.tryParse({
+    'name': 'Francesco',
+  });
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+
+/// The schema is valid!
+```

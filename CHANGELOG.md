@@ -1,3 +1,15 @@
+# Changelog
+
+## 0.1.3
+
+### Features
+
+- Add the `optionals` function to the `object` validator.
+
+### Docs
+
+- Add information about `optionals` in the `object` validator.
+
 ## 0.1.2
 
 ### Features

@@ -422,5 +422,35 @@ void main() {
         expect(resultParse.success, true);
       },
     );
+
+    test('when creating a map validator for an object, '
+        'and add a field to the optional list, '
+        'then the result should be successful even if the field is not present', () {
+      final object = acanthis
+          .object({
+            'name': acanthis.string().min(5).max(10).encode(),
+            'attributes': acanthis.object({
+              'age': acanthis.number().gte(18),
+              'email': acanthis.string().email(),
+              'style': acanthis.object({
+                'color': acanthis
+                    .string()
+                    .min(3)
+                    .max(10)
+              }),
+              'date': acanthis.date().min(DateTime.now())
+            }).optionals(['style', 'date']),
+          }).optionals(['name']);
+
+      final result = object.tryParse({
+        'attributes': {
+          'age': 18,
+          'email': 'test@test.com',
+          'date': DateTime.now()
+        },
+      });
+      expect(result.success, true);
+      print(result.value);
+    });
   });
 }
