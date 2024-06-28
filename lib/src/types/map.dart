@@ -59,7 +59,8 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       Map<String, V> value) {
     final parsed = <String, V>{};
     final errors = <String, dynamic>{};
-    if (!_fields.keys.every((element) => value.containsKey(element) || _optionalFields.contains(element))) {
+    if (!_fields.keys.every((element) =>
+        value.containsKey(element) || _optionalFields.contains(element))) {
       for (var field in _fields.keys) {
         if (!value.containsKey(field)) {
           errors[field] = {'required': 'Field is required'};
@@ -117,7 +118,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   }
 
   /// Add optional fields to the map
-  /// 
+  ///
   /// The optionals are valid only for the current layer of the object
   AcanthisMap<V> optionals(List<String> fields) {
     _optionalFields.addAll(fields);
