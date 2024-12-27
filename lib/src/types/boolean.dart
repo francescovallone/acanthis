@@ -1,4 +1,6 @@
-import 'package:acanthis/acanthis.dart';
+import 'list.dart';
+import 'types.dart';
+import 'union.dart';
 
 class AcanthisBoolean extends AcanthisType<bool> {
   /// Add a check to the boolean to check if it is true
@@ -29,10 +31,6 @@ class AcanthisBoolean extends AcanthisType<bool> {
     return AcanthisUnion([this, ...elements]);
   }
 
-  /// Make the value nullable
-  AcanthisNullable<bool> nullable({bool? defaultValue}) {
-    return AcanthisNullable(this, defaultValue: defaultValue);
-  }
 }
 
 /// Create a boolean validator

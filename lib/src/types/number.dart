@@ -1,6 +1,5 @@
 import 'dart:math' as math;
 
-import 'nullable.dart';
 import 'list.dart';
 import 'types.dart';
 import 'union.dart';
@@ -122,15 +121,6 @@ class AcanthisNumber extends AcanthisType<num> {
     return AcanthisList<num>(this);
   }
 
-  /// Add a custom check to the number
-  AcanthisNumber customCheck(
-      {required bool Function(num value) onCheck,
-      required String error,
-      required String name}) {
-    addCheck(AcanthisCheck<num>(onCheck: onCheck, error: error, name: name));
-    return this;
-  }
-
   /// Transform the number to a power of [value]
   AcanthisNumber pow(int value) {
     addTransformation(AcanthisTransformation<num>(
@@ -143,11 +133,6 @@ class AcanthisNumber extends AcanthisType<num> {
     addTransformation(
         AcanthisTransformation<num>(transformation: transformation));
     return this;
-  }
-
-  /// Make the value nullable
-  AcanthisNullable<num> nullable({num? defaultValue}) {
-    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
   /// Create a union from the number

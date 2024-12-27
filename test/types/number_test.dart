@@ -337,7 +337,7 @@ void main() {
         'when creating a number validator with a custom check,'
         'and the custom check is successful, '
         'then the result should be successful', () {
-      final number = acanthis.number().customCheck(
+      final number = acanthis.number().refine(
           onCheck: (value) => value == 1,
           error: 'Value must be 1',
           name: 'custom');
@@ -354,7 +354,7 @@ void main() {
         'when creating a number validator with a custom check,'
         'and the custom check is unsuccessful, '
         'then the result should be unsuccessful', () {
-      final number = acanthis.number().customCheck(
+      final number = acanthis.number().refine(
           onCheck: (value) => value == 1,
           error: 'Value must be 1',
           name: 'custom');

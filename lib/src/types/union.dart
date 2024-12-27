@@ -1,3 +1,5 @@
+import 'package:acanthis/src/types/nullable.dart';
+
 import 'types.dart';
 import '../exceptions/validation_error.dart';
 
@@ -36,6 +38,17 @@ class AcanthisUnion extends AcanthisType<dynamic> {
         value: value,
         errors: {'union': 'Value does not match any of the elements'},
         success: false);
+  }
+
+  @override
+  AcanthisNullable nullable({defaultValue}) {
+    for(var element in elements) {
+      if(element is AcanthisNullable) {
+        return element;
+      }
+      return element.nullable(defaultValue: defaultValue);
+    }
+    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 }
 

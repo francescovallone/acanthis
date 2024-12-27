@@ -305,7 +305,7 @@ void main() {
         'when creating a string validator with a custom check,'
         'and the custom check is successful, '
         'then the result should be successful', () {
-      final string = acanthis.string().customCheck(
+      final string = acanthis.string().refine(
           onCheck: (value) => value == 'test',
           error: 'Value must be test',
           name: 'customCheck');
@@ -322,7 +322,7 @@ void main() {
         'when creating a string validator with a custom check,'
         'and the custom check is unsuccessful, '
         'then the result should be unsuccessful', () {
-      final string = acanthis.string().customCheck(
+      final string = acanthis.string().refine(
           onCheck: (value) => value == 'test',
           error: 'Value must be test',
           name: 'customCheck');
@@ -715,14 +715,12 @@ void main() {
   test(
     'when creating an async string validator, then the result should be successful',
     () async {
-      final string = acanthis.string()..addAsyncCheck(
-        AcanthisAsyncCheck(
-          onCheck: (value) async {
-            return value == 'test';
-          },
-          name: 'asyncCheck',
-          error: 'Value must be test',
-        )
+      final string = acanthis.string().refineAsync(
+        onCheck: (value) async {
+          return value == 'test';
+        },
+        name: 'asyncCheck',
+        error: 'Value must be test',
       );
       final result = await string.tryParseAsync('test');
 
@@ -747,16 +745,226 @@ void main() {
   test(
     'when creating an async string validator, and a sync parse method is used, then an exception should be thrown',
     () async {
-      final string = acanthis.string()..addAsyncCheck(
-        AcanthisAsyncCheck(
-          onCheck: (value) async {
-            return value == 'test';
-          },
-          name: 'asyncCheck',
-          error: 'Value must be test',
-        )
+      final string = acanthis.string().refineAsync(
+        onCheck: (value) async {
+          return value == 'test';
+        },
+        name: 'asyncCheck',
+        error: 'Value must be test',
       );
       expect(() => string.parse('test'), throwsA(isA<AsyncValidationException>()));
+    },
+  );
+
+  test(
+    'when creating an uuid string validator, and the string is a valid uuid, then the result should be successful',
+    () {
+      final string = acanthis.string().uuid();
+      final result = string.tryParse('550e8400-e29b-41d4-a716-446655440000');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('550e8400-e29b-41d4-a716-446655440000');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating an uuid string validator, and the string is not a valid uuid, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().uuid();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a ulid string validator, and the string is a valid ulid, then the result should be successful',
+    () {
+      final string = acanthis.string().ulid();
+      final result = string.tryParse('01AN4Z07BY79KA1307SR9X4MV4');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('01AN4Z07BY79KA1307SR9X4MV4');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a ulid string validator, and the string is not a valid ulid, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().ulid();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a nanoid string validator, and the string is a valid nanoid, then the result should be successful',
+    () {
+      final string = acanthis.string().nanoid();
+      final result = string.tryParse('V1StGXR8_Z5jdHi6B-myT');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('V1StGXR8_Z5jdHi6B-myT');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a nanoid string validator, and the string is not a valid nanoid, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().nanoid();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a cuid string validator, and the string is a valid cuid, then the result should be successful',
+    () {
+      final string = acanthis.string().cuid();
+      final result = string.tryParse('cjb8k7v7s000001zv9l3k4f4l');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('cjb8k7v7s000001zv9l3k4f4l');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a cuid string validator, and the string is not a valid cuid, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().cuid();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a cuid2 string validator, and the string is a valid cuid2, then the result should be successful',
+    () {
+      final string = acanthis.string().cuid2();
+      final result = string.tryParse('cjb8k7v7s000001zv9l3k4f4l');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('cjb8k7v7s000001zv9l3k4f4l');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a cuid2 string validator, and the string is not a valid cuid2, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().cuid2();
+      final result = string.tryParse('%');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('%'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a base64 string validator, and the string is a valid base64, then the result should be successful',
+    () {
+      final string = acanthis.string().base64();
+      final result = string.tryParse('dGVzdA==');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('dGVzdA==');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a base64 string validator, and the string is not a valid base64, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().base64();
+      final result = string.tryParse('tester');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('tester'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a jwt string validator, and the string is a valid jwt, then the result should be successful',
+    () {
+      final string = acanthis.string().jwt();
+      final result = string.tryParse(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.aiodjiajidoaojidaoijdjo');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse(
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.aiodjiajidoaojidaoijdjo');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a jwt string validator, and the string is not a valid jwt, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().jwt();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
     },
   );
   

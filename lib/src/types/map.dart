@@ -2,7 +2,6 @@ import 'dart:collection';
 
 import '../exceptions/validation_error.dart';
 import 'list.dart';
-import 'nullable.dart';
 import 'types.dart';
 
 /// A class to validate map types
@@ -227,7 +226,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   @override
   Future<AcanthisParseResult<Map<String, V>>> tryParseAsync(Map<String, V> value) async {
     final parsed = await _tryParseAsync(value);
-    print(parsed);
     return AcanthisParseResult(value: parsed.values, errors: parsed.errors, success: _recursiveSuccess(parsed.errors));
   }
 
@@ -312,6 +310,18 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
+  AcanthisMap<V?> partial({bool deep = false}) {
+    if (deep) {
+      return AcanthisMap<V?>(_fields.map((key, value) {
+        if(value is AcanthisMap) {
+          return MapEntry(key, value.partial(deep: deep));
+        }
+        return MapEntry(key, value.nullable());
+      }));
+    }
+    return AcanthisMap<V?>(_fields.map((key, value) => MapEntry(key, value.nullable())));
+  }
+
   /// Add a transformation to the map to transform it using [transformation]
   AcanthisMap<V> transform(
       Map<String, V> Function(Map<String, V>) transformation) {
@@ -319,10 +329,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return this;
   }
 
-  /// Make the value nullable
-  AcanthisNullable<Map<String, V>> nullable({Map<String, V>? defaultValue}) {
-    return AcanthisNullable(this, defaultValue: defaultValue);
-  }
 }
 
 /// Create a map of [fields]

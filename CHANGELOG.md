@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.0.0
+
+- Upgrade dependencies.
+- Add async checks for all validators to allow for a more flexible validation process.
+- Add `partial` validator to object validator.
+- Add more String validators.
+- Rename `customCheck` to `refine` in all validators.
+- Add `refineAsync` to all validators.
+- Add `pipe` and  `AcanthisPipeline` to allow for more complex validation and transformation processes.
+- Add recursive types to the `object` validator.
+- Add `instanceOf` validator.
+- Add `intersaction` validator.
+
 ## 0.1.3
 
 ### Features

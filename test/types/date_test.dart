@@ -92,7 +92,7 @@ void main() {
         'when creating a date validator with a customCheck,'
         'and the date is not valid, '
         'then the result should be unsuccessful', () {
-      final date = acanthis.date().customCheck(
+      final date = acanthis.date().refine(
           onCheck: (date) => date.year == 2020,
           error: 'Date must be in 2020',
           name: 'customCheck');
@@ -108,7 +108,7 @@ void main() {
         'when creating a date validator with a customCheck,'
         'and the date is valid, '
         'then the result should be successful', () {
-      final date = acanthis.date().customCheck(
+      final date = acanthis.date().refine(
           onCheck: (date) => date.year == 2020,
           error: 'Date must be in 2020',
           name: 'customCheck');

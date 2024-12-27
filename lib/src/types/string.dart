@@ -3,9 +3,8 @@ import 'dart:io';
 import 'package:crypto/crypto.dart';
 import 'package:email_validator/email_validator.dart';
 
-import 'dart:convert';
+import 'dart:convert' as convert;
 import 'list.dart';
-import 'nullable.dart';
 import 'types.dart';
 import 'union.dart';
 
@@ -21,6 +20,16 @@ const _alphanumeric = r'[a-zA-Z0-9]+';
 const _alphanumericWithSpaces = r'[a-zA-Z0-9 ]+';
 const _specialCharacters = r'[!@#\$%^&*(),.?":{}|<>]+';
 const _allCharacters = r'[a-zA-Z0-9!@#\$%^&*(),.?":{}\(\)\[\];_\-\?\!\£\|<> ]+';
+const _cuidRegex = r'^c[^\s-]{8,}$';
+const _cuid2Regex = r'^[0-9a-z]+$';
+const _ulidRegex = r'^[0-9A-HJKMNP-TV-Z]{26}$';
+// const uuidRegex =
+//   /^([a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[a-f0-9]{4}-[a-f0-9]{12}|00000000-0000-0000-0000-000000000000)$/i;
+const _uuidRegex =
+  r'^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$';
+const _nanoidRegex = r'^[a-z0-9_-]{21}$';
+const _jwtRegex = r'^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$';
+const _base64Regex = r'^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$';
 
 /// A class to validate string types
 class AcanthisString extends AcanthisType<String> {
@@ -171,7 +180,7 @@ class AcanthisString extends AcanthisType<String> {
   AcanthisString uncompromised() {
     addAsyncCheck(AcanthisAsyncCheck<String>(
         onCheck: (value) async {
-          final bytes = utf8.encode(value);
+          final bytes = convert.utf8.encode(value);
           final sha = sha1.convert(bytes);
           final hexString = sha.toString().toUpperCase();
           final client = HttpClient();
@@ -179,7 +188,7 @@ class AcanthisString extends AcanthisType<String> {
             Uri.parse('https://api.pwnedpasswords.com/range/${hexString.substring(0, 5)}'),
           );
           final response = await request.close();
-          final body = await response.transform(utf8.decoder).join();
+          final body = await response.transform(convert.utf8.decoder).join();
           final lines = body.split('\n');
           return !lines.any((element) => element.startsWith(hexString.substring(5)));
         },
@@ -233,31 +242,59 @@ class AcanthisString extends AcanthisType<String> {
     return this;
   }
 
+  AcanthisString cuid() {
+    pattern(RegExp(_cuidRegex, caseSensitive: false));
+    return this;
+  }
+
+  AcanthisString cuid2() {
+    pattern(RegExp(_cuid2Regex));
+    return this;
+  }
+
+  AcanthisString ulid() {
+    pattern(RegExp(_ulidRegex, caseSensitive: false));
+    return this;
+  }
+
+  AcanthisString uuid() {
+    pattern(RegExp(_uuidRegex, caseSensitive: false));
+    return this;
+  }
+
+  AcanthisString nanoid() {
+    pattern(RegExp(_nanoidRegex, caseSensitive: false));
+    return this;
+  }
+
+  AcanthisString jwt() {
+    pattern(RegExp(_jwtRegex));
+    return this;
+  }
+
+  AcanthisString base64() {
+    pattern(RegExp(_base64Regex));
+    return this;
+  }
+
   /// Create a list of strings
   AcanthisList<String> list() {
     return AcanthisList<String>(this);
   }
 
-  /// Add a custom check to the string
-  AcanthisString customCheck(
-      {required bool Function(String value) onCheck,
-      required String error,
-      required String name}) {
-    addCheck(AcanthisCheck<String>(onCheck: onCheck, error: error, name: name));
-    return this;
-  }
+  
 
   /// Add a transformation to the string to encode it to base64
   AcanthisString encode() {
     addTransformation(AcanthisTransformation<String>(
-        transformation: (value) => base64.encode(value.codeUnits)));
+        transformation: (value) => convert.base64.encode(value.codeUnits)));
     return this;
   }
 
   /// Add a transformation to the string to decode it from base64
   AcanthisString decode() {
     addTransformation(AcanthisTransformation<String>(
-        transformation: (value) => utf8.decode(base64.decode(value))));
+        transformation: (value) => convert.utf8.decode(convert.base64.decode(value))));
     return this;
   }
 
@@ -280,11 +317,6 @@ class AcanthisString extends AcanthisType<String> {
     addTransformation(AcanthisTransformation<String>(
         transformation: (value) => value.toLowerCase()));
     return this;
-  }
-
-  /// Make the value nullable
-  AcanthisNullable<String> nullable({String? defaultValue}) {
-    return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
   /// Create a union from the string

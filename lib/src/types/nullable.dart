@@ -53,4 +53,9 @@ class AcanthisNullable<T> extends AcanthisType<T?> {
   AcanthisUnion or(List<AcanthisType> elements) {
     return AcanthisUnion([this, ...elements]);
   }
+
+  @override
+  AcanthisNullable nullable({T? defaultValue}) {
+    return this;
+  }
 }

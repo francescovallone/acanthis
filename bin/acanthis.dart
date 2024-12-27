@@ -56,22 +56,29 @@ void main(List<String> arguments) async {
 
   print(union.tryParse(DateTime.now()));
 
-  final schema = acanthis.object({
-    'email': acanthis.string().email(),
-    'password': acanthis.string().min(8).allCharacters().mixedCase().uncompromised(),
-    'confirmPassword': acanthis.string().min(8).allCharacters().mixedCase().uncompromised()
-  }).addFieldDependency(
-    dependent: 'password', 
-    dependendsOn: 'confirmPassword', 
-    dependency: (password, confirmPassword) => password == confirmPassword
+  // final schema = acanthis.object({
+  //   'email': acanthis.string().email(),
+  //   'password': acanthis.string().min(8).allCharacters().mixedCase().uncompromised(),
+  //   'confirmPassword': acanthis.string().min(8).allCharacters().mixedCase().uncompromised()
+  // }).addFieldDependency(
+  //   dependent: 'password', 
+  //   dependendsOn: 'confirmPassword', 
+  //   dependency: (password, confirmPassword) => password == confirmPassword
+  // );
+
+  // final result = await schema.tryParseAsync({
+  //   'email': 'test@example.com',
+  //   'password': r'Nq;CRa7rZ)%pGm5$MB_j].',
+  //   'confirmPassword': r'Nq;CRa7rZ)%pGm5$MB_j].'
+  // });
+
+  // print(result);
+
+  final stringDate = acanthis.string().pipe(
+    acanthis.date().min(DateTime.now()),
+    transform: (value) => DateTime.parse(value),
   );
-
-  final result = await schema.tryParseAsync({
-    'email': 'test@example.com',
-    'password': r'Nq;CRa7rZ)%pGm5$MB_j].',
-    'confirmPassword': r'Nq;CRa7rZ)%pGm5$MB_j].'
-  });
-
+  final result = stringDate.tryParse('aaaaa');
   print(result);
   return;
 }
