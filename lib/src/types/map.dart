@@ -55,6 +55,43 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return result.value;
   }
 
+  Future<Map<String, V>> _asyncParse(Map<String, V> value) async {
+    final parsed = <String, V>{};
+    if (!_fields.keys.every((element) => value.containsKey(element))) {
+      for (var field in _fields.keys) {
+        if (!value.containsKey(field)) {
+          throw ValidationError('Field $field is required');
+        }
+      }
+    }
+    for (var obj in value.entries) {
+      if (!_fields.containsKey(obj.key)) {
+        if (_passthrough) {
+          parsed[obj.key] = obj.value;
+          continue;
+        }
+        throw ValidationError('Field ${obj.key} is not allowed in this object');
+      }
+      final result = await _fields[obj.key]!.parseAsync(obj.value);
+      parsed[obj.key] = result.value;
+    }
+    for (var dependency in _dependencies) {
+      final dependFrom = _keyQuery(dependency.dependendsOn, value);
+      final dependTo = _keyQuery(dependency.dependent, value);
+      if (dependFrom != null && dependTo != null) {
+        if (!dependency.dependency(dependFrom, dependTo)) {
+          throw ValidationError(
+              'Dependency not met: ${dependency.dependendsOn}->${dependency.dependent}');
+        }
+      } else {
+        throw ValidationError(
+            'The dependency or dependFrom field does not exist in the map');
+      }
+    }
+    final result = await super.parseAsync(parsed);
+    return result.value;
+  }
+
   (Map<String, V> values, Map<String, dynamic> errors) _tryParse(
       Map<String, V> value) {
     final parsed = <String, V>{};
@@ -100,6 +137,51 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return (result.value, errors);
   }
 
+  Future<({Map<String, V> values, Map<String, dynamic> errors})> _tryParseAsync(
+      Map<String, V> value) async {
+    final parsed = <String, V>{};
+    final errors = <String, dynamic>{};
+    if (!_fields.keys.every((element) =>
+        value.containsKey(element) || _optionalFields.contains(element))) {
+      for (var field in _fields.keys) {
+        if (!value.containsKey(field)) {
+          errors[field] = {'required': 'Field is required'};
+        }
+      }
+    }
+    for (var obj in value.entries) {
+      if (!_fields.containsKey(obj.key)) {
+        if (_passthrough) {
+          parsed[obj.key] = obj.value;
+        } else {
+          errors[obj.key] = {
+            'notAllowed': 'Field is not allowed in this object'
+          };
+        }
+        continue;
+      }
+      final parsedValue = await _fields[obj.key]!.tryParseAsync(obj.value);
+      parsed[obj.key] = parsedValue.value;
+      errors[obj.key] = parsedValue.errors;
+    }
+    final result = await super.tryParseAsync(parsed);
+    for (var dependency in _dependencies) {
+      final dependFrom = _keyQuery(dependency.dependendsOn, value);
+      final dependTo = _keyQuery(dependency.dependent, value);
+      if (dependFrom != null && dependTo != null) {
+        if (!dependency.dependency(dependFrom, dependTo)) {
+          errors[dependency.dependent] = {'dependency': 'Dependency not met'};
+        }
+      } else {
+        errors[dependency.dependent] = {
+          'dependency[${dependency.dependendsOn}->${dependency.dependent}]':
+              'The dependency or dependFrom field does not exist in the map'
+        };
+      }
+    }
+    return (values: result.value, errors: errors);
+  }
+
   dynamic _keyQuery(String key, Map<String, V> value) {
     final keys = key.split('.');
     dynamic result = value;
@@ -128,13 +210,34 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
+    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
+    if(hasAsyncOperations) {
+      throw Exception('Cannot use tryParse with async operations');
+    }
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
+  }
+
+  @override
+  Future<AcanthisParseResult<Map<String, V>>> parseAsync(Map<String, V> value) async {
+    final parsed = await _asyncParse(value);
+    return AcanthisParseResult(value: parsed);
+  }
+
+  @override
+  Future<AcanthisParseResult<Map<String, V>>> tryParseAsync(Map<String, V> value) async {
+    final parsed = await _tryParseAsync(value);
+    print(parsed);
+    return AcanthisParseResult(value: parsed.values, errors: parsed.errors, success: _recursiveSuccess(parsed.errors));
   }
 
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
+    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
+    if(hasAsyncOperations) {
+      throw Exception('Cannot use tryParse with async operations');
+    }
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
         value: parsed, errors: errors, success: _recursiveSuccess(errors));

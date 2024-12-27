@@ -1,6 +1,6 @@
 import 'package:acanthis/acanthis.dart' as acanthis;
 
-void main(List<String> arguments) {
+void main(List<String> arguments) async {
   final string = acanthis.string();
 
   string.email().min(5).max(10).endsWith('i');
@@ -55,4 +55,23 @@ void main(List<String> arguments) {
   ]);
 
   print(union.tryParse(DateTime.now()));
+
+  final schema = acanthis.object({
+    'email': acanthis.string().email(),
+    'password': acanthis.string().min(8).allCharacters().mixedCase().uncompromised(),
+    'confirmPassword': acanthis.string().min(8).allCharacters().mixedCase().uncompromised()
+  }).addFieldDependency(
+    dependent: 'password', 
+    dependendsOn: 'confirmPassword', 
+    dependency: (password, confirmPassword) => password == confirmPassword
+  );
+
+  final result = await schema.tryParseAsync({
+    'email': 'test@example.com',
+    'password': r'Nq;CRa7rZ)%pGm5$MB_j].',
+    'confirmPassword': r'Nq;CRa7rZ)%pGm5$MB_j].'
+  });
+
+  print(result);
+  return;
 }

@@ -189,4 +189,58 @@ void main() {
       expect(resultParse.value, ['VALUE', 'OTHER', 'ANOTHER', 'ONEEE']);
     });
   });
+
+  test(
+    'when creating with anyOf check, and the list is valid, then the result should be successful',
+    () {
+      final list = acanthis.string().list().anyOf(['value', 'other']);
+      final result = list.tryParse(['other']);
+
+      expect(result.success, true);
+
+      final resultParse = list.parse(['value']);
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating with anyOf check, and the list is invalid, then the result should be unsuccessful',
+    () {
+      final list = acanthis.string().list().anyOf(['value', 'other']);
+      final result = list.tryParse(['another']);
+
+      expect(result.success, false);
+
+      expect(() => list.parse(['another']),
+          throwsA(TypeMatcher<ValidationError>()));
+    },
+  );
+
+  test(
+    'when creating with everyOf check, and the list is valid, then the result should be successful',
+    () {
+      final list = acanthis.string().list().everyOf(['value', 'other']);
+      final result = list.tryParse(['value', 'other']);
+
+      expect(result.success, true);
+
+      final resultParse = list.parse(['value', 'other']);
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating with everyOf check, and the list is invalid, then the result should be unsuccessful',
+    () {
+      final list = acanthis.string().list().everyOf(['value', 'other']);
+      final result = list.tryParse(['value', 'another']);
+
+      expect(result.success, false);
+
+      expect(() => list.parse(['value', 'another']),
+          throwsA(TypeMatcher<ValidationError>()));
+    },
+  );
 }

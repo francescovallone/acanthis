@@ -33,9 +33,39 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
     return (result.value, {...errors, ...result.errors});
   }
 
+  @override
+  Future<AcanthisParseResult<List<T>>> parseAsync(List<T> value) async {
+    final parsed = <T>[];
+    for (var i = 0; i < value.length; i++) {
+      final parsedElement = await element.parseAsync(value[i]);
+      parsed.add(parsedElement.value);
+    }
+    final result = await super.parseAsync(value);
+    return AcanthisParseResult(value: result.value);
+  }
+
+  @override
+  Future<AcanthisParseResult<List<T>>> tryParseAsync(List<T> value) async {
+    final parsed = <T>[];
+    final errors = <String, dynamic>{};
+    for (var i = 0; i < value.length; i++) {
+      final parsedElement = await element.tryParseAsync(value[i]);
+      parsed.add(parsedElement.value);
+      if (parsedElement.errors.isNotEmpty) {
+        errors[i.toString()] = parsedElement.errors;
+      }
+    }
+    final result = await super.tryParseAsync(value);
+    return AcanthisParseResult(value: result.value, errors: result.errors);
+  }
+
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> parse(List<T> value) {
+    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
+    if(hasAsyncOperations) {
+      throw Exception('Cannot use tryParse with async operations');
+    }
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
   }
@@ -43,6 +73,10 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> tryParse(List<T> value) {
+    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
+    if(hasAsyncOperations) {
+      throw Exception('Cannot use tryParse with async operations');
+    }
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(
         value: parsed, errors: errors, success: _recursiveSuccess(errors));
@@ -64,6 +98,24 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
         onCheck: (toTest) => toTest.length >= length,
         error: 'The list must have at least $length elements',
         name: 'min'));
+    return this;
+  }
+
+  /// Add a check to the list to check if it contains at least one of the [values]
+  AcanthisList<T> anyOf(List<T> values) {
+    addCheck(AcanthisCheck<List<T>>(
+        onCheck: (toTest) => toTest.any((element) => values.contains(element)),
+        error: 'The list must have at least one of the values in $values',
+        name: 'anyOf'));
+    return this;
+  }
+
+  /// Add a check to the list to check if it contains all of the [values]
+  AcanthisList<T> everyOf(List<T> values) {
+    addCheck(AcanthisCheck<List<T>>(
+        onCheck: (toTest) => toTest.every((element) => values.contains(element)),
+        error: 'The list must have all of the values in $values',
+        name: 'allOf'));
     return this;
   }
 

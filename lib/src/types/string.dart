@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:crypto/crypto.dart';
 import 'package:email_validator/email_validator.dart';
 
 import 'dart:convert';
@@ -5,6 +8,19 @@ import 'list.dart';
 import 'nullable.dart';
 import 'types.dart';
 import 'union.dart';
+
+const _lettersStrict = r'^[a-zA-Z]+$';
+const _digitsStrict = r'^[0-9]+$';
+const _alphanumericStrict = r'^[a-zA-Z0-9]+$';
+const _alphanumericWithSpacesStrict = r'^[a-zA-Z0-9 ]+$';
+const _specialCharactersStrict = r'^[!@#\$%^&*(),.?":{}|<>]+$';
+const _allCharactersStrict = r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}\(\)\[\];_\-\?\!\£\|<> ]+$';
+const _letters = r'[a-zA-Z]+';
+const _digits = r'[0-9]+';
+const _alphanumeric = r'[a-zA-Z0-9]+';
+const _alphanumericWithSpaces = r'[a-zA-Z0-9 ]+';
+const _specialCharacters = r'[!@#\$%^&*(),.?":{}|<>]+';
+const _allCharacters = r'[a-zA-Z0-9!@#\$%^&*(),.?":{}\(\)\[\];_\-\?\!\£\|<> ]+';
 
 /// A class to validate string types
 class AcanthisString extends AcanthisType<String> {
@@ -43,6 +59,132 @@ class AcanthisString extends AcanthisType<String> {
         onCheck: (value) => pattern.hasMatch(value),
         error: 'Value does not match the pattern',
         name: 'pattern'));
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains letters
+  AcanthisString letters({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_lettersStrict));
+    } else {
+      pattern(RegExp(_letters));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains digits
+  AcanthisString digits({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_digitsStrict));
+    } else {
+      pattern(RegExp(_digits));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains alphanumeric characters
+  AcanthisString alphanumeric({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_alphanumericStrict));
+    } else {
+      pattern(RegExp(_alphanumeric));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains alphanumeric characters and spaces
+  AcanthisString alphanumericWithSpaces({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_alphanumericWithSpacesStrict));
+    } else {
+      pattern(RegExp(_alphanumericWithSpaces));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains special characters
+  AcanthisString specialCharacters({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_specialCharactersStrict));
+    } else {
+      pattern(RegExp(_specialCharacters));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it contains all characters
+  AcanthisString allCharacters({bool strict = true}) {
+    if(strict) {
+      pattern(RegExp(_allCharactersStrict));
+    } else {
+      pattern(RegExp(_allCharacters));
+    }
+    return this;
+  }
+
+  /// Add a check to the string to check if it is in uppercase
+  AcanthisString upperCase() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => value == value.toUpperCase(),
+        error: 'Value must be uppercase',
+        name: 'upperCase'));
+    return this;
+  }
+
+  /// Add a check to the string to check if it is in lowercase
+  AcanthisString lowerCase() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => value == value.toLowerCase(),
+        error: 'Value must be lowercase',
+        name: 'lowerCase'));
+    return this;
+  }
+
+  /// Add a check to the string to check if it is in mixed case
+  AcanthisString mixedCase() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            value != value.toUpperCase() && value != value.toLowerCase(),
+        error: 'Value must be mixed case',
+        name: 'mixedCase'));
+    return this;
+  }
+
+  /// Add a check to the string to check if it is a valid date time
+  AcanthisString dateTime() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => DateTime.tryParse(value) != null,
+        error: 'Value must be a valid date time',
+        name: 'dateTime'));
+    return this;
+  }
+
+  /// Add a check to the string to check if it is a valid uri
+  AcanthisString uri() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => Uri.tryParse(value) != null,
+        error: 'Value must be a valid uri',
+        name: 'uri'));
+    return this;
+  }
+
+  AcanthisString uncompromised() {
+    addAsyncCheck(AcanthisAsyncCheck<String>(
+        onCheck: (value) async {
+          final bytes = utf8.encode(value);
+          final sha = sha1.convert(bytes);
+          final hexString = sha.toString().toUpperCase();
+          final client = HttpClient();
+          final request = await client.getUrl(
+            Uri.parse('https://api.pwnedpasswords.com/range/${hexString.substring(0, 5)}'),
+          );
+          final response = await request.close();
+          final body = await response.transform(utf8.decoder).join();
+          final lines = body.split('\n');
+          return !lines.any((element) => element.startsWith(hexString.substring(5)));
+        },
+        error: 'Value is compromised',
+        name: 'uncompromised'));
     return this;
   }
 
@@ -149,6 +291,11 @@ class AcanthisString extends AcanthisType<String> {
   AcanthisUnion or(List<AcanthisType> elements) {
     return AcanthisUnion([this, ...elements]);
   }
+
+  // AcanthisDate date() {
+  //   addTransformation(AcanthisTransformation(transformation: (value) => DateTime.parse(value)));
+  //   return AcanthisDate();
+  // }
 }
 
 /// Create a new AcanthisString instance

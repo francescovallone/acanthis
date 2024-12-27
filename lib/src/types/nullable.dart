@@ -28,6 +28,22 @@ class AcanthisNullable<T> extends AcanthisType<T?> {
     return element.tryParse(value);
   }
 
+  @override
+  Future<AcanthisParseResult<T?>> parseAsync(T? value) async {
+    if (value == null) {
+      return AcanthisParseResult(value: defaultValue);
+    }
+    return element.parseAsync(value);
+  }
+
+  @override
+  Future<AcanthisParseResult<T?>> tryParseAsync(T? value) async {
+    if(value == null) {
+      return AcanthisParseResult(value: defaultValue);
+    }
+    return super.tryParseAsync(value);
+  }
+
   /// Make a list of nullable elements
   AcanthisList<T?> list() {
     return AcanthisList(this);
