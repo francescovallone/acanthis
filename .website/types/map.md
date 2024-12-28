@@ -4,7 +4,6 @@ The map validator is used to validate a map. Usally should be used to validate J
 
 You can use the class `AcanthisMap<V>` to create a map schema or the function `object` to create a map schema suitable for a json object.
 
-
 ## Example
 
 ```dart
@@ -273,3 +272,68 @@ void main() {
 
 /// The schema is valid!
 ```
+
+### partial
+
+The partial method is used to make the first-level fields nullable.
+
+::: warning
+Even if a field is nullable, it still needs to be present in the map.
+:::
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = object({
+    'name': string().min(3),
+    'age': number().positive(),
+  }).partial();
+
+  final result = schema.tryParse({
+    'name': 'Francesco',
+    'age': null,
+  });
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
+You can also set the `deep` parameter to `true` to make all the fields in the map nullable.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = object({
+    'name': string().min(3),
+    'age': number().positive(),
+    'address': object({
+      'street': string().min(3),
+      'city': string().min(3),
+    }),
+  }).partial(deep: true);
+
+  final result = schema.tryParse({
+    'name': 'Francesco',
+    'age': null,
+    'address': {
+      'street': 'Main St.',
+      'city': null,
+    },
+  });
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
+
+

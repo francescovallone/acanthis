@@ -31,13 +31,6 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return AcanthisList<DateTime>(this);
   }
 
-  /// Add a transformation to the date to transform it using [transformation]
-  AcanthisDate transform(DateTime Function(DateTime value) transformation) {
-    addTransformation(
-        AcanthisTransformation<DateTime>(transformation: transformation));
-    return this;
-  }
-
   /// Create a union from the string
   AcanthisUnion or(List<AcanthisType> elements) {
     return AcanthisUnion([this, ...elements]);

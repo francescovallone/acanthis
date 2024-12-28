@@ -322,13 +322,6 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
     return AcanthisMap<V?>(_fields.map((key, value) => MapEntry(key, value.nullable())));
   }
 
-  /// Add a transformation to the map to transform it using [transformation]
-  AcanthisMap<V> transform(
-      Map<String, V> Function(Map<String, V>) transformation) {
-    addTransformation(AcanthisTransformation(transformation: transformation));
-    return this;
-  }
-
 }
 
 /// Create a map of [fields]

@@ -1,12 +1,12 @@
 # Introduction
 
-Acanthis is a Validation library heavily inspired by [Zod](https://github.com/colinhacks/zod). It is designed to be a simple, and easy to use validation library.
+Acanthis is a Validation library for Dart & Flutter heavily inspired by [Zod](https://github.com/colinhacks/zod). It is designed to be a simple, and easy to use validation library.
 
 ## Features
 
 Acanthis is designed to be composable. Schemas can be composed together to create more complex schemas.
 
-Also Acanthis doesn't require any runtime dependencies, and makes use of a chainable API to create schemas.
+Also Acanthis doesn't require any runtime dependencies other than [Dart](https://dart.dev).
 
 ## Getting Started
 
@@ -25,13 +25,13 @@ import 'package:acanthis/acanthis.dart';
 
 void main() {
   final schema = object({
-	'name': string().min(3),
-	'age': number().positive(),
+	  'name': string().min(3),
+	  'age': number().positive(),
   });
 
   final result = schema.tryParse({
-	'name': 'Francesco',
-	'age': 24,
+	  'name': 'Francesco',
+	  'age': 24,
   });
 
   /// The result is a AcanthisParseResult object
@@ -41,9 +41,9 @@ void main() {
   /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
 
   if (result.success) {
-	print('The schema is valid!');
+	  print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+	  print('The schema is invalid!');
   }
 }
 ```
@@ -52,11 +52,16 @@ As you can see if you come from a Zod background, the API is very similar and sh
 Also all the values are required.
 
 
-## Differences between parse and tryParse
+## Differences between the parsing methods
 
-Acanthis has two methods to parse a schema: `parse` and `tryParse`.
+Acanthis provide four different methods to parse a value:
 
-`parse` will throw an exception if the schema is invalid, while `tryParse` will return a `AcanthisParseResult` object that contains the result of the parsing.
+| Method | Description |
+| --- | --- |
+| `tryParse` | This method will return a `AcanthisParseResult` object that contains the result of the parsing. |
+| `parse` | This method will return a `AcanthisParseResult` object that contains the result of the parsing. If the parsing was unsuccessful, it will throw an exception. |
+| `tryParseAsync` | This method will return a `Future<AcanthisParseResult>` object that contains the result of the parsing. |
+| `parseAsync` | This method will return a `Future<AcanthisParseResult>` object that contains the result of the parsing. If the parsing was unsuccessful, it will throw an exception. |
 
 ### AcanthisParseResult
 

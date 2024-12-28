@@ -282,8 +282,6 @@ class AcanthisString extends AcanthisType<String> {
     return AcanthisList<String>(this);
   }
 
-  
-
   /// Add a transformation to the string to encode it to base64
   AcanthisString encode() {
     addTransformation(AcanthisTransformation<String>(
@@ -295,13 +293,6 @@ class AcanthisString extends AcanthisType<String> {
   AcanthisString decode() {
     addTransformation(AcanthisTransformation<String>(
         transformation: (value) => convert.utf8.decode(convert.base64.decode(value))));
-    return this;
-  }
-
-  /// Add a transformation to the string to transform it using [transformation]
-  AcanthisString transform(String Function(String value) transformation) {
-    addTransformation(
-        AcanthisTransformation<String>(transformation: transformation));
     return this;
   }
 

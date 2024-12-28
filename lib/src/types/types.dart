@@ -155,6 +155,12 @@ abstract class AcanthisType<O> {
   void addTransformation(AcanthisTransformation<O> transformation) {
     operations.add(transformation);
   }
+
+  AcanthisType<O> transform(
+      O Function(O value) transformation) {
+    addTransformation(AcanthisTransformation<O>(transformation: transformation));
+    return this;
+  }
 }
 
 /// A class that represents a check operation

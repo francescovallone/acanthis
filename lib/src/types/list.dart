@@ -146,10 +146,4 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
         name: 'length'));
     return this;
   }
-
-  /// Add a transformation to the list to transform it using [transformation]
-  AcanthisList<T> transform(List<T> Function(List<T> value) transformation) {
-    addTransformation(AcanthisTransformation(transformation: transformation));
-    return this;
-  }
 }

@@ -1,6 +1,5 @@
 import 'package:acanthis/acanthis.dart' as acanthis;
 import 'package:acanthis/acanthis.dart';
-import 'package:acanthis/src/exceptions/async_exception.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -707,6 +706,20 @@ void main() {
       expect(result.success, true);
 
       final resultParse = string.parse('test 123');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a uri string validator, and the value is a parsable uri then the result should be successful',
+    () {
+      final string = acanthis.string().uri();
+      final result = string.tryParse('https://test.com');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('https://test.com');
 
       expect(resultParse.success, true);
     },

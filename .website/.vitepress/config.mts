@@ -17,8 +17,10 @@ export default defineConfig({
         link: 'https://pub.dev/packages/acanthis'
       }
     ],
+    outline: {
+      level: [2, 3]
+    },
     logo: '/acanthis-logo.png',
-
     sidebar: [
       {
         text: 'Introduction',
@@ -27,6 +29,7 @@ export default defineConfig({
       {
         text: 'Types',
         items: [
+          { text: 'Type', link: '/types' },
           { text: 'Boolean', link: '/types/boolean' },
           { text: 'String', link: '/types/string' },
           { text: 'Number', link: '/types/number' },

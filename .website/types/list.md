@@ -110,3 +110,43 @@ void main() {
   }
 }
 ```
+
+### anyOf
+
+The anyOf method is used to validate that a list contains at least one of the elements in the list.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final list = string().min(3).list().anyOf([255]);
+
+  final result = list.tryParse(['Francesco', 255]);
+
+  if (result.success) {
+  print('The schema is valid!');
+  } else {
+  print('The schema is invalid!');
+  }
+}
+```
+
+### everyOf
+
+The everyOf method is used to validate that a list contains all the elements in the list.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final list = string().min(3).list().everyOf([255, 'Francesco']);
+
+  final result = list.tryParse(['Francesco', 255]);
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```

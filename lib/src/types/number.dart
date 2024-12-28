@@ -128,13 +128,6 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
-  /// Add a transformation to the number to add [value]
-  AcanthisNumber transform(num Function(num value) transformation) {
-    addTransformation(
-        AcanthisTransformation<num>(transformation: transformation));
-    return this;
-  }
-
   /// Create a union from the number
   AcanthisUnion or(List<AcanthisType> elements) {
     return AcanthisUnion([this, ...elements]);
