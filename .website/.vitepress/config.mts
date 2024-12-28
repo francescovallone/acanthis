@@ -41,9 +41,16 @@ export default defineConfig({
         ]
       }
     ],
+    footer: {
+      copyright: 'Copyright © 2024 Avesbox',
+      message: 'Built with 💙 by <a href="https://github.com/avesbox">Avesbox</a>'
+    },
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/francescovallone/acanthis' }
+      { icon: 'github', link: 'https://github.com/francescovallone/acanthis' },
+      { icon: 'x', link: 'https://x.com/avesboxx' },
+      { icon: 'discord', link: 'https://discord.gg/zydgnJ3ksJ' },
+      { icon: 'youtube', link: 'https://www.youtube.com/@avesbox' }
     ]
   }
 })
