@@ -1,4 +1,3 @@
-
 import '../exceptions/async_exception.dart';
 import '../exceptions/validation_error.dart';
 import 'nullable.dart';
@@ -7,15 +6,18 @@ import 'nullable.dart';
 abstract class AcanthisType<O> {
   /// The operations that the type should perform
   final List<AcanthisOperation> operations = [];
+
   /// The constructor of the class
   AcanthisType();
 
   /// The parse method to parse the value
   /// it returns a [AcanthisParseResult] with the parsed value and throws a [ValidationError] if the value is not valid
   AcanthisParseResult<O> parse(O value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
-      throw AsyncValidationException('Cannot use tryParse with async operations');
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     O newValue = value;
     for (var operation in operations) {
@@ -38,9 +40,11 @@ abstract class AcanthisType<O> {
   /// - value: The value of the parsing. If the parsing was successful, this will contain the parsed value.
   /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
   AcanthisParseResult<O> tryParse(O value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
-      throw AsyncValidationException('Cannot use tryParse with async operations');
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     final errors = <String, String>{};
     O newValue = value;
@@ -68,8 +72,8 @@ abstract class AcanthisType<O> {
           throw ValidationError(operation.error);
         }
       }
-      if(operation is AcanthisAsyncCheck) {
-        if(!await operation(newValue)) {
+      if (operation is AcanthisAsyncCheck) {
+        if (!await operation(newValue)) {
           throw ValidationError(operation.error);
         }
       }
@@ -95,8 +99,8 @@ abstract class AcanthisType<O> {
           errors[operation.name] = operation.error;
         }
       }
-      if(operation is AcanthisAsyncCheck) {
-        if(!await operation(newValue)) {
+      if (operation is AcanthisAsyncCheck) {
+        if (!await operation(newValue)) {
           errors[operation.name] = operation.error;
         }
       }
@@ -123,7 +127,7 @@ abstract class AcanthisType<O> {
     return AcanthisNullable(this, defaultValue: defaultValue);
   }
 
-    /// Add a custom check to the number
+  /// Add a custom check to the number
   AcanthisType<O> refine(
       {required bool Function(O value) onCheck,
       required String error,
@@ -136,19 +140,16 @@ abstract class AcanthisType<O> {
       {required Future<bool> Function(O value) onCheck,
       required String error,
       required String name}) {
-    addAsyncCheck(AcanthisAsyncCheck<O>(onCheck: onCheck, error: error, name: name));
+    addAsyncCheck(
+        AcanthisAsyncCheck<O>(onCheck: onCheck, error: error, name: name));
     return this;
   }
 
-
-  AcanthisPipeline<O, T> pipe<T>(AcanthisType<T> type, {
+  AcanthisPipeline<O, T> pipe<T>(
+    AcanthisType<T> type, {
     required T Function(O value) transform,
   }) {
-    return AcanthisPipeline(
-      inType: this,
-      outType: type,
-      transform: transform
-    );
+    return AcanthisPipeline(inType: this, outType: type, transform: transform);
   }
 
   /// Add a transformation to the type
@@ -156,9 +157,9 @@ abstract class AcanthisType<O> {
     operations.add(transformation);
   }
 
-  AcanthisType<O> transform(
-      O Function(O value) transformation) {
-    addTransformation(AcanthisTransformation<O>(transformation: transformation));
+  AcanthisType<O> transform(O Function(O value) transformation) {
+    addTransformation(
+        AcanthisTransformation<O>(transformation: transformation));
     return this;
   }
 }
@@ -167,10 +168,13 @@ abstract class AcanthisType<O> {
 class AcanthisCheck<O> extends AcanthisOperation<O> {
   /// The function to check the value
   final bool Function(O value) onCheck;
+
   /// The error message of the check
   final String error;
+
   /// The name of the check
   final String name;
+
   /// The constructor of the class
   const AcanthisCheck({this.error = '', this.name = '', required this.onCheck});
 
@@ -189,12 +193,16 @@ class AcanthisCheck<O> extends AcanthisOperation<O> {
 class AcanthisAsyncCheck<O> extends AcanthisOperation<O> {
   /// The function to check the value asynchronously
   final Future<bool> Function(O value) onCheck;
+
   /// The error message of the check
   final String error;
+
   /// The name of the check
   final String name;
+
   /// The constructor of the class
-  const AcanthisAsyncCheck({this.error = '', this.name = '', required this.onCheck});
+  const AcanthisAsyncCheck(
+      {this.error = '', this.name = '', required this.onCheck});
 
   @override
   Future<bool> call(O value) async {
@@ -204,7 +212,6 @@ class AcanthisAsyncCheck<O> extends AcanthisOperation<O> {
       return false;
     }
   }
-
 }
 
 /// A class that represents a transformation operation
@@ -232,18 +239,14 @@ abstract class AcanthisOperation<O> {
 }
 
 class AcanthisPipeline<O, T> {
-
   final AcanthisType<O> inType;
 
   final AcanthisType<T> outType;
-  
+
   final T Function(O value) transform;
 
-  AcanthisPipeline({
-    required this.inType,
-    required this.outType,
-    required this.transform
-  });
+  AcanthisPipeline(
+      {required this.inType, required this.outType, required this.transform});
 
   AcanthisParseResult parse(O value) {
     var inResult = inType.parse(value);
@@ -251,7 +254,10 @@ class AcanthisPipeline<O, T> {
     try {
       newValue = transform(inResult.value);
     } catch (e) {
-      return AcanthisParseResult(value: inResult.value, errors: {'transform': 'Error transforming the value from $O -> $T'}, success: false);
+      return AcanthisParseResult(
+          value: inResult.value,
+          errors: {'transform': 'Error transforming the value from $O -> $T'},
+          success: false);
     }
     var outResult = outType.parse(newValue);
     return outResult;
@@ -259,14 +265,17 @@ class AcanthisPipeline<O, T> {
 
   AcanthisParseResult tryParse(O value) {
     var inResult = inType.tryParse(value);
-    if(!inResult.success) {
+    if (!inResult.success) {
       return inResult;
     }
     final T newValue;
     try {
       newValue = transform(inResult.value);
     } catch (e) {
-      return AcanthisParseResult(value: inResult.value, errors: {'transform': 'Error transforming the value from $O -> $T'}, success: false);
+      return AcanthisParseResult(
+          value: inResult.value,
+          errors: {'transform': 'Error transforming the value from $O -> $T'},
+          success: false);
     }
     var outResult = outType.tryParse(newValue);
     return outResult;
@@ -278,7 +287,10 @@ class AcanthisPipeline<O, T> {
     try {
       newValue = transform(inResult.value);
     } catch (e) {
-      return AcanthisParseResult(value: inResult.value, errors: {'transform': 'Error transforming the value from $O -> $T'}, success: false);
+      return AcanthisParseResult(
+          value: inResult.value,
+          errors: {'transform': 'Error transforming the value from $O -> $T'},
+          success: false);
     }
     final outResult = await outType.parseAsync(newValue);
     return outResult;
@@ -286,29 +298,34 @@ class AcanthisPipeline<O, T> {
 
   Future<AcanthisParseResult> tryParseAsync(O value) async {
     var inResult = await inType.tryParseAsync(value);
-    if(!inResult.success) {
+    if (!inResult.success) {
       return inResult;
     }
     final T newValue;
     try {
       newValue = transform(inResult.value);
     } catch (e) {
-      return AcanthisParseResult(value: inResult.value, errors: {'transform': 'Error transforming the value from $O -> $T'}, success: false);
+      return AcanthisParseResult(
+          value: inResult.value,
+          errors: {'transform': 'Error transforming the value from $O -> $T'},
+          success: false);
     }
     var outResult = await outType.tryParseAsync(newValue);
     return outResult;
   }
-
 }
 
 /// A class to represent the result of a parse operation
 class AcanthisParseResult<O> {
   /// The value of the parsing
   final O value;
+
   /// The errors of the parsing
   final Map<String, dynamic> errors;
+
   /// A boolean that indicates if the parsing was successful or not
   final bool success;
+
   /// The constructor of the class
   const AcanthisParseResult(
       {required this.value, this.errors = const {}, this.success = true});

@@ -423,24 +423,20 @@ void main() {
       },
     );
 
-    test('when creating a map validator for an object, '
+    test(
+        'when creating a map validator for an object, '
         'and add a field to the optional list, '
-        'then the result should be successful even if the field is not present', () {
-      final object = acanthis
-          .object({
-            'name': acanthis.string().min(5).max(10).encode(),
-            'attributes': acanthis.object({
-              'age': acanthis.number().gte(18),
-              'email': acanthis.string().email(),
-              'style': acanthis.object({
-                'color': acanthis
-                    .string()
-                    .min(3)
-                    .max(10)
-              }),
-              'date': acanthis.date().min(DateTime.now())
-            }).optionals(['style', 'date']),
-          }).optionals(['name']);
+        'then the result should be successful even if the field is not present',
+        () {
+      final object = acanthis.object({
+        'name': acanthis.string().min(5).max(10).encode(),
+        'attributes': acanthis.object({
+          'age': acanthis.number().gte(18),
+          'email': acanthis.string().email(),
+          'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
+          'date': acanthis.date().min(DateTime.now())
+        }).optionals(['style', 'date']),
+      }).optionals(['name']);
 
       final result = object.tryParse({
         'attributes': {
@@ -453,65 +449,53 @@ void main() {
     });
 
     test(
-      'when creating a map validator for an object with the partial method, then only the first level should be nullable',
-      () {
-        final object = acanthis
-            .object({
-              'name': acanthis.string().min(5).max(10).encode(),
-              'attributes': acanthis.object({
-                'age': acanthis.number().gte(18),
-                'style': acanthis.object({
-                  'color': acanthis
-                      .string()
-                      .min(3)
-                      .max(10)
-              }),
-              'date': acanthis.date().min(DateTime.now())
-            }).partial()});
+        'when creating a map validator for an object with the partial method, then only the first level should be nullable',
+        () {
+      final object = acanthis.object({
+        'name': acanthis.string().min(5).max(10).encode(),
+        'attributes': acanthis.object({
+          'age': acanthis.number().gte(18),
+          'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
+          'date': acanthis.date().min(DateTime.now())
+        }).partial()
+      });
 
-        final result = object.tryParse({
-          'name': 'Hello',
-          'attributes': {
-            'age': null,
-            'style': {
-              'color': 'red',
-            },
-            'date': DateTime.now()
-          }
-        });
-        expect(result.success, true);
-      }
-    );
+      final result = object.tryParse({
+        'name': 'Hello',
+        'attributes': {
+          'age': null,
+          'style': {
+            'color': 'red',
+          },
+          'date': DateTime.now()
+        }
+      });
+      expect(result.success, true);
+    });
 
     test(
-      'when creating a map validator for an object with the partial method and the deep param at true, then all the elements should be nullable',
-      () {
-        final object = acanthis
-            .object({
-              'name': acanthis.string().min(5).max(10).encode(),
-              'attributes': acanthis.object({
-                'age': acanthis.number().gte(18),
-                'style': acanthis.object({
-                  'color': acanthis
-                      .string()
-                      .min(3)
-                      .max(10)
-              }),
-              'date': acanthis.date().min(DateTime.now())
-            }).partial(deep: true)});
+        'when creating a map validator for an object with the partial method and the deep param at true, then all the elements should be nullable',
+        () {
+      final object = acanthis.object({
+        'name': acanthis.string().min(5).max(10).encode(),
+        'attributes': acanthis.object({
+          'age': acanthis.number().gte(18),
+          'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
+          'date': acanthis.date().min(DateTime.now())
+        }).partial(deep: true)
+      });
 
-        final result = object.tryParse({
-          'name': 'Hello',
-          'attributes': {
-            'age': null,
-            'style': {
-              'color': null,
-            },
-            'date': DateTime.now()
-          }
-        });
-        expect(result.success, true);
-      }
-    );
+      final result = object.tryParse({
+        'name': 'Hello',
+        'attributes': {
+          'age': null,
+          'style': {
+            'color': null,
+          },
+          'date': DateTime.now()
+        }
+      });
+      expect(result.success, true);
+    });
   });
 }

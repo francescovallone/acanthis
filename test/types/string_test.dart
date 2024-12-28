@@ -672,9 +672,10 @@ void main() {
   test(
     'when creating a string validator with multiple non-strict pattern checks, then the result should be successful',
     () {
-      final string = acanthis.string().digits(strict: false).letters(strict: false);
+      final string =
+          acanthis.string().digits(strict: false).letters(strict: false);
       final result = string.tryParse('test 123');
-      
+
       expect(result.success, true);
 
       final resultParse = string.parse('test 123');
@@ -686,9 +687,13 @@ void main() {
   test(
     'when creating a string validator with multiple non-strict pattern checks, then the result should be successful',
     () {
-      final string = acanthis.string().digits(strict: false).letters(strict: false).lowerCase();
+      final string = acanthis
+          .string()
+          .digits(strict: false)
+          .letters(strict: false)
+          .lowerCase();
       final result = string.tryParse('test 123');
-      
+
       expect(result.success, true);
 
       final resultParse = string.parse('test 123');
@@ -700,9 +705,13 @@ void main() {
   test(
     'when creating a string validator with multiple non-strict pattern checks, then the result should be successful',
     () {
-      final string = acanthis.string().digits(strict: false).letters(strict: false).lowerCase();
+      final string = acanthis
+          .string()
+          .digits(strict: false)
+          .letters(strict: false)
+          .lowerCase();
       final result = string.tryParse('test 123');
-      
+
       expect(result.success, true);
 
       final resultParse = string.parse('test 123');
@@ -729,12 +738,12 @@ void main() {
     'when creating an async string validator, then the result should be successful',
     () async {
       final string = acanthis.string().refineAsync(
-        onCheck: (value) async {
-          return value == 'test';
-        },
-        name: 'asyncCheck',
-        error: 'Value must be test',
-      );
+            onCheck: (value) async {
+              return value == 'test';
+            },
+            name: 'asyncCheck',
+            error: 'Value must be test',
+          );
       final result = await string.tryParseAsync('test');
 
       expect(result.success, true);
@@ -759,13 +768,14 @@ void main() {
     'when creating an async string validator, and a sync parse method is used, then an exception should be thrown',
     () async {
       final string = acanthis.string().refineAsync(
-        onCheck: (value) async {
-          return value == 'test';
-        },
-        name: 'asyncCheck',
-        error: 'Value must be test',
-      );
-      expect(() => string.parse('test'), throwsA(isA<AsyncValidationException>()));
+            onCheck: (value) async {
+              return value == 'test';
+            },
+            name: 'asyncCheck',
+            error: 'Value must be test',
+          );
+      expect(
+          () => string.parse('test'), throwsA(isA<AsyncValidationException>()));
     },
   );
 
@@ -980,5 +990,4 @@ void main() {
           ));
     },
   );
-  
 }

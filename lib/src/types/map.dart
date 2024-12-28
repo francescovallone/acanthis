@@ -209,8 +209,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
       throw Exception('Cannot use tryParse with async operations');
     }
     final parsed = _parse(value);
@@ -218,22 +219,28 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   }
 
   @override
-  Future<AcanthisParseResult<Map<String, V>>> parseAsync(Map<String, V> value) async {
+  Future<AcanthisParseResult<Map<String, V>>> parseAsync(
+      Map<String, V> value) async {
     final parsed = await _asyncParse(value);
     return AcanthisParseResult(value: parsed);
   }
 
   @override
-  Future<AcanthisParseResult<Map<String, V>>> tryParseAsync(Map<String, V> value) async {
+  Future<AcanthisParseResult<Map<String, V>>> tryParseAsync(
+      Map<String, V> value) async {
     final parsed = await _tryParseAsync(value);
-    return AcanthisParseResult(value: parsed.values, errors: parsed.errors, success: _recursiveSuccess(parsed.errors));
+    return AcanthisParseResult(
+        value: parsed.values,
+        errors: parsed.errors,
+        success: _recursiveSuccess(parsed.errors));
   }
 
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
       throw Exception('Cannot use tryParse with async operations');
     }
     final (parsed, errors) = _tryParse(value);
@@ -313,15 +320,15 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   AcanthisMap<V?> partial({bool deep = false}) {
     if (deep) {
       return AcanthisMap<V?>(_fields.map((key, value) {
-        if(value is AcanthisMap) {
+        if (value is AcanthisMap) {
           return MapEntry(key, value.partial(deep: deep));
         }
         return MapEntry(key, value.nullable());
       }));
     }
-    return AcanthisMap<V?>(_fields.map((key, value) => MapEntry(key, value.nullable())));
+    return AcanthisMap<V?>(
+        _fields.map((key, value) => MapEntry(key, value.nullable())));
   }
-
 }
 
 /// Create a map of [fields]

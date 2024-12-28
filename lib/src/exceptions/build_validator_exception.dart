@@ -1,5 +1,4 @@
 class BuildValidatorException implements Exception {
-
   /// The message of the exception
   final String message;
 
@@ -10,5 +9,4 @@ class BuildValidatorException implements Exception {
   String toString() {
     return 'BuildValidatorException: $message';
   }
-
 }

@@ -13,7 +13,8 @@ const _digitsStrict = r'^[0-9]+$';
 const _alphanumericStrict = r'^[a-zA-Z0-9]+$';
 const _alphanumericWithSpacesStrict = r'^[a-zA-Z0-9 ]+$';
 const _specialCharactersStrict = r'^[!@#\$%^&*(),.?":{}|<>]+$';
-const _allCharactersStrict = r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}\(\)\[\];_\-\?\!\£\|<> ]+$';
+const _allCharactersStrict =
+    r'^[a-zA-Z0-9!@#\$%^&*(),.?":{}\(\)\[\];_\-\?\!\£\|<> ]+$';
 const _letters = r'[a-zA-Z]+';
 const _digits = r'[0-9]+';
 const _alphanumeric = r'[a-zA-Z0-9]+';
@@ -26,10 +27,11 @@ const _ulidRegex = r'^[0-9A-HJKMNP-TV-Z]{26}$';
 // const uuidRegex =
 //   /^([a-f0-9]{8}-[a-f0-9]{4}-[1-5][a-f0-9]{3}-[a-f0-9]{4}-[a-f0-9]{12}|00000000-0000-0000-0000-000000000000)$/i;
 const _uuidRegex =
-  r'^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$';
+    r'^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$';
 const _nanoidRegex = r'^[a-z0-9_-]{21}$';
 const _jwtRegex = r'^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$';
-const _base64Regex = r'^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$';
+const _base64Regex =
+    r'^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$';
 
 /// A class to validate string types
 class AcanthisString extends AcanthisType<String> {
@@ -73,7 +75,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains letters
   AcanthisString letters({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_lettersStrict));
     } else {
       pattern(RegExp(_letters));
@@ -83,7 +85,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains digits
   AcanthisString digits({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_digitsStrict));
     } else {
       pattern(RegExp(_digits));
@@ -93,7 +95,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains alphanumeric characters
   AcanthisString alphanumeric({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_alphanumericStrict));
     } else {
       pattern(RegExp(_alphanumeric));
@@ -103,7 +105,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains alphanumeric characters and spaces
   AcanthisString alphanumericWithSpaces({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_alphanumericWithSpacesStrict));
     } else {
       pattern(RegExp(_alphanumericWithSpaces));
@@ -113,7 +115,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains special characters
   AcanthisString specialCharacters({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_specialCharactersStrict));
     } else {
       pattern(RegExp(_specialCharacters));
@@ -123,7 +125,7 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains all characters
   AcanthisString allCharacters({bool strict = true}) {
-    if(strict) {
+    if (strict) {
       pattern(RegExp(_allCharactersStrict));
     } else {
       pattern(RegExp(_allCharacters));
@@ -185,12 +187,14 @@ class AcanthisString extends AcanthisType<String> {
           final hexString = sha.toString().toUpperCase();
           final client = HttpClient();
           final request = await client.getUrl(
-            Uri.parse('https://api.pwnedpasswords.com/range/${hexString.substring(0, 5)}'),
+            Uri.parse(
+                'https://api.pwnedpasswords.com/range/${hexString.substring(0, 5)}'),
           );
           final response = await request.close();
           final body = await response.transform(convert.utf8.decoder).join();
           final lines = body.split('\n');
-          return !lines.any((element) => element.startsWith(hexString.substring(5)));
+          return !lines
+              .any((element) => element.startsWith(hexString.substring(5)));
         },
         error: 'Value is compromised',
         name: 'uncompromised'));
@@ -292,7 +296,8 @@ class AcanthisString extends AcanthisType<String> {
   /// Add a transformation to the string to decode it from base64
   AcanthisString decode() {
     addTransformation(AcanthisTransformation<String>(
-        transformation: (value) => convert.utf8.decode(convert.base64.decode(value))));
+        transformation: (value) =>
+            convert.utf8.decode(convert.base64.decode(value))));
     return this;
   }
 

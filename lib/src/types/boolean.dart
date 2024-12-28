@@ -30,7 +30,6 @@ class AcanthisBoolean extends AcanthisType<bool> {
   AcanthisUnion or(List<AcanthisType> elements) {
     return AcanthisUnion([this, ...elements]);
   }
-
 }
 
 /// Create a boolean validator

@@ -155,8 +155,12 @@ void main() {
         'when creating a list validator with a custom check,'
         'and the list is invalid, '
         'then the result should be unsuccessful', () {
-      final list = acanthis.string().min(5).max(20).list().refine(
-          onCheck: (value) => value.length == 4, error: '5', name: '5');
+      final list = acanthis
+          .string()
+          .min(5)
+          .max(20)
+          .list()
+          .refine(onCheck: (value) => value.length == 4, error: '5', name: '5');
       final result =
           list.tryParse(['value', 'other', 'another', 'another', 'oneee']);
 

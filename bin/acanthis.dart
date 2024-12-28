@@ -61,8 +61,8 @@ void main(List<String> arguments) async {
   //   'password': acanthis.string().min(8).allCharacters().mixedCase().uncompromised(),
   //   'confirmPassword': acanthis.string().min(8).allCharacters().mixedCase().uncompromised()
   // }).addFieldDependency(
-  //   dependent: 'password', 
-  //   dependendsOn: 'confirmPassword', 
+  //   dependent: 'password',
+  //   dependendsOn: 'confirmPassword',
   //   dependency: (password, confirmPassword) => password == confirmPassword
   // );
 
@@ -75,9 +75,9 @@ void main(List<String> arguments) async {
   // print(result);
 
   final stringDate = acanthis.string().pipe(
-    acanthis.date().min(DateTime.now()),
-    transform: (value) => DateTime.parse(value),
-  );
+        acanthis.date().min(DateTime.now()),
+        transform: (value) => DateTime.parse(value),
+      );
   final result = stringDate.tryParse('aaaaa');
   print(result);
   return;

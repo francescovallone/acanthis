@@ -61,8 +61,9 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> parse(List<T> value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
       throw Exception('Cannot use tryParse with async operations');
     }
     final parsed = _parse(value);
@@ -72,8 +73,9 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> tryParse(List<T> value) {
-    final hasAsyncOperations = operations.any((element) => element is AcanthisAsyncCheck);
-    if(hasAsyncOperations) {
+    final hasAsyncOperations =
+        operations.any((element) => element is AcanthisAsyncCheck);
+    if (hasAsyncOperations) {
       throw Exception('Cannot use tryParse with async operations');
     }
     final (parsed, errors) = _tryParse(value);
@@ -112,7 +114,8 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Add a check to the list to check if it contains all of the [values]
   AcanthisList<T> everyOf(List<T> values) {
     addCheck(AcanthisCheck<List<T>>(
-        onCheck: (toTest) => toTest.every((element) => values.contains(element)),
+        onCheck: (toTest) =>
+            toTest.every((element) => values.contains(element)),
         error: 'The list must have all of the values in $values',
         name: 'allOf'));
     return this;
@@ -128,7 +131,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   }
 
   /// Add a check to the list to check if all elements are unique
-  /// 
+  ///
   /// In Zod is the same as creating a set.
   AcanthisList<T> unique() {
     addCheck(AcanthisCheck<List<T>>(

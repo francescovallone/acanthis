@@ -38,7 +38,7 @@ class AcanthisNullable<T> extends AcanthisType<T?> {
 
   @override
   Future<AcanthisParseResult<T?>> tryParseAsync(T? value) async {
-    if(value == null) {
+    if (value == null) {
       return AcanthisParseResult(value: defaultValue);
     }
     return super.tryParseAsync(value);
