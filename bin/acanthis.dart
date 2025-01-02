@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:acanthis/acanthis.dart' as acanthis;
+import 'package:acanthis/src/types/map.dart';
 
 void main(List<String> arguments) async {
   final string = acanthis.string();
@@ -45,16 +48,16 @@ void main(List<String> arguments) async {
   final parsedList = list.tryParse(['Hello', 'World', 'hello']);
 
   final number = acanthis.number().pow(2).gte(5);
-  print(number.tryParse(3));
-  print(parsed);
-  print(parsedList);
+  //print(number.tryParse(3));
+  //print(parsed);
+  //print(parsedList);
 
   final union = acanthis.union([
     acanthis.number(),
     acanthis.string(),
   ]);
 
-  print(union.tryParse(DateTime.now()));
+  //print(union.tryParse(DateTime.now()));
 
   // final schema = acanthis.object({
   //   'email': acanthis.string().email(),
@@ -74,11 +77,41 @@ void main(List<String> arguments) async {
 
   // print(result);
 
+  final schema = acanthis.object({
+    'name': acanthis.string().min(5),
+    'subcategories': lazy((parent) => parent.list().min(1)),
+  });
+
+  final r = schema.tryParse({
+    'name': 'Hello',
+    'subcategories': [
+      {
+        'name': 'World',
+        'subcategories': [
+          {
+            'name': '!',
+            'subcategories': []
+          },
+          {
+            'name': '!!!!!',
+            'subcategories': []
+          }
+        ]
+      }
+    ]
+  });
+  final encoder = JsonEncoder.withIndent('  ');
+  print(
+    '''value: ${encoder.convert(r.value)}
+errors: ${encoder.convert(r.errors)}
+    '''
+  );
+
   final stringDate = acanthis.string().pipe(
         acanthis.date().min(DateTime.now()),
         transform: (value) => DateTime.parse(value),
       );
   final result = stringDate.tryParse('aaaaa');
-  print(result);
+  //print(result);
   return;
 }

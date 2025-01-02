@@ -497,5 +497,26 @@ void main() {
       });
       expect(result.success, true);
     });
+
+    test(
+      'when a map validator is created with a lazy object inside, then the object should be recursively parsable',
+      () {
+        final object = acanthis.object({
+          'name': acanthis.string().min(5).max(10).encode(),
+          'attributes': acanthis.lazy((parent) => parent.passthrough().list())
+        });
+
+        final result = object.tryParse({
+          'name': 'Hello',
+          'attributes': [
+            {
+              'name': 'Hello',
+              'age': 18,
+              'attributes': []
+            }
+          ]
+        });
+        expect(result.success, true);
+    });
   });
 }

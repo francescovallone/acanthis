@@ -1,5 +1,7 @@
 import 'dart:collection';
 
+import 'package:acanthis/src/types/nullable.dart';
+
 import '../exceptions/validation_error.dart';
 import 'list.dart';
 import 'types.dart';
@@ -35,7 +37,16 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         }
         throw ValidationError('Field ${obj.key} is not allowed in this object');
       }
-      parsed[obj.key] = _fields[obj.key]!.parse(obj.value).value;
+      if (_fields[obj.key] is LazyEntry) {
+        final type = (_fields[obj.key] as LazyEntry).call(this);
+        if(obj.value is List) {
+          parsed[obj.key] = type.parse(List<Map<String, dynamic>>.from(obj.value as List)).value;
+        } else {
+          parsed[obj.key] = type.parse(obj.value).value;
+        }
+      } else {
+        parsed[obj.key] = _fields[obj.key]!.parse(obj.value).value;
+      }
     }
     for (var dependency in _dependencies) {
       final dependFrom = _keyQuery(dependency.dependendsOn, value);
@@ -71,7 +82,17 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         }
         throw ValidationError('Field ${obj.key} is not allowed in this object');
       }
-      final result = await _fields[obj.key]!.parseAsync(obj.value);
+      final dynamic result;
+      if (_fields[obj.key] is LazyEntry) {
+        final type = (_fields[obj.key] as LazyEntry).call(this);
+        if(obj.value is List) {
+          result = type.parseAsync(List<Map<String, dynamic>>.from(obj.value as List));
+        } else {
+          result = type.parseAsync(obj.value);
+        }
+      } else {
+        result = await _fields[obj.key]!.parseAsync(obj.value);
+      }
       parsed[obj.key] = result.value;
     }
     for (var dependency in _dependencies) {
@@ -114,7 +135,17 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         }
         continue;
       }
-      final parsedValue = _fields[obj.key]!.tryParse(obj.value);
+      final AcanthisParseResult<dynamic> parsedValue;
+      if (_fields[obj.key] is LazyEntry) {
+        final type = (_fields[obj.key] as LazyEntry).call(this);
+        if(obj.value is List) {
+          parsedValue = type.tryParse(List<Map<String, dynamic>>.from(obj.value as List));
+        } else {
+          parsedValue = type.tryParse(obj.value);
+        }
+      } else {
+        parsedValue = _fields[obj.key]!.tryParse(obj.value);
+      }
       parsed[obj.key] = parsedValue.value;
       errors[obj.key] = parsedValue.errors;
     }
@@ -159,7 +190,17 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         }
         continue;
       }
-      final parsedValue = await _fields[obj.key]!.tryParseAsync(obj.value);
+      final AcanthisParseResult parsedValue;
+      if (_fields[obj.key] is LazyEntry) {
+        final type = (_fields[obj.key] as LazyEntry).call(this);
+        if(obj.value is List) {
+          parsedValue = await type.tryParseAsync(List<Map<String, dynamic>>.from(obj.value as List));
+        } else {
+          parsedValue = await type.tryParseAsync(obj.value);
+        }
+      } else {
+        parsedValue = await _fields[obj.key]!.tryParseAsync(obj.value);
+      }
       parsed[obj.key] = parsedValue.value;
       errors[obj.key] = parsedValue.errors;
     }
@@ -323,6 +364,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         if (value is AcanthisMap) {
           return MapEntry(key, value.partial(deep: deep));
         }
+        if(value is LazyEntry) {
+          return MapEntry(key, value.call(this).nullable());
+        }
         return MapEntry(key, value.nullable());
       }));
     }
@@ -343,3 +387,26 @@ class _Dependency {
 
   _Dependency(this.dependent, this.dependendsOn, this.dependency);
 }
+
+class LazyEntry extends AcanthisType<dynamic>{
+
+  final AcanthisType Function(AcanthisMap parent) _type;
+
+  LazyEntry(this._type);
+  
+  AcanthisType call(AcanthisMap parent) {
+    final type = _type(parent);
+    if(type is LazyEntry) {
+      throw StateError('Circular dependency detected');
+    }
+    return type;
+  }
+
+  @override
+  AcanthisNullable nullable({defaultValue}) {
+    throw UnimplementedError('The implementation must be done from the parent');
+  }
+
+}
+
+LazyEntry lazy(AcanthisType Function(AcanthisMap parent) type) => LazyEntry(type);

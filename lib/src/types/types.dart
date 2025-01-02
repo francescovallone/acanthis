@@ -7,15 +7,15 @@ abstract class AcanthisType<O> {
   /// The operations that the type should perform
   final List<AcanthisOperation> operations = [];
 
+  bool get isAsync => operations.any((element) => element is AcanthisAsyncCheck);
+
   /// The constructor of the class
   AcanthisType();
 
   /// The parse method to parse the value
   /// it returns a [AcanthisParseResult] with the parsed value and throws a [ValidationError] if the value is not valid
   AcanthisParseResult<O> parse(O value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
+    if (isAsync) {
       throw AsyncValidationException(
           'Cannot use tryParse with async operations');
     }
@@ -40,9 +40,7 @@ abstract class AcanthisType<O> {
   /// - value: The value of the parsing. If the parsing was successful, this will contain the parsed value.
   /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
   AcanthisParseResult<O> tryParse(O value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
+    if (isAsync) {
       throw AsyncValidationException(
           'Cannot use tryParse with async operations');
     }
@@ -136,6 +134,7 @@ abstract class AcanthisType<O> {
     return this;
   }
 
+  /// Add a custom async check to the number
   AcanthisType<O> refineAsync(
       {required Future<bool> Function(O value) onCheck,
       required String error,
@@ -145,6 +144,7 @@ abstract class AcanthisType<O> {
     return this;
   }
 
+  /// Add a pipe transformation to the type to transform the value to another type
   AcanthisPipeline<O, T> pipe<T>(
     AcanthisType<T> type, {
     required T Function(O value) transform,
@@ -157,6 +157,7 @@ abstract class AcanthisType<O> {
     operations.add(transformation);
   }
 
+  /// Add a typed transformation to the type. It does not transform the value if the type is not the same
   AcanthisType<O> transform(O Function(O value) transformation) {
     addTransformation(
         AcanthisTransformation<O>(transformation: transformation));
