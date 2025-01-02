@@ -48,16 +48,16 @@ void main(List<String> arguments) async {
   final parsedList = list.tryParse(['Hello', 'World', 'hello']);
 
   final number = acanthis.number().pow(2).gte(5);
-  //print(number.tryParse(3));
-  //print(parsed);
-  //print(parsedList);
+  print(number.tryParse(3));
+  print(parsed);
+  print(parsedList);
 
   final union = acanthis.union([
     acanthis.number(),
     acanthis.string(),
   ]);
 
-  //print(union.tryParse(DateTime.now()));
+  print(union.tryParse(DateTime.now()));
 
   // final schema = acanthis.object({
   //   'email': acanthis.string().email(),
@@ -112,6 +112,5 @@ errors: ${encoder.convert(r.errors)}
         transform: (value) => DateTime.parse(value),
       );
   final result = stringDate.tryParse('aaaaa');
-  //print(result);
-  return;
+  print(result);
 }
