@@ -1,56 +1,25 @@
+![Acanthis Banner](https://github.com/francescovallone/acanthis/raw/main/assets/github-header.png)
+
 # Acanthis
 
-Acanthis is a Validation library heavily inspired by [Zod](https://github.com/colinhacks/zod). It is designed to be a simple, and easy to use validation library.
+Acanthis is a simple and easy to use validation library for Dart. It is inspired by [Zod](https://github.com/colinhacks/zod) although it is not a port of it. Acanthis is tailored to the Dart language and its features and is type-safe and composable.
 
-## Features
+[Get Started](hhttps://acanthis.serinus.app/introduction.html) | [Pub.dev](https://pub.dev/packages/acanthis)
 
-Acanthis is designed to be composable. Schemas can be composed together to create more complex schemas.
+## Why Acanthis?
 
-Also Acanthis doesn't require any runtime dependencies, and makes use of a chainable API to create schemas.
+Acanthis provides validation for most of the Dart built-in types and allows you to create custom validators.
 
-## Getting Started
-
-To get started with Acanthis, you can install it using the following command:
-
-```bash
-dart pub add acanthis
-```
-
-## Example
-
-Here is a simple example of how to use Acanthis:
-
-```dart
-import 'package:acanthis/acanthis.dart';
-
-void main() {
-  final schema = object({
-	'name': string().min(3),
-	'age': number().positive(),
-  });
-
-  final result = schema.tryParse({
-	  'name': 'Francesco',
-	  'age': 59,
-  });
-
-  /// The result is a AcanthisParseResult object
-  /// that has the following properties:
-  /// - success: A boolean that indicates if the parsing was successful or not.
-  /// - value: The value of the parsing. If the parsing was successful, this will contain the parsed value.
-  /// - errors: The errors of the parsing. If the parsing was unsuccessful, this will contain the errors of the parsing.
-
-  if (result.success) {
-	  print('The schema is valid!');
-  } else {
-	  print('The schema is invalid!');
-  }
-}
-```
-
-As you can see if you come from a Zod background, the API is very similar and should be familiar to you.
+But that's not all! Acanthis is designed to be composable, so you can create complex validators by combining simpler ones.
 
 ## Contributions
 
 Contributions are welcome! If you want to contribute to Acanthis, you can open a pull request on the [GitHub repository](https://github.com/francescovallone/acanthis/pulls)
 
+## License
+
+Acanthis is licensed under the MIT License. You can read the full license [here](https://github.com/francescovallone/acanthis/blob/main/LICENSE)
+
+## Credits
+
+Acanthis is developed and maintained by [Avesbox](https://avesbox.com)
