@@ -88,24 +88,16 @@ void main(List<String> arguments) async {
       {
         'name': 'World',
         'subcategories': [
-          {
-            'name': '!',
-            'subcategories': []
-          },
-          {
-            'name': '!!!!!',
-            'subcategories': []
-          }
+          {'name': '!', 'subcategories': []},
+          {'name': '!!!!!', 'subcategories': []}
         ]
       }
     ]
   });
   final encoder = JsonEncoder.withIndent('  ');
-  print(
-    '''value: ${encoder.convert(r.value)}
+  print('''value: ${encoder.convert(r.value)}
 errors: ${encoder.convert(r.errors)}
-    '''
-  );
+    ''');
 
   final stringDate = acanthis.string().pipe(
         acanthis.date().min(DateTime.now()),

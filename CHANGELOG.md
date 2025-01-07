@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.1
+
+- Add `lazy` validator to allow for recursive schemas.
+
 ## 1.0.0
 
 - Upgrade dependencies.

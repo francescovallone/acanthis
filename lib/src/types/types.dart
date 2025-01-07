@@ -7,7 +7,8 @@ abstract class AcanthisType<O> {
   /// The operations that the type should perform
   final List<AcanthisOperation> operations = [];
 
-  bool get isAsync => operations.any((element) => element is AcanthisAsyncCheck);
+  bool get isAsync =>
+      operations.any((element) => element is AcanthisAsyncCheck);
 
   /// The constructor of the class
   AcanthisType();

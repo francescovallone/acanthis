@@ -335,3 +335,47 @@ void main() {
 }
 ```
 
+## Recursive schemas
+
+You can create recursive schemas by using the `lazy` method.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final schema = object({
+    'name': string().min(3),
+    'age': number().positive(),
+    'children': lazy((parent) => parent.list()),
+  });
+
+  final result = schema.tryParse({
+    'name': 'Francesco',
+    'age': 32,
+    'children': [
+      {
+        'name': 'Alice',
+        'age': 5,
+        'children': [],
+      },
+      {
+        'name': 'Bob',
+        'age': 7,
+        'children': [
+          {
+            'name': 'Charlie',
+            'age': 3,
+            'children': [],
+          },
+        ],
+      },
+    ],
+  });
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```

@@ -39,8 +39,10 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       }
       if (_fields[obj.key] is LazyEntry) {
         final type = (_fields[obj.key] as LazyEntry).call(this);
-        if(obj.value is List) {
-          parsed[obj.key] = type.parse(List<Map<String, dynamic>>.from(obj.value as List)).value;
+        if (obj.value is List) {
+          parsed[obj.key] = type
+              .parse(List<Map<String, dynamic>>.from(obj.value as List))
+              .value;
         } else {
           parsed[obj.key] = type.parse(obj.value).value;
         }
@@ -85,8 +87,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       final dynamic result;
       if (_fields[obj.key] is LazyEntry) {
         final type = (_fields[obj.key] as LazyEntry).call(this);
-        if(obj.value is List) {
-          result = type.parseAsync(List<Map<String, dynamic>>.from(obj.value as List));
+        if (obj.value is List) {
+          result = type
+              .parseAsync(List<Map<String, dynamic>>.from(obj.value as List));
         } else {
           result = type.parseAsync(obj.value);
         }
@@ -138,8 +141,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       final AcanthisParseResult<dynamic> parsedValue;
       if (_fields[obj.key] is LazyEntry) {
         final type = (_fields[obj.key] as LazyEntry).call(this);
-        if(obj.value is List) {
-          parsedValue = type.tryParse(List<Map<String, dynamic>>.from(obj.value as List));
+        if (obj.value is List) {
+          parsedValue =
+              type.tryParse(List<Map<String, dynamic>>.from(obj.value as List));
         } else {
           parsedValue = type.tryParse(obj.value);
         }
@@ -193,8 +197,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
       final AcanthisParseResult parsedValue;
       if (_fields[obj.key] is LazyEntry) {
         final type = (_fields[obj.key] as LazyEntry).call(this);
-        if(obj.value is List) {
-          parsedValue = await type.tryParseAsync(List<Map<String, dynamic>>.from(obj.value as List));
+        if (obj.value is List) {
+          parsedValue = await type.tryParseAsync(
+              List<Map<String, dynamic>>.from(obj.value as List));
         } else {
           parsedValue = await type.tryParseAsync(obj.value);
         }
@@ -364,7 +369,7 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
         if (value is AcanthisMap) {
           return MapEntry(key, value.partial(deep: deep));
         }
-        if(value is LazyEntry) {
+        if (value is LazyEntry) {
           return MapEntry(key, value.call(this).nullable());
         }
         return MapEntry(key, value.nullable());
@@ -388,15 +393,14 @@ class _Dependency {
   _Dependency(this.dependent, this.dependendsOn, this.dependency);
 }
 
-class LazyEntry extends AcanthisType<dynamic>{
-
+class LazyEntry extends AcanthisType<dynamic> {
   final AcanthisType Function(AcanthisMap parent) _type;
 
   LazyEntry(this._type);
-  
+
   AcanthisType call(AcanthisMap parent) {
     final type = _type(parent);
-    if(type is LazyEntry) {
+    if (type is LazyEntry) {
       throw StateError('Circular dependency detected');
     }
     return type;
@@ -406,7 +410,7 @@ class LazyEntry extends AcanthisType<dynamic>{
   AcanthisNullable nullable({defaultValue}) {
     throw UnimplementedError('The implementation must be done from the parent');
   }
-
 }
 
-LazyEntry lazy(AcanthisType Function(AcanthisMap parent) type) => LazyEntry(type);
+LazyEntry lazy(AcanthisType Function(AcanthisMap parent) type) =>
+    LazyEntry(type);
