@@ -1,0 +1,20 @@
+name: benchmarks
+description: A sample command-line application.
+version: 1.0.0
+publish_to: none
+# repository: https://github.com/my_org/my_repo
+
+environment:
+  sdk: ^3.3.3
+
+# Add regular dependencies here.
+dependencies:
+  luthor: ^0.5.2+1
+  benchmark_harness: ^2.2.2
+  acanthis: 
+    path: ../
+  
+
+dev_dependencies:
+  lints: ^3.0.0
+  test: ^1.24.0
