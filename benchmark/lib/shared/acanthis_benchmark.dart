@@ -1,16 +1,12 @@
-import 'package:benchmark_harness/benchmark_harness.dart';
+import 'package:benchmark_harness/perf_benchmark_harness.dart';
 
-import 'acanthis_emitter.dart';
-
-class AcanthisBenchmark extends BenchmarkBase {
+class AcanthisBenchmark extends PerfBenchmarkBase {
   final int iterations;
-
-  List<double> result = [];
 
   AcanthisBenchmark({
     String name = 'AcanthisBenchmark',
     this.iterations = 100,
-  }) : super(name, emitter: AcanthisEmitter());
+  }) : super(name, emitter: PrintEmitterV2());
 
   @override
   void exercise() {
