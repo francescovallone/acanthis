@@ -16,6 +16,16 @@ class AcanthisDate extends AcanthisType<DateTime> {
     return this;
   }
 
+  /// Add a check to the date to check if it is after or equal to [value]
+  AcanthisDate differsFromNow(Duration difference) {
+    addCheck(AcanthisCheck<DateTime>(
+        onCheck: (toTest) =>
+            toTest.difference(DateTime.now()).abs() >= difference,
+        error: 'The date must differ from now by $difference or more',
+        name: 'differsFromNow'));
+    return this;
+  }
+
   /// Add a check to the date to check if it is less than or equal to [value]
   AcanthisDate max(DateTime value) {
     addCheck(AcanthisCheck<DateTime>(

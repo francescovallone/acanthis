@@ -13,8 +13,8 @@
 
 include: package:lints/recommended.yaml
 
-analyzer:
-  exclude: [benchmark/**]
+# analyzer:
+#   exclude: [benchmark/**]
 
 # Uncomment the following section to specify additional rules.
 

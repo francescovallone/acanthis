@@ -32,6 +32,7 @@ const _nanoidRegex = r'^[a-z0-9_-]{21}$';
 const _jwtRegex = r'^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]*$';
 const _base64Regex =
     r'^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$';
+const _timeRegex = r'^([0-1]?[0-9]|2[0-3]):[0-5][0-9](?::([0-5]\d))?$';
 
 /// A class to validate string types
 class AcanthisString extends AcanthisType<String> {
@@ -75,61 +76,69 @@ class AcanthisString extends AcanthisType<String> {
 
   /// Add a check to the string to check if it contains letters
   AcanthisString letters({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_lettersStrict));
-    } else {
-      pattern(RegExp(_letters));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => (strict ? RegExp(_lettersStrict) : RegExp(_letters))
+            .hasMatch(value),
+        error: 'Value must contain ${strict ? 'only ' : ''}letters',
+        name: 'letters'));
     return this;
   }
 
   /// Add a check to the string to check if it contains digits
   AcanthisString digits({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_digitsStrict));
-    } else {
-      pattern(RegExp(_digits));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            (strict ? RegExp(_digitsStrict) : RegExp(_digits)).hasMatch(value),
+        error: 'Value must contain ${strict ? 'only ' : ''}digits',
+        name: 'digits'));
     return this;
   }
 
   /// Add a check to the string to check if it contains alphanumeric characters
   AcanthisString alphanumeric({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_alphanumericStrict));
-    } else {
-      pattern(RegExp(_alphanumeric));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            (strict ? RegExp(_alphanumericStrict) : RegExp(_alphanumeric))
+                .hasMatch(value),
+        error:
+            'Value must contain ${strict ? 'only ' : ''}alphanumeric characters',
+        name: 'alphanumeric'));
     return this;
   }
 
   /// Add a check to the string to check if it contains alphanumeric characters and spaces
   AcanthisString alphanumericWithSpaces({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_alphanumericWithSpacesStrict));
-    } else {
-      pattern(RegExp(_alphanumericWithSpaces));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => (strict
+                ? RegExp(_alphanumericWithSpacesStrict)
+                : RegExp(_alphanumericWithSpaces))
+            .hasMatch(value),
+        error:
+            'Value must contain ${strict ? 'only ' : ''}alphanumeric or spaces characters',
+        name: 'alphanumericWithSpaces'));
     return this;
   }
 
   /// Add a check to the string to check if it contains special characters
   AcanthisString specialCharacters({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_specialCharactersStrict));
-    } else {
-      pattern(RegExp(_specialCharacters));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => (strict
+                ? RegExp(_specialCharactersStrict)
+                : RegExp(_specialCharacters))
+            .hasMatch(value),
+        error: 'Value must contain ${strict ? 'only ' : ''}special characters',
+        name: 'specialCharacters'));
     return this;
   }
 
   /// Add a check to the string to check if it contains all characters
   AcanthisString allCharacters({bool strict = true}) {
-    if (strict) {
-      pattern(RegExp(_allCharactersStrict));
-    } else {
-      pattern(RegExp(_allCharacters));
-    }
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            (strict ? RegExp(_allCharactersStrict) : RegExp(_allCharacters))
+                .hasMatch(value),
+        error: 'Value must contain ${strict ? 'only ' : ''} characters',
+        name: 'specialCharacters'));
     return this;
   }
 
@@ -170,12 +179,45 @@ class AcanthisString extends AcanthisType<String> {
     return this;
   }
 
+  AcanthisString time() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) => (RegExp(_timeRegex)).hasMatch(value),
+        error: 'Value must be a valid time format',
+        name: 'time'));
+    return this;
+  }
+
+  AcanthisString hexColor() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) {
+          if (value.length != 7) return false;
+          if (value[0] != '#') return false;
+          return RegExp(r'^[0-9a-fA-F]+$').hasMatch(value.substring(1));
+        },
+        error: 'Value must be a valid hex color',
+        name: 'hexColor'));
+    return this;
+  }
+
   /// Add a check to the string to check if it is a valid uri
   AcanthisString uri() {
     addCheck(AcanthisCheck<String>(
         onCheck: (value) => Uri.tryParse(value) != null,
         error: 'Value must be a valid uri',
         name: 'uri'));
+    return this;
+  }
+
+  AcanthisString url() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) {
+          if (value.isEmpty) return false;
+          final uriValue = Uri.tryParse(value);
+          if (uriValue == null) return false;
+          return uriValue.hasScheme && uriValue.host.isNotEmpty;
+        },
+        error: 'Value must be a valid url',
+        name: 'url'));
     return this;
   }
 
@@ -246,38 +288,96 @@ class AcanthisString extends AcanthisType<String> {
     return this;
   }
 
+  AcanthisString card() {
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) {
+          final sanitized = value.replaceAll(RegExp(r'\D'), '');
+          if (sanitized.length < 13 || sanitized.length > 19) return false;
+          if (!RegExp(r'^\d+$').hasMatch(sanitized)) return false;
+          return _isValidLuhn(sanitized);
+        },
+        error: 'Value must be a valid card number',
+        name: 'card'));
+    return this;
+  }
+
+  bool _isValidLuhn(String number) {
+    int sum = 0;
+    bool alternate = false;
+    for (int i = number.length - 1; i >= 0; i--) {
+      int digit = int.parse(number[i]);
+
+      if (alternate) {
+        digit *= 2;
+        if (digit > 9) digit -= 9;
+      }
+
+      sum += digit;
+      alternate = !alternate;
+    }
+    return sum % 10 == 0;
+  }
+
   AcanthisString cuid() {
-    pattern(RegExp(_cuidRegex, caseSensitive: false));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_cuidRegex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid cuid',
+        name: 'cuid'));
     return this;
   }
 
   AcanthisString cuid2() {
-    pattern(RegExp(_cuid2Regex));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_cuid2Regex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid cuid2',
+        name: 'cuid2'));
     return this;
   }
 
   AcanthisString ulid() {
-    pattern(RegExp(_ulidRegex, caseSensitive: false));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_ulidRegex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid ulid',
+        name: 'ulid'));
     return this;
   }
 
   AcanthisString uuid() {
-    pattern(RegExp(_uuidRegex, caseSensitive: false));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_uuidRegex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid uuid',
+        name: 'uuid'));
     return this;
   }
 
   AcanthisString nanoid() {
-    pattern(RegExp(_nanoidRegex, caseSensitive: false));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_nanoidRegex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid nanoid',
+        name: 'nanoid'));
     return this;
   }
 
   AcanthisString jwt() {
-    pattern(RegExp(_jwtRegex));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_jwtRegex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid jwt',
+        name: 'jwt'));
     return this;
   }
 
   AcanthisString base64() {
-    pattern(RegExp(_base64Regex));
+    addCheck(AcanthisCheck<String>(
+        onCheck: (value) =>
+            RegExp(_base64Regex, caseSensitive: false).hasMatch(value),
+        error: 'Value must be a valid base64',
+        name: 'base64'));
     return this;
   }
 

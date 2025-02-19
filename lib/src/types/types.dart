@@ -7,8 +7,9 @@ abstract class AcanthisType<O> {
   /// The operations that the type should perform
   final List<AcanthisOperation> operations = [];
 
-  bool get isAsync =>
-      operations.any((element) => element is AcanthisAsyncCheck);
+  bool _isAsync = false;
+
+  bool get isAsync => _isAsync;
 
   /// The constructor of the class
   AcanthisType();
@@ -118,6 +119,7 @@ abstract class AcanthisType<O> {
 
   /// Add an async check to the type
   void addAsyncCheck(AcanthisAsyncCheck<O> check) {
+    _isAsync = true;
     operations.add(check);
   }
 

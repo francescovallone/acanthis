@@ -409,5 +409,70 @@ void main() {
 
       expect(resultParse.success, true);
     });
+
+    test(
+      'when creating a number validator,'
+      'and use the between method, '
+      'and the value is between the range, '
+      'then the result should be successful',
+      () {
+        final number = acanthis.number().between(1, 3);
+        final result = number.tryParse(2);
+
+        expect(result.success, true);
+
+        final resultParse = number.parse(2);
+
+        expect(resultParse.success, true);
+      },
+    );
+
+    test(
+      'when creating a number validator,'
+      'and use the between method, '
+      'and the value is not between the range, '
+      'then the result should be unsuccessful',
+      () {
+        final number = acanthis.number().between(1, 3);
+        final result = number.tryParse(4);
+
+        expect(result.success, false);
+
+        expect(() => number.parse(4), throwsA(TypeMatcher<ValidationError>()));
+      },
+    );
+
+    test(
+      'when creating a number validator,'
+      'and use the double method, '
+      'and the value is a double value, '
+      'then the result should be successful',
+      () {
+        final number = acanthis.number().double();
+        final result = number.tryParse(4.5);
+
+        expect(result.success, true);
+
+        final resultParse = number.parse(4.5);
+
+        expect(resultParse.success, true);
+      },
+    );
+
+    test(
+      'when creating a number validator,'
+      'and use the double method, '
+      'and the value is not a double value, '
+      'then the result should be unsuccessful',
+      () {
+        final number = acanthis.number().double();
+        final result = number.tryParse(4);
+
+        expect(result.success, false);
+
+        expect(() => number.parse(4), throwsA(TypeMatcher<ValidationError>()));
+
+      },
+    );
   });
 }

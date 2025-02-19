@@ -158,5 +158,38 @@ void main() {
 
       expect(resultParse.success, true);
     });
+
+    test(
+      'when creating a date validator,'
+      'and use the differenceFromNow method, '
+      'and the value is valid, '
+      'then the result should be successful',
+      () {
+        final date = acanthis.date().differsFromNow(Duration(days: 1));
+        final result = date.tryParse(DateTime.now().add(Duration(days: 2)));
+
+        expect(result.success, true);
+
+        final resultParse = date.parse(DateTime.now().add(Duration(days: 2)));
+
+        expect(resultParse.success, true);
+      },
+    );
+
+    test(
+      'when creating a date validator,'
+      'and use the differenceFromNow method, '
+      'and the value is not valid, '
+      'then the result should be unsuccessful',
+      () {
+        final date = acanthis.date().differsFromNow(Duration(days: 1));
+        final result = date.tryParse(DateTime.now().add(Duration(hours: 12)));
+
+        expect(result.success, false);
+
+        expect(() => date.parse(DateTime.now().add(Duration(hours: 12))),
+            throwsA(TypeMatcher<ValidationError>()));
+      },
+    );
   });
 }

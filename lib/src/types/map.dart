@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:acanthis/src/exceptions/async_exception.dart';
 import 'package:acanthis/src/types/nullable.dart';
 
 import '../exceptions/validation_error.dart';
@@ -255,10 +256,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> parse(Map<String, V> value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
-      throw Exception('Cannot use tryParse with async operations');
+    if (isAsync) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
@@ -284,10 +284,9 @@ class AcanthisMap<V> extends AcanthisType<Map<String, V>> {
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<Map<String, V>> tryParse(Map<String, V> value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
-      throw Exception('Cannot use tryParse with async operations');
+    if (isAsync) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(

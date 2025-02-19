@@ -15,9 +15,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -42,9 +42,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -63,9 +63,9 @@ void main() {
   final result = age.tryParse(-24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -84,9 +84,29 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
+  }
+}
+```
+
+### double
+
+The double method is used to validate a double.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final age = number().double();
+
+  final result = age.tryParse(24.5);
+
+  if (result.success) {
+  print('The schema is valid!');
+  } else {
+  print('The schema is invalid!');
   }
 }
 ```
@@ -105,9 +125,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -126,9 +146,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -147,9 +167,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -168,9 +188,29 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
+  }
+}
+```
+
+### between
+
+The between method is used to validate that a number is between two values.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final age = number().between(18, 30);
+
+  final result = age.tryParse(24);
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
   }
 }
 ```
@@ -189,9 +229,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -210,9 +250,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -231,9 +271,9 @@ void main() {
   final result = age.tryParse(double.infinity);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -252,9 +292,9 @@ void main() {
   final result = age.tryParse(double.nan);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -273,9 +313,9 @@ void main() {
   final result = age.tryParse(24);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -296,9 +336,9 @@ void main() {
   final result = numbers.tryParse([24, 255]);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```

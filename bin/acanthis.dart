@@ -15,7 +15,7 @@ void main(List<String> arguments) async {
           'age': acanthis.number().gte(18),
           'email': acanthis.string().email(),
           'style': acanthis.object({'color': acanthis.string().min(3).max(10)}),
-          'date': acanthis.date().min(DateTime.now())
+          'date': acanthis.date().differsFromNow(Duration()),
         }),
       })
       .passthrough()
@@ -34,7 +34,7 @@ void main(List<String> arguments) async {
       'style': {
         'color': 'red',
       },
-      'date': DateTime.now()
+      'date': DateTime(1970)
     },
     'elements': ['Hell', 5],
   });

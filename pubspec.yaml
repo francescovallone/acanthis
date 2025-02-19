@@ -1,9 +1,11 @@
 name: acanthis
 description: Acanthis is an easy-to-use validation library for Dart and Flutter.
-version: 1.0.1
-homepage: https://acanthis.serinus.app
-documentation: https://acanthis.serinus.app/introduction.html
-repository: https://github.com/francescovallone/acanthis
+version: 1.0.2
+homepage: https://acanthis.avesbox.com
+documentation: https://acanthis.avesbox.com/introduction.html
+repository: https://github.com/avesbox/acanthis
+funding:
+  - https://github.com/sponsors/francescovallone
 
 topics:
   - validation

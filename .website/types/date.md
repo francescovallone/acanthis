@@ -16,9 +16,9 @@ void main() {
   final result = date.tryParse(DateTime.now());
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -43,9 +43,9 @@ void main() {
   final result = date.tryParse(DateTime.now());
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -64,9 +64,29 @@ void main() {
   final result = date.tryParse(DateTime.now());
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
+  }
+}
+```
+
+### differsFromNow
+
+The method differsFromNow is used to check if a DateTime object differs from the current time by a specific Duration
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final date = date().differsFromNow(Duration(days: 1));
+
+  final result = date.tryParse(DateTime.now().add(Duration(days: 2)));
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
   }
 }
 ```
@@ -87,9 +107,9 @@ void main() {
   final result = date.tryParse([DateTime.now(), DateTime.now()]);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```

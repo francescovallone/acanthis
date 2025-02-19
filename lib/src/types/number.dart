@@ -26,6 +26,14 @@ class AcanthisNumber extends AcanthisType<num> {
     return this;
   }
 
+  AcanthisNumber between(num min, num max) {
+    addCheck(AcanthisCheck<num>(
+        onCheck: (toTest) => toTest >= min && toTest <= max,
+        error: 'Value must be between $min and $max',
+        name: 'between'));
+    return this;
+  }
+
   /// Add a check to the number to check if it is greater than [value]
   AcanthisNumber gt(num value) {
     addCheck(AcanthisCheck<num>(
@@ -65,9 +73,18 @@ class AcanthisNumber extends AcanthisType<num> {
   /// Add a check to the number to check if it is an integer
   AcanthisNumber integer() {
     addCheck(AcanthisCheck<num>(
-        onCheck: (toTest) => toTest % 1 == 0,
+        onCheck: (toTest) => toTest is int,
         error: 'Value must be an integer',
         name: 'integer'));
+    return this;
+  }
+
+  /// Add a check to the number to check if it is a double
+  AcanthisNumber double() {
+    addCheck(AcanthisCheck<num>(
+        onCheck: (toTest) => toTest is! int,
+        error: 'Value must be a double',
+        name: 'double'));
     return this;
   }
 

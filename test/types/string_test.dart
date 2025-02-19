@@ -990,4 +990,124 @@ void main() {
           ));
     },
   );
+
+  test(
+    'when creating a time string validator, and the string is a valid time, then the result should be successful',
+    () {
+      final string = acanthis.string().time();
+      final result = string.tryParse('12:00');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('12:00');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a time string validator, and the string is not a valid time, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().time();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );  
+
+  test(
+    'when creating a hexColor string validator, and the string is a valid hexColor, then the result should be successful',
+    () {
+      final string = acanthis.string().hexColor();
+      final result = string.tryParse('#ffffff');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('#ffffff');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a hexColor string validator, and the string is not a valid hexColor, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().hexColor();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+
+  test(
+    'when creating a url string validator, and the string is a valid url, then the result should be successful',
+    () {
+      final string = acanthis.string().url();
+      final result = string.tryParse('https://test.com');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('https://test.com');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a url string validator, and the string is not a valid url, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().url();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
+  
+  test(
+    'when creating a card string validator, and the string is a valid date, then the result should be successful',
+    () {
+      final string = acanthis.string().card();
+      final result = string.tryParse('4242-4242-4242-4242');
+
+      expect(result.success, true);
+
+      final resultParse = string.parse('4242-4242-4242-4242');
+
+      expect(resultParse.success, true);
+    },
+  );
+
+  test(
+    'when creating a card string validator, and the string is not a valid date, then the result should be unsuccessful',
+    () {
+      final string = acanthis.string().card();
+      final result = string.tryParse('test');
+
+      expect(result.success, false);
+
+      expect(
+          () => string.parse('test'),
+          throwsA(
+            TypeMatcher<ValidationError>(),
+          ));
+    },
+  );
 }

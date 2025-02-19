@@ -15,9 +15,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -42,9 +42,9 @@ void main() {
   final result = email.tryParse('test@test.com');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -66,9 +66,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -86,9 +86,9 @@ void main() {
   final result = name.tryParse('Aca');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -106,9 +106,9 @@ void main() {
   final result = name.tryParse('Aca');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -126,9 +126,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -146,9 +146,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -167,9 +167,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -188,9 +188,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	  print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	  print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -209,9 +209,9 @@ void main() {
   final result = name.tryParse('Acanthis');
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```
@@ -610,6 +610,26 @@ void main() {
 }
 ```
 
+### card
+
+The card method is used to validate a card number.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final card = string().card();
+
+  final result = card.tryParse('4111-1111-1111-1111');
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
 ### dateTime
 
 The dateTime method is used to validate a string that is a valid date time.
@@ -630,6 +650,26 @@ void main() {
 }
 ```
 
+### time
+
+The time method is used to validate a string that is a valid time.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final time = string().time();
+
+  final result = time.tryParse('12:00:00');
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
 ### uri
 
 The uri method is used to validate a string that is a valid uri.
@@ -641,6 +681,46 @@ void main() {
   final uri = string().uri();
 
   final result = uri.tryParse('https://acanthis.dev');
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
+### url
+
+The url method is used to validate a string that is a valid url.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final url = string().url();
+
+  final result = url.tryParse('https://acanthis.serinus.app');
+
+  if (result.success) {
+    print('The schema is valid!');
+  } else {
+    print('The schema is invalid!');
+  }
+}
+```
+
+### hexColor
+
+The hexColor method is used to validate a string that is a valid hex color.
+
+```dart
+import 'package:acanthis/acanthis.dart';
+
+void main() {
+  final hexColor = string().hexColor();
+
+  final result = hexColor.tryParse('#ff0000');
 
   if (result.success) {
     print('The schema is valid!');
@@ -711,9 +791,9 @@ void main() {
   final result = list.tryParse(['Acanthis', '255']);
 
   if (result.success) {
-	print('The schema is valid!');
+    print('The schema is valid!');
   } else {
-	print('The schema is invalid!');
+    print('The schema is invalid!');
   }
 }
 ```

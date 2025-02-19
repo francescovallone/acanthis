@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+- Add `differsFromNow` to the `AcanthisDate` validator.
+- Add `double` and `between` to the `AcanthisNumber` validator.
+- Add `time`, `url`, `card` and `hexColor` to the `AcanthisString` validator.
+
 ## 1.0.1
 
 - Add `lazy` validator to allow for recursive schemas.
@@ -26,12 +32,7 @@
 
 ## 0.1.2
 
-### Features
-
 - Add the `addFieldDependency` function to the `object` validator.
-
-### Docs
-
 - Add information about `addFieldDependency` in the `object` validator.
 - Remove the `Operations` section from the documentation.
 
@@ -40,14 +41,9 @@
 ### Refactor
 
 - The function `jsonObject` has been renamed as `object`.
-
-### Docs
-
 - Add explicit information about the parse result object `AcanthisParseResult`.
 
 ## 0.1.0
-
-### Features
 
 - Add the `nullable` validator.
 - Add the `union` validator.
@@ -55,9 +51,6 @@
 - Add transformation functions for all the validators except `nullable`, `boolean` and `union`.
 - Add tests for all the validators (100% coverage 🎉).
 - Add documentation for all the validators.
-
-### Fixes
-
 - [#1] Fix the `string().email()` validator that will now use the `email_validator` package.
 
 ## 0.0.1

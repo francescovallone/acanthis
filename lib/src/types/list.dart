@@ -1,3 +1,5 @@
+import 'package:acanthis/src/exceptions/async_exception.dart';
+
 import 'types.dart';
 
 /// A class to validate list types
@@ -29,7 +31,7 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
       }
     }
     final result = super.tryParse(value);
-    return (result.value, {...errors, ...result.errors});
+    return (result.value, errors..addAll(result.errors));
   }
 
   @override
@@ -61,10 +63,9 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Override of [parse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> parse(List<T> value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
-      throw Exception('Cannot use tryParse with async operations');
+    if (isAsync) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     final parsed = _parse(value);
     return AcanthisParseResult(value: parsed);
@@ -73,10 +74,9 @@ class AcanthisList<T> extends AcanthisType<List<T>> {
   /// Override of [tryParse] from [AcanthisType]
   @override
   AcanthisParseResult<List<T>> tryParse(List<T> value) {
-    final hasAsyncOperations =
-        operations.any((element) => element is AcanthisAsyncCheck);
-    if (hasAsyncOperations) {
-      throw Exception('Cannot use tryParse with async operations');
+    if (isAsync) {
+      throw AsyncValidationException(
+          'Cannot use tryParse with async operations');
     }
     final (parsed, errors) = _tryParse(value);
     return AcanthisParseResult(

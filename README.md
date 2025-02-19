@@ -1,10 +1,10 @@
-![Acanthis Banner](https://github.com/francescovallone/acanthis/raw/main/assets/github-header.png)
+![Acanthis Banner](https://github.com/avesbox/acanthis/raw/main/assets/github-header.png)
 
 # Acanthis
 
 Acanthis is a simple and easy to use validation library for Dart. It is inspired by [Zod](https://github.com/colinhacks/zod) although it is not a port of it. Acanthis is tailored to the Dart language and its features and is type-safe and composable.
 
-[Get Started](https://acanthis.serinus.app/introduction.html) | [Pub.dev](https://pub.dev/packages/acanthis)
+[Get Started](https://acanthis.avesbox.com/introduction.html) | [Pub.dev](https://pub.dev/packages/acanthis)
 
 ## Why Acanthis?
 
@@ -14,11 +14,11 @@ But that's not all! Acanthis is designed to be composable, so you can create com
 
 ## Contributions
 
-Contributions are welcome! If you want to contribute to Acanthis, you can open a pull request on the [GitHub repository](https://github.com/francescovallone/acanthis/pulls)
+Contributions are welcome! If you want to contribute to Acanthis, you can open a pull request on the [GitHub repository](https://github.com/avesbox/acanthis/pulls)
 
 ## License
 
-Acanthis is licensed under the MIT License. You can read the full license [here](https://github.com/francescovallone/acanthis/blob/main/LICENSE)
+Acanthis is licensed under the MIT License. You can read the full license [here](https://github.com/avesbox/acanthis/blob/main/LICENSE)
 
 ## Credits
 
