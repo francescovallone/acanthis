@@ -1019,7 +1019,7 @@ void main() {
             TypeMatcher<ValidationError>(),
           ));
     },
-  );  
+  );
 
   test(
     'when creating a hexColor string validator, and the string is a valid hexColor, then the result should be successful',
@@ -1080,7 +1080,7 @@ void main() {
           ));
     },
   );
-  
+
   test(
     'when creating a card string validator, and the string is a valid date, then the result should be successful',
     () {

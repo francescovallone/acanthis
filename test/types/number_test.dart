@@ -471,7 +471,6 @@ void main() {
         expect(result.success, false);
 
         expect(() => number.parse(4), throwsA(TypeMatcher<ValidationError>()));
-
       },
     );
   });
